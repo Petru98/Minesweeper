@@ -5,26 +5,29 @@
 
 namespace Resources
 {
-    enum class ImageIndexes
+    namespace Images
     {
-        CellEmpty,
-        Cell1,
-        Cell2,
-        Cell3,
-        Cell4,
-        Cell5,
-        Cell6,
-        Cell7,
-        Cell8,
-        CellMine,
-        CellMineClicked,
-        CellNormal,
-        CellFlag,
+        enum Indexes
+        {
+            CellEmpty,
+            Cell1,
+            Cell2,
+            Cell3,
+            Cell4,
+            Cell5,
+            Cell6,
+            Cell7,
+            Cell8,
+            CellMine,
+            CellMineClicked,
+            CellNormal,
+            CellFlag,
 
-        Count
-    };
+            Count
+        };
 
-    extern const Resource images[];
+        extern const Resource images[];
+    }
 }
 
 #endif

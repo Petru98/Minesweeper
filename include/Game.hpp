@@ -1,9 +1,9 @@
 #ifndef MINESWEEPER_GAME_HPP_INCLUDED
 #define MINESWEEPER_GAME_HPP_INCLUDED
 
-#include "def.hpp"
+#include "images.hpp"
 #include "Exception.hpp"
-#include "resources.hpp"
+#include "def.hpp"
 
 class Game
 {

@@ -11,9 +11,8 @@ int main()
     }
     catch(Exception error)
     {
-
-        return static_cast<int>(error.code());
+        return error.code();
     }
 
-    return static_cast<int>(Error::None);
+    return 0;
 }

@@ -2,12 +2,10 @@
 
 Game::Game()
 {
-
 }
 
 Game::~Game()
 {
-
 }
 
 void Game::initialize()

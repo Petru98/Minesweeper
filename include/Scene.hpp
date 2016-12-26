@@ -1,12 +1,12 @@
 #ifndef MINESWEEPER_SCENE_HPP_INCLUDED
 #define MINESWEEPER_SCENE_HPP_INCLUDED
 
-#include "Game.hpp"
+#include <SFML/Graphics.hpp>
 
 class Scene
 {
 public:
-    static Game* game;
+    static class Game* game;
 
     void (*onClosed)();
     void (*onResized)(const sf::Event::SizeEvent&);
@@ -15,7 +15,7 @@ public:
     void (*onTextEntered)(const sf::Event::TextEvent&);
     void (*onKeyPressed)(const sf::Event::KeyEvent&);
     void (*onKeyReleased)(const sf::Event::KeyEvent&);
-    void (*onMouseWheelScrolled)(const sf::Event::MouseWheelEvent&);
+    void (*onMouseWheelScrolled)(const sf::Event::MouseWheelScrollEvent&);
     void (*onMouseButtonPressed)(const sf::Event::MouseButtonEvent&);
     void (*onMouseButtonReleased)(const sf::Event::MouseButtonEvent&);
     void (*onMouseMoved)(const sf::Event::MouseMoveEvent&);

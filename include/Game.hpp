@@ -2,9 +2,12 @@
 #define MINESWEEPER_GAME_HPP_INCLUDED
 
 #include "images.hpp"
+
 #include "Exception.hpp"
 #include "def.hpp"
-#include <SFML/Graphics.hpp>
+
+#include "Scene.hpp"
+#include "Cell.hpp"
 
 class Game
 {

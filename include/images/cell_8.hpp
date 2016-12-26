@@ -1,11 +1,13 @@
 #ifndef MINESWEEPER_CELL8_HPP_INCLUDED
 #define MINESWEEPER_CELL8_HPP_INCLUDED
 
+#include <cstddef>
+
 namespace Resources
 {
     namespace Images
     {
-        static constexpr struct {size_t size; unsigned char data[173];} cell_8 =
+        static constexpr struct {std::size_t size; unsigned char data[173u + 1u];} cell_8 =
         {
             173,
             "\x89PNG\15\12\32\12\0\0\0\15IHDR\0\0\0\20\0\0\0\20\10\2\0\0\0\x90\x91h6\0\0\0\tpHYs\0\0\16\xC3\0\0\16\xC3\1\xC7o\xA8""d\0\0\0_"

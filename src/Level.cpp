@@ -1,24 +1,24 @@
 #include "Level.hpp"
 
-struct Level::Difficulty
+const Level::Difficulty Level::easy   = {9 , 9 , 10};
+const Level::Difficulty Level::medium = {16, 16, 40};
+const Level::Difficulty Level::hard   = {16, 30, 99};
+
+void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
-    sf::Uint8  width;
-    sf::Uint8  height;
-    sf::Uint16 mines;
 
-    Difficulty() : width(0), height(0), mines(0) {}
-    Difficulty(const sf::Uint8 w, const sf::Uint8 h, const sf::Uint16 m) : width(w), height(h), mines(m) {}
-};
-
-const Level::Difficulty easy   = {9 , 9 , 10};
-const Level::Difficulty medium = {16, 16, 40};
-const Level::Difficulty hard   = {16, 30, 99};
+}
 
 Level::Level(sf::RenderWindow& window) : m_window(window)
 {}
 
 Level::~Level()
 {}
+
+void Level::create(const Difficulty difficulty)
+{
+
+}
 
 void Level::onClosed()
 {

@@ -7,7 +7,15 @@
 class Level : public Scene
 {
 public:
-    struct Difficulty;
+    struct Difficulty
+    {
+        sf::Uint8  width;
+        sf::Uint8  height;
+        sf::Uint16 mines;
+
+        Difficulty() : width(0), height(0), mines(0) {}
+        Difficulty(const sf::Uint8 w, const sf::Uint8 h, const sf::Uint16 m) : width(w), height(h), mines(m) {}
+    };
 
     static const Difficulty easy;
     static const Difficulty medium;
@@ -16,13 +24,13 @@ public:
 private:
     sf::RenderWindow& m_window;
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states);
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:
     Level(sf::RenderWindow& window);
     ~Level();
 
-    void create()
+    void create(const Difficulty difficulty);
 
     virtual void onClosed();
     virtual void onResized(const sf::Event::SizeEvent&);

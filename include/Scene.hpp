@@ -6,7 +6,7 @@
 class Scene : public sf::Drawable
 {
 private:
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) = 0;
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const = 0;
 
 public:
     virtual void onClosed() = 0;

@@ -13,7 +13,7 @@ void Game::initialize()
     if(textures.loadFromMemory(Textures::pack.data, Textures::pack.size) == false)
         throw Exception(Error::LoadTextures, Error::messages[Error::LoadTextures]);
 
-    level.create(GameScene::easy);
+    level.create(Level::easy);
 }
 
 void Game::run()
@@ -29,7 +29,7 @@ void Game::run()
         }
         else
         {
-            level.onClose();
+            level.onClosed();
             window.close();
         }
     }

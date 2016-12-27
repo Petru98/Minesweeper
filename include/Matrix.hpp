@@ -15,24 +15,24 @@ private:
     std::size_t m_lines;
     std::size_t m_columns;
 
-    bool M_alloc(std::size_t p_lines, std::size_t p_columns);
+    bool M_alloc(const std::size_t p_lines, const std::size_t p_columns);
     void M_dealloc();
 
 public:
     Matrix();
-    Matrix(std::size_t p_lines, std::size_t p_columns);
+    Matrix(const std::size_t p_lines, const std::size_t p_columns);
 
     ~Matrix();
 
-    bool create(std::size_t p_lines, std::size_t p_columns);
+    bool create(const std::size_t p_lines, const std::size_t p_columns);
     void destroy();
 
     bool isCreated()const;
-    std::size_t width()const;
-    std::size_t height()const;
+    std::size_t lines()const;
+    std::size_t columns()const;
 
-    T* const operator[] (std::size_t index);
-    const T* const operator[] (std::size_t index)const;
+    T* operator[] (const std::size_t index);
+    const T* operator[] (const std::size_t index)const;
 };
 
 #endif

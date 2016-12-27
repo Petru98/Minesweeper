@@ -1,13 +1,15 @@
 #include "Matrix.hpp"
 
-Matrix::Matrix() : m_matrix(nullptr), m_lines(0), m_columns(0)
-{}
-Matrix::Matrix(std::size_t p_lines, std::size_t p_columns) : m_matrix(nullptr), m_lines(0), m_columns(0)
+template<typename T> Matrix<T>::Matrix()
+    : m_matrix(nullptr), m_lines(0), m_columns(0) {}
+
+template<typename T> Matrix<T>::Matrix(const std::size_t p_lines, const std::size_t p_columns)
+    : m_matrix(nullptr), m_lines(0), m_columns(0)
 {
     create(p_lines, p_columns);
 }
 
-bool Matrix::create(std::size_t p_lines, std::size_t p_columns)
+template<typename T> bool Matrix<T>::create(const std::size_t p_lines, const std::size_t p_columns)
 {
     if(m_matrix != nullptr)
         M_dealloc();
@@ -21,7 +23,7 @@ bool Matrix::create(std::size_t p_lines, std::size_t p_columns)
     m_columns = p_columns;
     return true;
 }
-bool Matrix::M_alloc(std::size_t p_lines, std::size_t p_columns)
+template<typename T> bool Matrix<T>::M_alloc(const std::size_t p_lines, const std::size_t p_columns)
 {
     m_matrix = new(std::nothrow) T*[p_lines];
     if(m_matrix == nullptr)
@@ -40,43 +42,43 @@ bool Matrix::M_alloc(std::size_t p_lines, std::size_t p_columns)
     return true;
 }
 
-Matrix::~Matrix()
+template<typename T> Matrix<T>::~Matrix()
 {
     if(m_matrix != nullptr)
         M_dealloc();
 }
 
-void Matrix::destroy()
+template<typename T> void Matrix<T>::destroy()
 {
     M_dealloc();
     m_matrix = nullptr;
     m_lines = 0;
     m_columns = 0;
 }
-void Matrix::M_dealloc()
+template<typename T> void Matrix<T>::M_dealloc()
 {
     delete[] (*m_matrix);
     delete[]   m_matrix;
 }
 
-bool Matrix::isCreated()const
+template<typename T> bool Matrix<T>::isCreated()const
 {
     return m_matrix;
 }
-std::size_t Matrix::lines()const
+template<typename T> std::size_t Matrix<T>::lines()const
 {
     return m_lines;
 }
-std::size_t Matrix::columns()const
+template<typename T> std::size_t Matrix<T>::columns()const
 {
     return m_columns;
 }
 
-T* const Matrix::operator[] (std::size_t index)
+template<typename T> T* Matrix<T>::operator[] (const std::size_t index)
 {
     return m_matrix[index];
 }
-const T* const Matrix::operator[] (std::size_t index)const
+template<typename T> const T* Matrix<T>::operator[] (const std::size_t index)const
 {
     return m_matrix[index];
 }

@@ -23,7 +23,7 @@ Level::~Level()
 {}
 
 /* New game */
-void Level::create(Difficulty difficulty)
+void Level::create(Level::Difficulty difficulty)
 {
     difficulty = S_correctDifficulty(difficulty);
     if(m_cells.create(difficulty.lines, difficulty.columns) == false)
@@ -44,12 +44,18 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
         difficulty.mines = difficulty.lines*difficulty.coulmns;
     return difficulty;
 }
-void M_placeMines(Difficulty difficulty)
+void Level::M_placeMines(Level::Difficulty difficulty)
 {
     while(difficulty.mines > 0)
     {
-        std::size_t line = Random::rand() % difficulty.lines;
-        std::size_t column = Random::rand() % difficulty.columns;
+        const std::size_t line = Random::rand() % difficulty.lines;
+        const std::size_t column = Random::rand() % difficulty.columns;
+
+        if(m_cells[line][column].hasMine() == false)
+        {
+            m_cells[line][column].setMine();
+            --difficulty.mines;
+        }
     }
 }
 void Level::M_initializeWindow(const Level::Difficulty difficulty)

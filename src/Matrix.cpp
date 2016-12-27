@@ -1,10 +1,43 @@
 #include "Matrix.hpp"
 
-Matrix::Matrix() : m_matrix(nullptr), m_width(0), m_height(0)
+Matrix::Matrix() : m_matrix(nullptr), m_lines(0), m_columns(0)
 {}
-Matrix::Matrix(std::size_t w, std::size_t h) : m_matrix(nullptr), m_width(0), m_height(0)
+Matrix::Matrix(std::size_t p_lines, std::size_t p_columns) : m_matrix(nullptr), m_lines(0), m_columns(0)
 {
-    create(w, h);
+    create(p_lines, p_columns);
+}
+
+bool Matrix::create(std::size_t p_lines, std::size_t p_columns)
+{
+    if(m_matrix != nullptr)
+        M_dealloc();
+    if(M_alloc(p_lines, p_columns) == false)
+    {
+        m_lines = 0;
+        m_columns = 0;
+        return false;
+    }
+    m_lines = p_lines;
+    m_columns = p_columns;
+    return true;
+}
+bool Matrix::M_alloc(std::size_t p_lines, std::size_t p_columns)
+{
+    m_matrix = new(std::nothrow) T*[p_lines];
+    if(m_matrix == nullptr)
+        return false;
+
+    (*m_matrix) = new(std::nothrow) T[p_lines * p_columns];
+    if((*m_matrix) == nullptr)
+    {
+        delete[] m_matrix;
+        return false;
+    }
+
+    T* line_address = (*m_matrix) + p_columns;
+    for(std::size_t i = 1; i < p_lines; (++i, line_address += p_columns))
+        m_matrix[i] = line_address;
+    return true;
 }
 
 Matrix::~Matrix()
@@ -13,18 +46,12 @@ Matrix::~Matrix()
         M_dealloc();
 }
 
-bool Matrix::create(std::size_t w, std::size_t h)
-{
-
-}
-bool Matrix::M_alloc(std::size_t w, std::size_t h)
-{
-
-}
-
 void Matrix::destroy()
 {
-
+    M_dealloc();
+    m_matrix = nullptr;
+    m_lines = 0;
+    m_columns = 0;
 }
 void Matrix::M_dealloc()
 {
@@ -36,13 +63,13 @@ bool Matrix::isCreated()const
 {
     return m_matrix;
 }
-std::size_t Matrix::width()const
+std::size_t Matrix::lines()const
 {
-    return m_width;
+    return m_lines;
 }
-std::size_t Matrix::height()const
+std::size_t Matrix::columns()const
 {
-    return m_height;
+    return m_columns;
 }
 
 T* const Matrix::operator[] (std::size_t index)

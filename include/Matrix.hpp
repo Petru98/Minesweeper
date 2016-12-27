@@ -12,19 +12,19 @@ private:
     Matrix& operator=(const Matrix&);
 
     T**         m_matrix;
-    std::size_t m_width;
-    std::size_t m_height;
+    std::size_t m_lines;
+    std::size_t m_columns;
 
-    bool M_alloc(std::size_t w, std::size_t h);
+    bool M_alloc(std::size_t p_lines, std::size_t p_columns);
     void M_dealloc();
 
 public:
     Matrix();
-    Matrix(std::size_t w, std::size_t h);
+    Matrix(std::size_t p_lines, std::size_t p_columns);
 
     ~Matrix();
 
-    bool create(std::size_t w, std::size_t h);
+    bool create(std::size_t p_lines, std::size_t p_columns);
     void destroy();
 
     bool isCreated()const;

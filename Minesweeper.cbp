@@ -77,7 +77,7 @@
 		<Unit filename="include/function.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="include/images.hpp">
+		<Unit filename="include/textures.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="src/Cell.cpp">
@@ -85,8 +85,8 @@
 		</Unit>
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Scene.cpp" />
-		<Unit filename="src/images.cpp" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/textures.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

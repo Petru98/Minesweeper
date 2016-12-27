@@ -11,6 +11,8 @@ Game::~Game()
 
 void Game::initialize()
 {
+    if(textures.loadFromMemory(Resources::Textures::pack.data, Resources::Textures::pack.size) == false)
+        throw Exception(Error::LoadTextures, Error::messages[Error::LoadTextures]);
 }
 
 void Game::run()
@@ -23,5 +25,9 @@ void Game::run()
         case sf::Event::Closed:
             window.close();
         }
+
+        sf::Sprite sprite(textures);
+        window.draw(sprite);
+        window.display();
     }
 }

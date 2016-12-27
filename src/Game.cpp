@@ -21,7 +21,6 @@ void Game::run()
     sf::Event event;
     while(window.waitEvent(event))
     {
-
         if(event.type != sf::Event::Closed)
         {
             level.handleEvent(event);

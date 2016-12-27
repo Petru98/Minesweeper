@@ -8,6 +8,21 @@
 class Level : public Scene
 {
 public:
+    struct Error
+    {
+        enum
+        {
+            None,
+            Allocate
+        };
+
+        static constexpr const char* messages[] =
+        {
+            "No error",
+            "Could not allocate memory for a new game"
+        };
+    };
+
     struct Difficulty
     {
         sf::Uint8  lines;
@@ -21,6 +36,11 @@ public:
     static const Difficulty easy;
     static const Difficulty medium;
     static const Difficulty hard;
+
+    static constexpr unsigned int s_cell_left_offset   = 12;
+    static constexpr unsigned int s_cell_right_offset  = 8;
+    static constexpr unsigned int s_cell_top_offset    = 75;
+    static constexpr unsigned int s_cell_bottom_offset = 8;
 
 private:
     sf::RenderWindow& m_window;

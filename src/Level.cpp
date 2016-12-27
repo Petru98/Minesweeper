@@ -2,15 +2,18 @@
 #include "random.hpp"
 #include <ctime>
 
+/* Static */
 const Level::Difficulty Level::easy   = {9 , 9 , 10};
 const Level::Difficulty Level::medium = {16, 16, 40};
 const Level::Difficulty Level::hard   = {16, 30, 99};
 
+/* Draw */
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
 
 }
 
+/* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window) : m_window(window), m_cells()
 {
     Random::seed(std::time(nullptr));
@@ -19,12 +22,17 @@ Level::Level(sf::RenderWindow& window) : m_window(window), m_cells()
 Level::~Level()
 {}
 
+/* New game */
 void Level::create(Difficulty difficulty)
 {
     difficulty = S_correctDifficulty(difficulty);
-    m_cells.create()
+    if(m_cells.create(difficulty.lines, difficulty.columns) == false)
+        throw Exception(Error::Allocate, Error::messages[Error::Allocate]);
+
+    M_placeMines(difficulty.mines);
+    M_initializeWindow(difficulty);
 }
-Level::Difficulty Level::S_correctDifficulty(Level::Difficuly difficulty)
+Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
 {
     if(difficulty.lines == 0)
         difficulty.lines = 1;
@@ -32,9 +40,26 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficuly difficulty)
         difficulty.column = 8;
     if(difficulty.mines == 0)
         difficulty.mines = 1;
+    else if(difficulty.mines >= difficulty.lines*difficulty.columns)
+        difficulty.mines = difficulty.lines*difficulty.coulmns;
     return difficulty;
 }
+void M_placeMines(Difficulty difficulty)
+{
+    while(difficulty.mines > 0)
+    {
+        std::size_t line = Random::rand() % difficulty.lines;
+        std::size_t column = Random::rand() % difficulty.columns;
+    }
+}
+void Level::M_initializeWindow(const Level::Difficulty difficulty)
+{
+    const sf::Vector2u size(Cell::width * difficulty.column + s_cell_left_offset + s_cell_right_offset,
+                            Cell::height* difficulty.lines  + s_cell_top_offset  + s_cell_bottom_offset);
+    m_window.setSize(size);
+}
 
+/* Events */
 void Level::onClosed()
 {
 

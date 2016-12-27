@@ -3,24 +3,25 @@
 
 #include <SFML/Graphics.hpp>
 
-class Scene
+class Scene : public sf::Drawable
 {
-public:
-    static class Game* game;
+private:
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) = 0;
 
-    void (*onClosed)();
-    void (*onResized)(const sf::Event::SizeEvent&);
-    void (*onLostFocus)();
-    void (*onGainedFocus)();
-    void (*onTextEntered)(const sf::Event::TextEvent&);
-    void (*onKeyPressed)(const sf::Event::KeyEvent&);
-    void (*onKeyReleased)(const sf::Event::KeyEvent&);
-    void (*onMouseWheelScrolled)(const sf::Event::MouseWheelScrollEvent&);
-    void (*onMouseButtonPressed)(const sf::Event::MouseButtonEvent&);
-    void (*onMouseButtonReleased)(const sf::Event::MouseButtonEvent&);
-    void (*onMouseMoved)(const sf::Event::MouseMoveEvent&);
-    void (*onMouseEntered)();
-    void (*onMouseLeft)();
+public:
+    virtual void onClosed() = 0;
+    virtual void onResized(const sf::Event::SizeEvent&) = 0;
+    virtual void onLostFocus() = 0;
+    virtual void onGainedFocus() = 0;
+    virtual void onTextEntered(const sf::Event::TextEvent&) = 0;
+    virtual void onKeyPressed(const sf::Event::KeyEvent&) = 0;
+    virtual void onKeyReleased(const sf::Event::KeyEvent&) = 0;
+    virtual void onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent&) = 0;
+    virtual void onMouseButtonPressed(const sf::Event::MouseButtonEvent&) = 0;
+    virtual void onMouseButtonReleased(const sf::Event::MouseButtonEvent&) = 0;
+    virtual void onMouseMoved(const sf::Event::MouseMoveEvent&) = 0;
+    virtual void onMouseEntered() = 0;
+    virtual void onMouseLeft() = 0;
 
     Scene();
 

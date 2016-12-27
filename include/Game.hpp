@@ -6,8 +6,7 @@
 #include "Exception.hpp"
 #include "def.hpp"
 
-#include "Scene.hpp"
-#include "Cell.hpp"
+#include "Level.hpp"
 
 class Game
 {
@@ -28,7 +27,8 @@ private:
     };
 
     sf::RenderWindow window;
-    sf::Texture textures;
+    sf::Texture      textures;
+    Level            level;
 
 public:
     Game();

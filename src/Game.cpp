@@ -1,18 +1,19 @@
 #include "Game.hpp"
 
-Game::Game() : window()
-{
-    window.create(sf::VideoMode(800,600), "Minesweeper");
-}
+Game::Game() : window(), textures(), level(window)
+{}
 
 Game::~Game()
-{
-}
+{}
 
 void Game::initialize()
 {
-    if(textures.loadFromMemory(Resources::Textures::pack.data, Resources::Textures::pack.size) == false)
+    using namespace Resources;
+
+    if(textures.loadFromMemory(Textures::pack.data, Textures::pack.size) == false)
         throw Exception(Error::LoadTextures, Error::messages[Error::LoadTextures]);
+
+    level.create(GameScene::easy);
 }
 
 void Game::run()
@@ -20,13 +21,16 @@ void Game::run()
     sf::Event event;
     while(window.waitEvent(event))
     {
-        switch(event.type)
+
+        if(event.type != sf::Event::Closed)
         {
-        case sf::Event::Closed:
+            level.handleEvent(event);
+            window.draw(level);
+        }
+        else
+        {
+            level.onClose();
             window.close();
         }
-
-        window.clear();
-        window.display();
     }
 }

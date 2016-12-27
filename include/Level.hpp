@@ -10,12 +10,12 @@ class Level : public Scene
 public:
     struct Difficulty
     {
-        sf::Uint8  width;
-        sf::Uint8  height;
+        sf::Uint8  lines;
+        sf::Uint8  columns;
         sf::Uint16 mines;
 
-        Difficulty() : width(0), height(0), mines(0) {}
-        Difficulty(const sf::Uint8 w, const sf::Uint8 h, const sf::Uint16 m) : width(w), height(h), mines(m) {}
+        Difficulty() : lines(0), columns(0), mines(0) {}
+        Difficulty(const sf::Uint8 w, const sf::Uint8 h, const sf::Uint16 m) : lines(w), columns(h), mines(m) {}
     };
 
     static const Difficulty easy;
@@ -27,6 +27,8 @@ private:
     Matrix<Cell> m_cells;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
+
+    static Difficulty S_correctDifficulty(Difficulty difficulty);
 
 public:
     Level(sf::RenderWindow& window);

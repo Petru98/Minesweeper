@@ -19,9 +19,20 @@ Level::Level(sf::RenderWindow& window) : m_window(window), m_cells()
 Level::~Level()
 {}
 
-void Level::create(const Difficulty difficulty)
+void Level::create(Difficulty difficulty)
 {
-
+    difficulty = S_correctDifficulty(difficulty);
+    m_cells.create()
+}
+Level::Difficulty Level::S_correctDifficulty(Level::Difficuly difficulty)
+{
+    if(difficulty.lines == 0)
+        difficulty.lines = 1;
+    if(difficulty.columns < 8)
+        difficulty.column = 8;
+    if(difficulty.mines == 0)
+        difficulty.mines = 1;
+    return difficulty;
 }
 
 void Level::onClosed()

@@ -3,6 +3,7 @@
 
 #include "Scene.hpp"
 #include "Matrix.hpp"
+#include "Cell.hpp"
 
 class Level : public Scene
 {
@@ -23,6 +24,7 @@ public:
 
 private:
     sf::RenderWindow& m_window;
+    Matrix<Cell> m_cells;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 

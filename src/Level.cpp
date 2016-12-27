@@ -1,4 +1,6 @@
 #include "Level.hpp"
+#include "random.hpp"
+#include <ctime>
 
 const Level::Difficulty Level::easy   = {9 , 9 , 10};
 const Level::Difficulty Level::medium = {16, 16, 40};
@@ -9,8 +11,10 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 
 }
 
-Level::Level(sf::RenderWindow& window) : m_window(window)
-{}
+Level::Level(sf::RenderWindow& window) : m_window(window), m_cells()
+{
+    Random::seed(std::time(nullptr));
+}
 
 Level::~Level()
 {}

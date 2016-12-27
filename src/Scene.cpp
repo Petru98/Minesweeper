@@ -1,8 +1,5 @@
 #include "Scene.hpp"
 
-Scene::Scene()
-{}
-
 void Scene::handleEvent(const sf::Event& event)
 {
     switch(event.type)

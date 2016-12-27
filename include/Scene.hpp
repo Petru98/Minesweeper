@@ -23,8 +23,6 @@ public:
     virtual void onMouseEntered() = 0;
     virtual void onMouseLeft() = 0;
 
-    Scene();
-
     void handleEvent(const sf::Event& event);
 };
 

@@ -64,6 +64,7 @@
 		</Unit>
 		<Unit filename="include/Game.hpp" />
 		<Unit filename="include/Level.hpp" />
+		<Unit filename="include/Matrix.hpp" />
 		<Unit filename="include/Resource.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -77,6 +78,7 @@
 		<Unit filename="src/Cell.cpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Level.cpp" />
+		<Unit filename="src/Matrix.cpp" />
 		<Unit filename="src/Scene.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/textures.cpp" />

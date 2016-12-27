@@ -17,7 +17,18 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 }
 void Level::M_drawBackground(sf::RenderTarget& target, sf::RenderStates& states)const
 {
+    target.clear(sf::Color::White);
+    const sf::Vector2f size = {static_cast<float>(target.getSize().x), static_cast<float>(target.getSize().y)};
 
+    M_drawRect(target, sf::Color(236, 233, 216), 0, 0, size.x, s_menu_height);
+    M_drawRect(target, sf::Color(192, 192, 192), 3, s_menu_height+4, size.x-3, s_menu_height-s_menu_height-4);
+}
+void Level::M_drawRect(sf::RenderTarget& target, const sf::Color color, const float x, const float y, const float w, const float h)const
+{
+    sf::RectangleShape rect(sf::Vector2f(w,h));
+    rect.setFillColor(color);
+    rect.setPosition(x,y);
+    target.draw(rect);
 }
 void Level::M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const
 {
@@ -25,7 +36,9 @@ void Level::M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const
 }
 void Level::M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const
 {
-
+    for(std::size_t i = 0; i < m_cells.lines(); ++i)
+        for(std::size_t j = 0; j < m_cells.columns(); ++j)
+            target.draw(m_cells[i][j]);
 }
 
 
@@ -65,7 +78,10 @@ void Level::M_initializeCells()
 {
     for(std::size_t i = 0; i < m_cells.lines(); ++i)
         for(std::size_t j = 0; j < m_cells.columns(); ++j)
+        {
             m_cells[i][j].initialize(m_textures);
+            m_cells[i][j].setPosition(s_cell_left_offset + j*Cell::width, s_cell_top_offset + i*Cell::height);
+        }
 }
 void Level::M_placeMines(Level::Difficulty difficulty)
 {

@@ -39,9 +39,10 @@ public:
     static const Difficulty medium;
     static const Difficulty hard;
 
+    static constexpr unsigned int s_menu_height        = 19;
     static constexpr unsigned int s_cell_left_offset   = 12;
     static constexpr unsigned int s_cell_right_offset  = 8;
-    static constexpr unsigned int s_cell_top_offset    = 75;
+    static constexpr unsigned int s_cell_top_offset    = s_menu_height + 56;
     static constexpr unsigned int s_cell_bottom_offset = 8;
 
 private:
@@ -52,6 +53,7 @@ private:
     Matrix<Cell>       m_cells;
 
     void M_drawBackground(sf::RenderTarget& target, sf::RenderStates& states)const;
+    void M_drawRect(sf::RenderTarget& target, const sf::Color color, const float x, const float y, const float w, const float h)const;
     void M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const;
     void M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const;
 

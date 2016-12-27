@@ -27,6 +27,7 @@ void Game::run()
         {
             level.handleEvent(event);
             window.draw(level);
+            window.display();
         }
         else
         {

@@ -13,13 +13,15 @@ public:
         enum
         {
             None,
-            Allocate
+            Allocate,
+            CreateWindow
         };
 
         static constexpr const char* messages[] =
         {
             "No error",
-            "Could not allocate memory for a new game"
+            "Could not allocate memory for a new game",
+            "Could not create an OpenGL window"
         };
     };
 
@@ -43,15 +45,24 @@ public:
     static constexpr unsigned int s_cell_bottom_offset = 8;
 
 private:
-    sf::RenderWindow& m_window;
-    Matrix<Cell> m_cells;
+    static Difficulty S_correctDifficulty(Difficulty difficulty);
+
+    sf::RenderWindow&  m_window;
+    const sf::Texture& m_textures;
+    Matrix<Cell>       m_cells;
+
+    void M_drawBackground(sf::RenderTarget& target, sf::RenderStates& states)const;
+    void M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const;
+    void M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const;
+
+    void M_initializeCells();
+    void M_placeMines(Level::Difficulty difficulty);
+    void M_initializeWindow(const Level::Difficulty difficulty);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
-    static Difficulty S_correctDifficulty(Difficulty difficulty);
-
 public:
-    Level(sf::RenderWindow& window);
+    Level(sf::RenderWindow& window, const sf::Texture& texture);
     ~Level();
 
     void create(const Difficulty difficulty);

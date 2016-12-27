@@ -2,10 +2,6 @@
 #define MINESWEEPER_GAME_HPP_INCLUDED
 
 #include "textures.hpp"
-
-#include "Exception.hpp"
-#include "def.hpp"
-
 #include "Level.hpp"
 
 class Game

@@ -9,9 +9,9 @@ void Cell::draw(sf::RenderTarget& target, sf::RenderStates states)const
 Cell::Cell() : m_sprite(), m_mines_count(0), m_has_mine(false), m_revealed(false)
 {}
 
-void Cell::initialize(const sf::Texture& texture)
+void Cell::initialize(const sf::Texture& textures)
 {
-    m_sprite.setTexture(texture);
+    m_sprite.setTexture(textures);
     this->reset();
 }
 

@@ -1,6 +1,8 @@
 #include "Game.hpp"
 
-Game::Game() : window(), textures(), level(window)
+#include "Exception.hpp"
+
+Game::Game() : window(), textures(), level(window, textures)
 {}
 
 Game::~Game()

@@ -6,10 +6,11 @@
 
 class Cell : public sf::Drawable, public sf::Transformable
 {
-private:
+public:
     static constexpr std::size_t width = Resources::Textures::CELL_WIDTH;
     static constexpr std::size_t height = Resources::Textures::CELL_HEIGHT;
 
+private:
     sf::Sprite m_sprite;
     sf::Uint8  m_mines_count;
     bool       m_has_mine;
@@ -20,7 +21,7 @@ private:
 public:
     Cell();
 
-    void initialize(const sf::Texture& texture);
+    void initialize(const sf::Texture& textures);
     void reset();
 
     void setMine();

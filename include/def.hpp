@@ -8,4 +8,4 @@
     #define main WinMain
 #endif
 
-#endif // MINESWEEPER_MSDEF_HPP_INCLUDED
+#endif

@@ -26,8 +26,7 @@ void Game::run()
             window.close();
         }
 
-        sf::Sprite sprite(textures);
-        window.draw(sprite);
+        window.clear();
         window.display();
     }
 }

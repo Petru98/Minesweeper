@@ -12,9 +12,6 @@
 class Game
 {
 private:
-    sf::RenderWindow window;
-    sf::Texture textures;
-
     struct Error
     {
         enum
@@ -29,6 +26,9 @@ private:
             "Could not load textures from memory"
         };
     };
+
+    sf::RenderWindow window;
+    sf::Texture textures;
 
 public:
     Game();

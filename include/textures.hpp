@@ -15,24 +15,35 @@ namespace Resources
 
         namespace Rectangles
         {
-            extern const sf::IntRect CellEmpty;
-            extern const sf::IntRect Cell1;
-            extern const sf::IntRect Cell2;
-            extern const sf::IntRect Cell3;
-            extern const sf::IntRect Cell4;
-            extern const sf::IntRect Cell5;
-            extern const sf::IntRect Cell6;
-            extern const sf::IntRect Cell7;
-            extern const sf::IntRect Cell8;
-            extern const sf::IntRect CellMine;
-            extern const sf::IntRect CellMineClicked;
-            extern const sf::IntRect CellNormal;
-            extern const sf::IntRect CellFlag;
+            namespace Indexes
+            {
+                enum Cell
+                {
+                    CellEmpty,
+                    Cell1,
+                    Cell2,
+                    Cell3,
+                    Cell4,
+                    Cell5,
+                    Cell6,
+                    Cell7,
+                    Cell8,
+                    CellMine,
+                    CellMineClicked,
+                    CellNormal,
+                    CellFlag,
+                };
+                enum Smiley
+                {
+                    SmileyNormal,
+                    SmileyScared,
+                    SmileyWin,
+                    SmileyDead
+                };
+            }
 
-            extern const sf::IntRect SmileyNormal;
-            extern const sf::IntRect SmileyScared;
-            extern const sf::IntRect SmileyWin;
-            extern const sf::IntRect SmileyDead;
+            extern const sf::IntRect cell[];
+            extern const sf::IntRect smiley[];
         }
 
         extern const Resource pack;

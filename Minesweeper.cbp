@@ -80,9 +80,7 @@
 		<Unit filename="include/textures.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="src/Cell.cpp">
-			<Option target="Release" />
-		</Unit>
+		<Unit filename="src/Cell.cpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Scene.cpp" />
 		<Unit filename="src/main.cpp" />

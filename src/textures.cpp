@@ -6,24 +6,30 @@ namespace Resources
     {
         namespace Rectangles
         {
-            const sf::IntRect CellEmpty       = {0 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect Cell1           = {1 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect Cell2           = {2 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect Cell3           = {3 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect Cell4           = {4 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect Cell5           = {5 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect Cell6           = {6 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect Cell7           = {7 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect Cell8           = {8 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect CellMine        = {9 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect CellMineClicked = {10*CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect CellNormal      = {11*CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
-            const sf::IntRect CellFlag        = {12*CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT};
+            const sf::IntRect cell[] =
+            {
+                {0 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {1 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {2 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {3 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {4 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {5 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {6 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {7 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {8 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {9 *CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {10*CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {11*CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT},
+                {12*CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT}
+            };
 
-            const sf::IntRect SmileyNormal = {0*SMILEY_WIDTH, CELL_HEIGHT, SMILEY_WIDTH, SMILEY_HEIGHT};
-            const sf::IntRect SmileyScared = {1*SMILEY_WIDTH, CELL_HEIGHT, SMILEY_WIDTH, SMILEY_HEIGHT};
-            const sf::IntRect SmileyWin    = {2*SMILEY_WIDTH, CELL_HEIGHT, SMILEY_WIDTH, SMILEY_HEIGHT};
-            const sf::IntRect SmileyDead   = {3*SMILEY_WIDTH, CELL_HEIGHT, SMILEY_WIDTH, SMILEY_HEIGHT};
+            const sf::IntRect smiley[] =
+            {
+                {0*SMILEY_WIDTH, CELL_HEIGHT, SMILEY_WIDTH, SMILEY_HEIGHT},
+                {1*SMILEY_WIDTH, CELL_HEIGHT, SMILEY_WIDTH, SMILEY_HEIGHT},
+                {2*SMILEY_WIDTH, CELL_HEIGHT, SMILEY_WIDTH, SMILEY_HEIGHT},
+                {3*SMILEY_WIDTH, CELL_HEIGHT, SMILEY_WIDTH, SMILEY_HEIGHT}
+            };
         }
 
         const Resource pack =

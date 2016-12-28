@@ -70,6 +70,7 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="include/Scene.hpp" />
+		<Unit filename="include/Table.hpp" />
 		<Unit filename="include/def.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -84,6 +85,7 @@
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Level.cpp" />
 		<Unit filename="src/Scene.cpp" />
+		<Unit filename="src/Table.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/textures.cpp" />
 		<Extensions>

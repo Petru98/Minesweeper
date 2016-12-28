@@ -2,8 +2,7 @@
 #define MINESWEEPER_LEVEL_HPP_INCLUDED
 
 #include "Scene.hpp"
-#include "Matrix.hpp"
-#include "Cell.hpp"
+#include "Table.hpp"
 #include "Background.hpp"
 
 class Level : public Scene

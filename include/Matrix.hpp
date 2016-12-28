@@ -31,6 +31,9 @@ public:
     std::size_t lines()const;
     std::size_t columns()const;
 
+    T* operator[] (const std::size_t index);
+    const T* operator[] (const std::size_t index)const;
+
     template<typename U = T>
     typename std::enable_if<std::is_signed<U>::value, bool>::type outOfBounds(const U line, const U column)
     {
@@ -41,15 +44,14 @@ public:
     {
         return line >= m_lines || column >= m_columns;
     }
-
-    T* operator[] (const std::size_t index);
-    const T* operator[] (const std::size_t index)const;
 };
 
 /* Implementarea trebuie pusa in header pentru a nu primi undefined reference catre constructor/destructor */
 
 template<typename T> Matrix<T>::Matrix()
-    : m_matrix(nullptr), m_lines(0), m_columns(0) {}
+    : m_matrix(nullptr), m_lines(0), m_columns(0)
+{}
+
 template<typename T> Matrix<T>::Matrix(const std::size_t p_lines, const std::size_t p_columns)
     : m_matrix(nullptr), m_lines(0), m_columns(0)
 {
@@ -108,26 +110,11 @@ template<typename T> void Matrix<T>::M_dealloc()
     delete[]   m_matrix;
 }
 
-template<typename T> bool Matrix<T>::isCreated()const
-{
-    return m_matrix;
-}
-template<typename T> std::size_t Matrix<T>::lines()const
-{
-    return m_lines;
-}
-template<typename T> std::size_t Matrix<T>::columns()const
-{
-    return m_columns;
-}
+template<typename T> bool Matrix<T>::isCreated()const      {return m_matrix;}
+template<typename T> std::size_t Matrix<T>::lines()const   {return m_lines;}
+template<typename T> std::size_t Matrix<T>::columns()const {return m_columns;}
 
-template<typename T> T* Matrix<T>::operator[] (const std::size_t index)
-{
-    return m_matrix[index];
-}
-template<typename T> const T* Matrix<T>::operator[] (const std::size_t index)const
-{
-    return m_matrix[index];
-}
+template<typename T> T* Matrix<T>::operator[] (const std::size_t index)            {return m_matrix[index];}
+template<typename T> const T* Matrix<T>::operator[] (const std::size_t index)const {return m_matrix[index];}
 
 #endif

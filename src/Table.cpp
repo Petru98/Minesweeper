@@ -134,12 +134,13 @@ bool Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 
     if(m_table.outOfBounds(index.y, index.x) == false)
     {
-        m_pressed_cell_index.x = -1;
-        m_pressed_cell_index.y = -1;
         Cell& cell = m_table[index.y][index.x];
 
         if(event.button == sf::Mouse::Left)
         {
+            m_pressed_cell_index.x = -1;
+            m_pressed_cell_index.y = -1;
+
             if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
             {
                 cell.reveal();
@@ -197,12 +198,15 @@ void Table::onMouseMoved(const sf::Event::MouseMoveEvent& event)
     {
         const sf::Vector2i index = M_getCellPositionFromPixels(event.x, event.y);
 
-        if(m_table.outOfBounds(index.y, index.x) == false)
-        {
-            m_table[index.y][index.x].press();
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
-                M_pressAdjacentCells(index);
-            m_pressed_cell_index = index;
-        }
+        m_table[index.y][index.x].press();
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
+            M_pressAdjacentCells(index);
+
+        m_pressed_cell_index = index;
+    }
+    else
+    {
+        m_pressed_cell_index.x = -1;
+        m_pressed_cell_index.y = -1;
     }
 }

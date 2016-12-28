@@ -113,7 +113,8 @@ void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 }
 sf::Vector2i Table::M_getCellPositionFromPixels(const int x, const int y)const
 {
-    return sf::Vector2i((y - this->getPosition().y) / Cell::height, (x - this->getPosition().x) / Cell::width);
+    const sf::Vector2f position = this->getPosition();
+    return sf::Vector2i((x - position.x) / Cell::width, (y - position.y) / Cell::height);
 }
 void Table::M_pressAdjacentCells(const sf::Vector2i index)
 {
@@ -185,5 +186,23 @@ void Table::M_revealAdjacentCells(const sf::Vector2i index)
 
 void Table::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
+    if(m_table.outOfBounds(m_pressed_cell_index.y, m_pressed_cell_index.x) == false)
+    {
+        m_table[m_pressed_cell_index.y][m_pressed_cell_index.x].release();
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
+            M_releaseAdjacentCells(m_pressed_cell_index);
+    }
 
+    if(this->contains(event.x, event.y) == true)
+    {
+        const sf::Vector2i index = M_getCellPositionFromPixels(event.x, event.y);
+
+        if(m_table.outOfBounds(index.y, index.x) == false)
+        {
+            m_table[index.y][index.x].press();
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
+                M_pressAdjacentCells(index);
+            m_pressed_cell_index = index;
+        }
+    }
 }

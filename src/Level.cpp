@@ -124,15 +124,14 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
-
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+    {
+        m_table.onMouseMoved(event);
+    }
 }
 
 void Level::onMouseEntered()
-{
-
-}
+{}
 
 void Level::onMouseLeft()
-{
-
-}
+{}

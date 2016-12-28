@@ -55,6 +55,7 @@
 			<Add directory="C:/Github/Minesweeper/trunk/include" />
 		</Compiler>
 		<Linker>
+			<Add option="-static-libgcc -static-libstdc++" />
 			<Add directory="lib" />
 			<Add directory="lib/SFML" />
 		</Linker>

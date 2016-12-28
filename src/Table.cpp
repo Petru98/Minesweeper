@@ -2,12 +2,21 @@
 
 #include "random.hpp"
 
-const sf::Vector2i Level::directions[Level::DIRECTIONS_COUNT] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
+const sf::Vector2i Table::directions[Level::DIRECTIONS_COUNT] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
+
+void Table::draw(sf::RenderTarget& target, sf::RenderStates states)const
+{
+    states.transform.combine(this->getTransform());
+
+    for(std::size_t i = 0; i < m_table.lines(); ++i)
+        for(std::size_t j = 0; j < m_table.columns(); ++j)
+            target.draw(m_table[i][j], states);
+}
 
 Table::Table() : m_table(), m_mines(0), m_flags(0)
 {}
 
-bool Table::create(const sf::Uint8 lines, const sf::Uint8 columns, const sf::Uint16 mines, const sf::Texture& textures)
+bool Table::create(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines, const sf::Texture& textures)
 {
     if(m_table.create(lines, columns) == false)
         return false;
@@ -64,15 +73,20 @@ void Table::destroy()
     m_flags = 0;
 }
 
-bool Table::isCreated()const    {return m_table.isCreated();}
+bool Table::isCreated()const     {return m_table.isCreated();}
 
-sf::Uint8 Table::lines()const   {return m_table.lines();}
-sf::Uint8 Table::columns()const {return m_table.columns();}
-sf::Uint16 Table::mines()const  {return m_mines;}
-sf::Uint16 Table::flags()const  {return m_flags;}
+sf::Uint16 Table::lines()const   {return m_table.lines();}
+sf::Uint16 Table::columns()const {return m_table.columns();}
+sf::Uint16 Table::mines()const   {return m_mines;}
+sf::Uint16 Table::flags()const   {return m_flags;}
 
-Cell* Table::operator[] (const sf::Uint8 index)            {return m_table[index];}
-const Cell* Table::operator[] (const sf::Uint8 index)const {return m_table[index];}
+sf::Vector2f Table::getSize()const
+{
+    return sf::Vector2f(Cell::width * m_table.columns(), Cell::height * m_table.lines());
+}
+
+Cell* Table::operator[] (const sf::Uint16 index)            {return m_table[index];}
+const Cell* Table::operator[] (const sf::Uint16 index)const {return m_table[index];}
 
 template<typename T> bool Table::contains(const T x, const T y)const
 {
@@ -85,4 +99,20 @@ template<typename T> bool Table::contains(const T x, const T y)const
 template<typename T> bool Table::outOfBounds(const T line, const T column)const
 {
     return m_table.outOfBounds(line, column);
+}
+
+/* Events */
+void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
+{
+
+}
+
+void Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
+{
+
+}
+
+void Table::onMouseMoved(const sf::Event::MouseMoveEvent& event)
+{
+
 }

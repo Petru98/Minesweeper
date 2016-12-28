@@ -27,12 +27,12 @@ public:
 
     struct Difficulty
     {
-        sf::Uint8  lines;
-        sf::Uint8  columns;
+        sf::Uint16 lines;
+        sf::Uint16 columns;
         sf::Uint16 mines;
 
         Difficulty() : lines(0), columns(0), mines(0) {}
-        Difficulty(const sf::Uint8 w, const sf::Uint8 h, const sf::Uint16 m) : lines(w), columns(h), mines(m) {}
+        Difficulty(const sf::Uint16 w, const sf::Uint16 h, const sf::Uint16 m) : lines(w), columns(h), mines(m) {}
     };
 
     static const Difficulty easy;
@@ -48,15 +48,12 @@ private:
     const sf::Texture& m_textures;
     sf::IntRect        m_cells_area;
     Background         m_background;
-    Matrix<Cell>       m_cells;
+    Table              m_table;
     sf::Vector2i       m_pressed_cell_index;
 
     void M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const;
-    void M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const;
 
     void M_initializeBackground(const Difficulty difficulty);
-    void M_initializeCells();
-    void M_placeMines(Difficulty difficulty);
     void M_resizeWindow();
 
     sf::Vector2i M_getCellPositionFromPixels(const int x, const int y)const;

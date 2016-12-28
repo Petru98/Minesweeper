@@ -5,6 +5,9 @@
 
 class Background : public sf::Drawable, public sf::Transformable
 {
+public:
+    static const sf::Vector2f table_position;
+
 private:
     sf::Vector2f m_size;
 

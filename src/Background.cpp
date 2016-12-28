@@ -1,5 +1,7 @@
 #include "Background.hpp"
 
+const sf::Vector2f Background::table_position = {12.0f, 56.0f};
+
 void Background::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
     states.transform.combine(this->getTransform());

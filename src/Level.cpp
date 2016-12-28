@@ -9,7 +9,7 @@ const Level::Difficulty Level::hard   = {16, 30, 99};
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
-    : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_cells(), m_pressed_cell_index(-1,-1)
+    : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_table(), m_pressed_cell_index(-1,-1)
 {
     Random::seed(std::time(nullptr));
 }
@@ -21,12 +21,11 @@ Level::~Level()
 void Level::create(Level::Difficulty difficulty)
 {
     difficulty = S_correctDifficulty(difficulty);
-    if(m_cells.create(difficulty.lines, difficulty.columns) == false)
+    if(m_table.create(difficulty.lines, difficulty.columns, difficulty.mines) == false)
         throw Exception(Error::Allocate, Error::messages[Error::Allocate]);
 
     M_initializeBackground(difficulty);
-    M_initializeCells();
-    M_placeMines(difficulty);
+    m_table.setPosition(m_background.getPosition() + m_background.table_position);
     M_resizeWindow();
 }
 Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
@@ -47,6 +46,7 @@ void Level::M_initializeBackground(const Level::Difficulty difficulty)
     m_background.setSize(Cell::width * difficulty.columns + Cell::LEFT_OFFSET + Cell::RIGHT_OFFSET,
                          Cell::height* difficulty.lines   + Cell::TOP_OFFSET  + Cell::BOTTOM_OFFSET);
 }
+/*
 void Level::M_initializeCells()
 {
     m_cells_area.left   = Cell::LEFT_OFFSET;
@@ -84,6 +84,7 @@ void Level::M_placeMines(Level::Difficulty difficulty)
         }
     }
 }
+*/
 void Level::M_resizeWindow()
 {
     const sf::Vector2u size(m_background.getSize().x, m_background.getSize().y + s_MENU_HEIGHT);
@@ -113,24 +114,27 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
     //M_drawMenu(target, states);
     target.draw(m_background, states);
     M_drawHead(target, states);
-    M_drawCells(target, states);
+    target.draw(m_table, states);
 }
 void Level::M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const
 {
 
 }
+
+/*
 void Level::M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const
 {
     for(std::size_t i = 0; i < m_cells.lines(); ++i)
         for(std::size_t j = 0; j < m_cells.columns(); ++j)
             target.draw(m_cells[i][j]);
 }
+*/
 
 
 /* Events */
 void Level::onClosed()
 {
-    m_cells.destroy();
+    m_table.destroy();
 }
 
 void Level::onResized(const sf::Event::SizeEvent& event)
@@ -159,7 +163,7 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
     if(m_cells_area.contains(event.x, event.y) == true)
     {
         const sf::Vector2i index = M_getCellPositionFromPixels(event.x, event.y);
-        Cell& cell = m_cells[index.y][index.x];
+        Cell& cell = m_table[index.y][index.x];
 
         if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
         {
@@ -189,17 +193,17 @@ void Level::M_pressAdjacentCells(const sf::Vector2i index)
     {
         const int line = index.y + direction[i].y;
         const int column = index.x + direction[i].x;
-        if(m_cells.outOfBounds(line, column) == false)
-            m_cells[line][column].press();
+        if(m_table.outOfBounds(line, column) == false)
+            m_table[line][column].press();
     }
 }
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_cells.outOfBounds(m_pressed_cell_index.y, m_pressed_cell_index.x) == false)
+    if(m_table.outOfBounds(m_pressed_cell_index.y, m_pressed_cell_index.x) == false)
     {
         const sf::Vector2i index = m_pressed_cell_index;
-        Cell& cell = m_cells[index.y][index.x];
+        Cell& cell = m_table[index.y][index.x];
 
         if(event.button == sf::Mouse::Left)
         {
@@ -228,8 +232,8 @@ void Level::M_releaseAdjacentCells(const sf::Vector2i index)
     {
         const int line = index.y + direction[i].y;
         const int column = index.x + direction[i].x;
-        if(m_cells.outOfBounds(line, column) == false)
-            m_cells[line][column].release();
+        if(m_table.outOfBounds(line, column) == false)
+            m_table[line][column].release();
     }
 }
 void Level::M_revealAdjacentCells(const sf::Vector2i index)
@@ -238,8 +242,8 @@ void Level::M_revealAdjacentCells(const sf::Vector2i index)
     {
         const int line = index.y + direction[i].y;
         const int column = index.x + direction[i].x;
-        if(m_cells.outOfBounds(line, column) == false)
-            m_cells[line][column].reveal();
+        if(m_table.outOfBounds(line, column) == false)
+            m_table[line][column].reveal();
     }
 }
 

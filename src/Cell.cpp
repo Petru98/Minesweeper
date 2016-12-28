@@ -29,7 +29,7 @@ void Cell::setMine()
 {
     m_has_mine = 0;
 }
-bool Cell::reveal(const bool game_over = false)
+Cell& Cell::reveal(const bool game_over = false)
 {
     using namespace Resources::Textures::Rectangles;
 
@@ -39,13 +39,11 @@ bool Cell::reveal(const bool game_over = false)
     {
         m_revealed = true;
         if(m_has_mine == true)
-        {
             m_sprite.setTextureRect(cell[Indexes::CellMineClicked]);
-            return false;
-        }
-        m_sprite.setTextureRect(cell[m_mines_count]);
+        else
+            m_sprite.setTextureRect(cell[m_mines_count]);
     }
-    return true;
+    return *this;
 }
 void Cell::press()
 {

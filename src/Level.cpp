@@ -143,7 +143,8 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         const sf::Vector2u index = M_getCellPositionFromPixels(event.x, event.y);
         if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
         {
-            m_cells[index.y][index.x]
+            m_cells[index.y][index.x].press();
+            m_pressed_cell = &m_cells[index.y][index.x];
         }
     }
 }

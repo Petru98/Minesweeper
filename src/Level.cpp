@@ -7,8 +7,6 @@ const Level::Difficulty Level::easy   = {9 , 9 , 10};
 const Level::Difficulty Level::medium = {16, 16, 40};
 const Level::Difficulty Level::hard   = {16, 30, 99};
 
-const sf::Vector2i Level::direction[8] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
-
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
     : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_cells(), m_pressed_cell_index(-1,-1)

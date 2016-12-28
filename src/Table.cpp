@@ -2,6 +2,8 @@
 
 #include "random.hpp"
 
+const sf::Vector2i Level::directions[Level::DIRECTIONS_COUNT] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
+
 Table::Table() : m_table(), m_mines(0), m_flags(0)
 {}
 
@@ -10,6 +12,7 @@ bool Table::create(const sf::Uint8 lines, const sf::Uint8 columns, const sf::Uin
     if(m_table.create(lines, columns) == false)
         return false;
     M_initializeCells(textures);
+    M_placeMines(mines);
     return true;
 }
 void Table::M_initializeCells(const sf::Texture& textures)
@@ -26,6 +29,29 @@ void Table::M_initializeCells(const sf::Texture& textures)
         }
         position.y += Cell::height;
         position.x = 0.0f;
+    }
+}
+void Table::M_placeMines(sf::Uint16 mines)
+{
+    while(mines > 0)
+    {
+        const std::size_t line = Random::rand() % m_table.lines();
+        const std::size_t column = Random::rand() % m_table.columns();
+
+        if(m_cells[line][column].hasMine() == false)
+        {
+            m_cells[line][column].setMine();
+            --difficulty.mines;
+
+            for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
+            {
+                const std::size_t line_adjacent = line + directions[i].y;
+                const std::size_t column_adjacent = column + directions[i].x;
+
+                if(m_cells.outOfBounds(line_adjacent, column_adjacent) == false)
+                    m_cells[line_adjacent][column_adjacent].incrementMinesCount();
+            }
+        }
     }
 }
 

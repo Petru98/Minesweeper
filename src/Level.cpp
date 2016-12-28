@@ -9,7 +9,7 @@ const Level::Difficulty Level::hard   = {16, 30, 99};
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
-    : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_table(), m_pressed_cell_index(-1,-1)
+    : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_table()
 {
     Random::seed(std::time(nullptr));
 }
@@ -46,45 +46,7 @@ void Level::M_initializeBackground(const Level::Difficulty difficulty)
     m_background.setSize(Cell::width * difficulty.columns + Cell::LEFT_OFFSET + Cell::RIGHT_OFFSET,
                          Cell::height* difficulty.lines   + Cell::TOP_OFFSET  + Cell::BOTTOM_OFFSET);
 }
-/*
-void Level::M_initializeCells()
-{
-    m_cells_area.left   = Cell::LEFT_OFFSET;
-    m_cells_area.top    = s_MENU_HEIGHT + Cell::TOP_OFFSET;
-    m_cells_area.width  = Cell::width * m_cells.columns();
-    m_cells_area.height = Cell::height * m_cells.lines();
 
-    for(std::size_t i = 0; i < m_cells.lines(); ++i)
-        for(std::size_t j = 0; j < m_cells.columns(); ++j)
-        {
-            m_cells[i][j].initialize(m_textures);
-            m_cells[i][j].setPosition(Cell::LEFT_OFFSET + j*Cell::width, s_MENU_HEIGHT + Cell::TOP_OFFSET + i*Cell::height);
-        }
-}
-void Level::M_placeMines(Level::Difficulty difficulty)
-{
-    while(difficulty.mines > 0)
-    {
-        const std::size_t line = Random::rand() % difficulty.lines;
-        const std::size_t column = Random::rand() % difficulty.columns;
-
-        if(m_cells[line][column].hasMine() == false)
-        {
-            m_cells[line][column].setMine();
-            --difficulty.mines;
-
-            for(std::size_t i = 0; i < 8; ++i)
-            {
-                const std::size_t line_adjacent = line + direction[i].y;
-                const std::size_t column_adjacent = column + direction[i].x;
-
-                if(m_cells.outOfBounds(line_adjacent, column_adjacent) == false)
-                    m_cells[line_adjacent][column_adjacent].incrementMinesCount();
-            }
-        }
-    }
-}
-*/
 void Level::M_resizeWindow()
 {
     const sf::Vector2u size(m_background.getSize().x, m_background.getSize().y + s_MENU_HEIGHT);
@@ -121,16 +83,6 @@ void Level::M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const
 
 }
 
-/*
-void Level::M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const
-{
-    for(std::size_t i = 0; i < m_cells.lines(); ++i)
-        for(std::size_t j = 0; j < m_cells.columns(); ++j)
-            target.draw(m_cells[i][j]);
-}
-*/
-
-
 /* Events */
 void Level::onClosed()
 {
@@ -162,25 +114,7 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
     if(m_cells_area.contains(event.x, event.y) == true)
     {
-        const sf::Vector2i index = M_getCellPositionFromPixels(event.x, event.y);
-        Cell& cell = m_table[index.y][index.x];
 
-        if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
-        {
-            if(cell.press() == true)
-            m_pressed_cell_index = index;
-        }
-        else if(event.button == sf::Mouse::Right)
-        {
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
-            {
-                m_pressed_cell_index = index;
-                cell.press();
-                M_pressAdjacentCells(index);
-            }
-            else
-                cell.toggleFlag();
-        }
     }
 }
 

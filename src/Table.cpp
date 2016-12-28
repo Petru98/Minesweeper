@@ -13,9 +13,8 @@ void Table::draw(sf::RenderTarget& target, sf::RenderStates states)const
             target.draw(m_table[i][j], states);
 }
 
-Table::Table() : m_table(), m_mines(0), m_flags(0)
-{
-}
+Table::Table() : m_table(), m_mines(0), m_flags(0), m_pressed_cell_index(-1,-1)
+{}
 
 bool Table::create(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines, const sf::Texture& textures)
 {
@@ -101,11 +100,29 @@ template<typename T> bool Table::outOfBounds(const T line, const T column)const
 /* Events */
 void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
+    const sf::Vector2i index = M_getCellPositionFromPixels(event.x, event.y);
+    Cell& cell = m_table[index.y][index.x];
 
+    if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+    {
+        if(cell.press() == true)
+        m_pressed_cell_index = index;
+    }
+    else if(event.button == sf::Mouse::Right)
+    {
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+        {
+            m_pressed_cell_index = index;
+            cell.press();
+            M_pressAdjacentCells(index);
+        }
+        else
+            cell.toggleFlag();
+    }
 }
 sf::Vector2i Table::M_getCellPositionFromPixels(const int x, const int y)const
 {
-    return sf::Vector2i((x - m_cells_area.left) / Cell::width, (y - m_cells_area.top) / Cell::height);
+    return sf::Vector2i((x - this->getPosition().x) / Cell::width, (y - this->getPosition().y) / Cell::height);
 }
 void Table::M_pressAdjacentCells(const sf::Vector2i index)
 {
@@ -113,6 +130,7 @@ void Table::M_pressAdjacentCells(const sf::Vector2i index)
     {
         const int line = index.y + directions[i].y;
         const int column = index.x + directions[i].x;
+
         if(m_table.outOfBounds(line, column) == false)
             m_table[line][column].press();
     }

@@ -15,6 +15,7 @@ private:
     Matrix<Cell> m_table;
     sf::Uint16   m_mines;
     sf::Uint16   m_flags;
+    sf::Vector2i m_pressed_cell_index;
 
     void M_initializeCells(const sf::Texture& textures);
     void M_placeMines(sf::Uint16 mines);

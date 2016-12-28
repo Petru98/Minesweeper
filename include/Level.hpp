@@ -49,7 +49,6 @@ private:
     sf::IntRect        m_cells_area;
     Background         m_background;
     Table              m_table;
-    sf::Vector2i       m_pressed_cell_index;
 
     void M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const;
 

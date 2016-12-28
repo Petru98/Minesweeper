@@ -11,24 +11,10 @@ const Level::Difficulty Level::hard   = {16, 30, 99};
 /* Draw */
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
-    M_drawBackground(target, states);
+    //M_drawMenu(target, states);
+    target.draw(m_background, states);
     M_drawHead(target, states);
     M_drawCells(target, states);
-}
-void Level::M_drawBackground(sf::RenderTarget& target, sf::RenderStates& states)const
-{
-    target.clear(sf::Color::White);
-    const sf::Vector2f size = {static_cast<float>(target.getSize().x), static_cast<float>(target.getSize().y)};
-
-    M_drawRect(target, sf::Color(236, 233, 216), 0, 0, size.x, s_menu_height);
-    M_drawRect(target, sf::Color(192, 192, 192), 3, s_menu_height+4, size.x-3, s_menu_height-s_menu_height-4);
-}
-void Level::M_drawRect(sf::RenderTarget& target, const sf::Color color, const float x, const float y, const float w, const float h)const
-{
-    sf::RectangleShape rect(sf::Vector2f(w,h));
-    rect.setFillColor(color);
-    rect.setPosition(x,y);
-    target.draw(rect);
 }
 void Level::M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const
 {
@@ -43,7 +29,7 @@ void Level::M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const
 
 
 /* Constructor / Destructor */
-Level::Level(sf::RenderWindow& window, const sf::Texture& texture) : m_window(window), m_textures(texture), m_cells()
+Level::Level(sf::RenderWindow& window, const sf::Texture& texture) : m_window(window), m_textures(texture), m_background(), m_cells()
 {
     Random::seed(std::time(nullptr));
 }
@@ -58,9 +44,10 @@ void Level::create(Level::Difficulty difficulty)
     if(m_cells.create(difficulty.lines, difficulty.columns) == false)
         throw Exception(Error::Allocate, Error::messages[Error::Allocate]);
 
+    M_initializeBackground(difficulty);
     M_initializeCells();
     M_placeMines(difficulty);
-    M_initializeWindow(difficulty);
+    M_resizeWindow();
 }
 Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
 {
@@ -74,13 +61,19 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
         difficulty.mines = difficulty.lines*difficulty.columns;
     return difficulty;
 }
+void Level::M_initializeBackground(const Level::Difficulty difficulty)
+{
+    m_background.setPosition(0.0f, s_MENU_HEIGHT);
+    m_background.setSize(Cell::width * difficulty.columns + Cell::LEFT_OFFSET + Cell::RIGHT_OFFSET,
+                         Cell::height* difficulty.lines   + Cell::TOP_OFFSET  + Cell::BOTTOM_OFFSET);
+}
 void Level::M_initializeCells()
 {
     for(std::size_t i = 0; i < m_cells.lines(); ++i)
         for(std::size_t j = 0; j < m_cells.columns(); ++j)
         {
             m_cells[i][j].initialize(m_textures);
-            m_cells[i][j].setPosition(s_cell_left_offset + j*Cell::width, s_cell_top_offset + i*Cell::height);
+            m_cells[i][j].setPosition(Cell::LEFT_OFFSET + j*Cell::width, s_MENU_HEIGHT + Cell::TOP_OFFSET + i*Cell::height);
         }
 }
 void Level::M_placeMines(Level::Difficulty difficulty)
@@ -97,10 +90,9 @@ void Level::M_placeMines(Level::Difficulty difficulty)
         }
     }
 }
-void Level::M_initializeWindow(const Level::Difficulty difficulty)
+void Level::M_resizeWindow()
 {
-    const sf::Vector2u size(Cell::width * difficulty.columns + s_cell_left_offset + s_cell_right_offset,
-                            Cell::height* difficulty.lines   + s_cell_top_offset  + s_cell_bottom_offset);
+    const sf::Vector2u size(m_background.getSize().x, m_background.getSize().y + s_MENU_HEIGHT);
     if(m_window.isOpen() == false)
     {
         m_window.create(sf::VideoMode(size.x, size.y), "Minesweeper", sf::Style::Titlebar | sf::Style::Close);

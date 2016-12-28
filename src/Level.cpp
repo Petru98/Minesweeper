@@ -147,26 +147,6 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         }
     }
 }
-void Level::M_releaseAdjacentCells(const sf::Vector2i index)
-{
-    for(std::size_t i = 0; i < 8; ++i)
-    {
-        const int line = index.y + direction[i].y;
-        const int column = index.x + direction[i].x;
-        if(m_table.outOfBounds(line, column) == false)
-            m_table[line][column].release();
-    }
-}
-void Level::M_revealAdjacentCells(const sf::Vector2i index)
-{
-    for(std::size_t i = 0; i < 8; ++i)
-    {
-        const int line = index.y + direction[i].y;
-        const int column = index.x + direction[i].x;
-        if(m_table.outOfBounds(line, column) == false)
-            m_table[line][column].reveal();
-    }
-}
 
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {

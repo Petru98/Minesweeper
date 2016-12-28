@@ -55,9 +55,6 @@ private:
     void M_initializeBackground(const Difficulty difficulty);
     void M_resizeWindow();
 
-    void M_releaseAdjacentCells(const sf::Vector2i index);
-    void M_revealAdjacentCells(const sf::Vector2i index);
-
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:

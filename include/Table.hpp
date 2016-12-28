@@ -20,6 +20,9 @@ private:
     void M_initializeCells(const sf::Texture& textures);
     void M_placeMines(sf::Uint16 mines);
 
+    void M_releaseAdjacentCells(const sf::Vector2i index);
+    void M_revealAdjacentCells(const sf::Vector2i index);
+
     sf::Vector2i M_getCellPositionFromPixels(const int x, const int y)const;
     void M_pressAdjacentCells(const sf::Vector2i index);
 

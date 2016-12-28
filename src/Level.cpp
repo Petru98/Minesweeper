@@ -8,26 +8,6 @@ const Level::Difficulty Level::easy   = {9 , 9 , 10};
 const Level::Difficulty Level::medium = {16, 16, 40};
 const Level::Difficulty Level::hard   = {16, 30, 99};
 
-/* Draw */
-void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
-{
-    //M_drawMenu(target, states);
-    target.draw(m_background, states);
-    M_drawHead(target, states);
-    M_drawCells(target, states);
-}
-void Level::M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const
-{
-
-}
-void Level::M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const
-{
-    for(std::size_t i = 0; i < m_cells.lines(); ++i)
-        for(std::size_t j = 0; j < m_cells.columns(); ++j)
-            target.draw(m_cells[i][j]);
-}
-
-
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
     : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_cells(), m_pressed_cell_index(-1,-1)
@@ -108,6 +88,36 @@ void Level::M_resizeWindow()
     else
         m_window.setSize(size);
 }
+
+/* Win / Lose */
+void Level::win()
+{
+
+}
+void Level::lose()
+{
+
+}
+
+/* Draw */
+void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
+{
+    //M_drawMenu(target, states);
+    target.draw(m_background, states);
+    M_drawHead(target, states);
+    M_drawCells(target, states);
+}
+void Level::M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const
+{
+
+}
+void Level::M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const
+{
+    for(std::size_t i = 0; i < m_cells.lines(); ++i)
+        for(std::size_t j = 0; j < m_cells.columns(); ++j)
+            target.draw(m_cells[i][j]);
+}
+
 
 /* Events */
 void Level::onClosed()

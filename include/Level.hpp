@@ -72,6 +72,9 @@ public:
 
     void create(const Difficulty difficulty);
 
+    void win();
+    void lose();
+
     virtual void onClosed();
     virtual void onResized(const sf::Event::SizeEvent&);
     virtual void onLostFocus();

@@ -141,16 +141,17 @@ bool Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
             m_pressed_cell_index.x = -1;
             m_pressed_cell_index.y = -1;
 
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+            cell.reveal();
+            if(cell.isRevealed() == true)
             {
-                cell.reveal();
-                if(cell.isRevealed() == true && cell.hasMine() == true)
+                if(cell.hasMine() == true)
+                {
+                    M_releaseAdjacentCells(index);
                     return false;
-            }
-            else
-            {
-                cell.reveal();
-                M_revealAdjacentCells(index);
+                }
+                //M_reveal
+                if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
+                    M_revealAdjacentCells(index);
             }
         }
         else if(event.button == sf::Mouse::Right)

@@ -27,55 +27,73 @@ void Cell::reset()
     m_revealed = false;
 }
 
-Cell& Cell::reveal(const bool game_over)
+void Cell::reveal(const bool game_over)
 {
     using namespace Resources::Textures::Rectangles;
 
-    if(game_over == true)
+    if(m_revealed == false)
     {
-        assert(m_has_mine == true);
-        m_sprite.setTextureRect(cell[Indexes::CellMine]);
+        if(game_over == true)
+        {
+            assert(m_has_mine == true);
+
+            m_flag = false;
+            m_sprite.setTextureRect(cell[Indexes::CellMine]);
+        }
+        else if(m_flag == false)
+        {
+            m_revealed = true;
+            if(m_has_mine == true)
+                m_sprite.setTextureRect(cell[Indexes::CellMineClicked]);
+            else
+                m_sprite.setTextureRect(cell[m_mines_count]);
+        }
     }
-    else if(m_revealed == false && m_flag == false)
-    {
-        m_revealed = true;
-        if(m_has_mine == true)
-            m_sprite.setTextureRect(cell[Indexes::CellMineClicked]);
-        else
-            m_sprite.setTextureRect(cell[m_mines_count]);
-    }
-    return *this;
 }
 
 void Cell::setMine()
 {
     m_has_mine = true;
 }
-void Cell::flag()
+bool Cell::toggleFlag()
 {
-    if(m_revealed == false)
+    using namespace Resources::Textures::Rectangles;
+
+    if(m_revealed == true)
+        return false;
+
+    if(m_flag == false)
     {
-        using namespace Resources::Textures::Rectangles;
         m_flag = true;
         m_sprite.setTextureRect(cell[Indexes::CellFlag]);
     }
-}
-
-void Cell::press()
-{
-    if(m_revealed == false && m_flag == false)
+    else
     {
-        using namespace Resources::Textures::Rectangles;
-        m_sprite.setTextureRect(cell[Indexes::CellEmpty]);
-    }
-}
-void Cell::release()
-{
-    if(m_revealed == false && m_flag == false)
-    {
-        using namespace Resources::Textures::Rectangles;
+        m_flag = false;
         m_sprite.setTextureRect(cell[Indexes::CellNormal]);
     }
+    return true;
+}
+
+bool Cell::press()
+{
+    using namespace Resources::Textures::Rectangles;
+
+    if(m_revealed == true || m_flag == true)
+        return false;
+
+    m_sprite.setTextureRect(cell[Indexes::CellEmpty]);
+    return true;
+}
+bool Cell::release()
+{
+    using namespace Resources::Textures::Rectangles;
+
+    if(m_revealed == true || m_flag == true)
+        return false;
+
+    m_sprite.setTextureRect(cell[Indexes::CellNormal]);
+    return true;
 }
 
 bool Cell::hasMine()const

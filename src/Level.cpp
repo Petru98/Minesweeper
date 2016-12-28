@@ -143,23 +143,21 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         const sf::Vector2i index = M_getCellPositionFromPixels(event.x, event.y);
         Cell& cell = m_cells[index.y][index.x];
 
-        if(cell.isRevealed() == false)
+        if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
         {
-            if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+            if(cell.press() == true)
+            m_pressed_cell_index = index;
+        }
+        else if(event.button == sf::Mouse::Right)
+        {
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
             {
-                cell.press();
                 m_pressed_cell_index = index;
+                cell.press();
+                M_pressAdjacentCells(index);
             }
-            else if(event.button == sf::Mouse::Right)
-            {
-                if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
-                {
-                    m_pressed_cell_index = index;
-                    M_pressAdjacentCells(index);
-                }
-                else
-                    cell.flag();
-            }
+            else
+                cell.toggleFlag();
         }
     }
 }
@@ -169,7 +167,7 @@ sf::Vector2i Level::M_getCellPositionFromPixels(const int x, const int y)const
 }
 void Level::M_pressAdjacentCells(const sf::Vector2i index)
 {
-    const sf::Vector2i direction[9] = {{0,0},{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
+    const sf::Vector2i direction[8] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
     for(std::size_t i = 0; i < 9; ++i)
     {
         const int line = index.y + direction[i].y;
@@ -181,12 +179,32 @@ void Level::M_pressAdjacentCells(const sf::Vector2i index)
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
+    if(m_cells.outOfBounds(m_pressed_cell_index.y, m_pressed_cell_index.x) == false)
+    {
+        const sf::Vector2i index = m_pressed_cell_index;
+        Cell& cell = m_cells[index.y][index.x];
 
+        if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+        {
+            cell.reveal();
+            if(cell.isRevealed() == true && cell.hasMine() == true)
+                lose();
+        }
+        else if(event.button == sf::Mouse::Right)
+        {
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+            {
+                m_pressed_cell_index = index;
+                cell.press();
+                M_pressAdjacentCells(index);
+            }
+        }
+    }
 }
 void Level::M_releaseAdjacentCells(const sf::Vector2i index)
 {
-    const sf::Vector2i direction[9] = {{0,0},{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
-    for(std::size_t i = 0; i < 9; ++i)
+    const sf::Vector2i direction[8] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
+    for(std::size_t i = 0; i < 8; ++i)
     {
         const int line = index.y + direction[i].y;
         const int column = index.x + direction[i].x;

@@ -29,12 +29,12 @@ public:
     void initialize(const sf::Texture& textures);
     void reset();
 
-    Cell& reveal(const bool game_over = false);
+    void reveal(const bool game_over = false);
 
     void setMine();
-    void flag();
-    void press();
-    void release();
+    bool toggleFlag();
+    bool press();
+    bool release();
 
     bool hasMine()const;
     bool hasFlag()const;

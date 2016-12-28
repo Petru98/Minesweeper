@@ -56,8 +56,6 @@ private:
     void M_initializeBackground(const Difficulty difficulty);
     void M_resizeWindow();
 
-    sf::Vector2i M_getCellPositionFromPixels(const int x, const int y)const;
-    void M_pressAdjacentCells(const sf::Vector2i index);
     void M_releaseAdjacentCells(const sf::Vector2i index);
     void M_revealAdjacentCells(const sf::Vector2i index);
 

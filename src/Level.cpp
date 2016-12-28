@@ -183,20 +183,7 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         }
     }
 }
-sf::Vector2i Level::M_getCellPositionFromPixels(const int x, const int y)const
-{
-    return sf::Vector2i((x - m_cells_area.left) / Cell::width, (y - m_cells_area.top) / Cell::height);
-}
-void Level::M_pressAdjacentCells(const sf::Vector2i index)
-{
-    for(std::size_t i = 0; i < 9; ++i)
-    {
-        const int line = index.y + direction[i].y;
-        const int column = index.x + direction[i].x;
-        if(m_table.outOfBounds(line, column) == false)
-            m_table[line][column].press();
-    }
-}
+
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {

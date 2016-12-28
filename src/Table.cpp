@@ -14,7 +14,8 @@ void Table::draw(sf::RenderTarget& target, sf::RenderStates states)const
 }
 
 Table::Table() : m_table(), m_mines(0), m_flags(0)
-{}
+{
+}
 
 bool Table::create(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines, const sf::Texture& textures)
 {
@@ -81,9 +82,7 @@ sf::Uint16 Table::mines()const   {return m_mines;}
 sf::Uint16 Table::flags()const   {return m_flags;}
 
 sf::Vector2f Table::getSize()const
-{
-    return sf::Vector2f(Cell::width * m_table.columns(), Cell::height * m_table.lines());
-}
+    {return sf::Vector2f(Cell::width * m_table.columns(), Cell::height * m_table.lines());}
 
 Cell* Table::operator[] (const sf::Uint16 index)            {return m_table[index];}
 const Cell* Table::operator[] (const sf::Uint16 index)const {return m_table[index];}
@@ -97,14 +96,26 @@ template<typename T> bool Table::contains(const T x, const T y)const
     return x >= position.x && x < right && y >= position.y && y < bottom;
 }
 template<typename T> bool Table::outOfBounds(const T line, const T column)const
-{
-    return m_table.outOfBounds(line, column);
-}
+    {return m_table.outOfBounds(line, column);}
 
 /* Events */
 void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
 
+}
+sf::Vector2i Table::M_getCellPositionFromPixels(const int x, const int y)const
+{
+    return sf::Vector2i((x - m_cells_area.left) / Cell::width, (y - m_cells_area.top) / Cell::height);
+}
+void Table::M_pressAdjacentCells(const sf::Vector2i index)
+{
+    for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
+    {
+        const int line = index.y + directions[i].y;
+        const int column = index.x + directions[i].x;
+        if(m_table.outOfBounds(line, column) == false)
+            m_table[line][column].press();
+    }
 }
 
 void Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)

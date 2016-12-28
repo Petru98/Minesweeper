@@ -30,6 +30,7 @@ private:
 
 public:
     Table();
+    ~Table();
 
     bool create(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines, const sf::Texture& textures);
     void destroy();

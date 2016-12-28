@@ -15,6 +15,8 @@ void Table::draw(sf::RenderTarget& target, sf::RenderStates states)const
 
 Table::Table() : m_table(), m_mines(0), m_flags(0), m_pressed_cell_index(-1,-1)
 {}
+Table::~Table()
+{}
 
 bool Table::create(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines, const sf::Texture& textures)
 {

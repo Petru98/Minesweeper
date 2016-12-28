@@ -13,6 +13,8 @@ bool Table::create(const sf::Uint8 lines, const sf::Uint8 columns, const sf::Uin
         return false;
     M_initializeCells(textures);
     M_placeMines(mines);
+    m_mines = mines;
+    m_flags = 0;
     return true;
 }
 void Table::M_initializeCells(const sf::Texture& textures)
@@ -57,7 +59,9 @@ void Table::M_placeMines(sf::Uint16 mines)
 
 void Table::destroy()
 {
-
+    m_table.destroy();
+    m_mines = 0;
+    m_flags = 0;
 }
 
 bool Table::isCreated()const    {return m_table.isCreated();}
@@ -70,7 +74,15 @@ sf::Uint16 Table::flags()const  {return m_flags;}
 Cell* Table::operator[] (const sf::Uint8 index)            {return m_table[index];}
 const Cell* Table::operator[] (const sf::Uint8 index)const {return m_table[index];}
 
-template<typename U> bool Table::outOfBounds(const U line, const U column)
+template<typename T> bool Table::contains(const T x, const T y)const
+{
+    const sf::Vector2f position = this->getPosition();
+    const float right = position.x + Cell::width * m_table.columns();
+    const float bottom = position.y + Cell::height * m_table.lines();
+
+    return x >= position.x && x < right && y >= position.y && y < bottom;
+}
+template<typename T> bool Table::outOfBounds(const T line, const T column)const
 {
     return m_table.outOfBounds(line, column);
 }

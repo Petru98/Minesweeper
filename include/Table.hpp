@@ -36,7 +36,8 @@ public:
     Cell* operator[] (const sf::Uint8 index);
     const Cell* operator[] (const sf::Uint8 index)const;
 
-    template<typename U> bool outOfBounds(const U line, const U column);
+    template<typename T> bool contains(const T x, const T y)const;
+    template<typename T> bool outOfBounds(const T line, const T column)const;
 };
 
 #endif

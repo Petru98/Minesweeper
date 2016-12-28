@@ -35,12 +35,12 @@ public:
     const T* operator[] (const std::size_t index)const;
 
     template<typename U = T>
-    typename std::enable_if<std::is_signed<U>::value, bool>::type outOfBounds(const U line, const U column)
+    typename std::enable_if<std::is_signed<U>::value, bool>::type outOfBounds(const U line, const U column)const
     {
         return line <= -1 || static_cast<std::size_t>(line) >= m_lines || column <= -1 || static_cast<std::size_t>(column) >= m_columns;
     }
     template<typename U>
-    typename std::enable_if<std::is_unsigned<U>::value, bool>::type outOfBounds(const U line, const U column)
+    typename std::enable_if<std::is_unsigned<U>::value, bool>::type outOfBounds(const U line, const U column)const
     {
         return line >= m_lines || column >= m_columns;
     }

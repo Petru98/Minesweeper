@@ -29,9 +29,10 @@ public:
     void initialize(const sf::Texture& textures);
     void reset();
 
+    Cell& reveal(const bool game_over = false);
+
     void setMine();
     void flag();
-    bool reveal(const bool game_over = false);
     void press();
     void release();
 

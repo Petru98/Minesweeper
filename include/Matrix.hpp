@@ -31,6 +31,17 @@ public:
     std::size_t lines()const;
     std::size_t columns()const;
 
+    template<typename U = T>
+    typename std::enable_if<std::is_signed<U>::value, bool>::type outOfBounds(const U line, const U column)
+    {
+        return line <= -1 || static_cast<std::size_t>(line) >= m_lines || column <= -1 || static_cast<std::size_t>(column) >= m_columns;
+    }
+    template<typename U>
+    typename std::enable_if<std::is_unsigned<U>::value, bool>::type outOfBounds(const U line, const U column)
+    {
+        return line >= m_lines || column >= m_columns;
+    }
+
     T* operator[] (const std::size_t index);
     const T* operator[] (const std::size_t index)const;
 };
@@ -39,7 +50,6 @@ public:
 
 template<typename T> Matrix<T>::Matrix()
     : m_matrix(nullptr), m_lines(0), m_columns(0) {}
-
 template<typename T> Matrix<T>::Matrix(const std::size_t p_lines, const std::size_t p_columns)
     : m_matrix(nullptr), m_lines(0), m_columns(0)
 {

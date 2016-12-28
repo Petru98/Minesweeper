@@ -40,6 +40,8 @@ public:
     static const Difficulty medium;
     static const Difficulty hard;
 
+    static const sf::Vector2i direction[8];
+
     static constexpr unsigned int s_MENU_HEIGHT = 19;
 
 private:

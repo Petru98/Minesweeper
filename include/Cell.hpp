@@ -31,11 +31,13 @@ public:
 
     void reveal(const bool game_over = false);
 
+    void incrementMinesCount();
     void setMine();
     bool toggleFlag();
     bool press();
     bool release();
 
+    sf::Uint8 getMinesCount()const;
     bool hasMine()const;
     bool hasFlag()const;
     bool isRevealed()const;

@@ -8,6 +8,8 @@ const Level::Difficulty Level::easy   = {9 , 9 , 10};
 const Level::Difficulty Level::medium = {16, 16, 40};
 const Level::Difficulty Level::hard   = {16, 30, 99};
 
+const sf::Vector2i Level::direction[8] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
+
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
     : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_cells(), m_pressed_cell_index(-1,-1)
@@ -73,6 +75,15 @@ void Level::M_placeMines(Level::Difficulty difficulty)
         {
             m_cells[line][column].setMine();
             --difficulty.mines;
+
+            for(std::size_t i = 0; i < 8; ++i)
+            {
+                const std::size_t line_adjacent = line + direction[i].y;
+                const std::size_t column_adjacent = column + direction[i].x;
+
+                if(m_cells.outOfBounds(line_adjacent, column_adjacent) == false)
+                    m_cells[line_adjacent][column_adjacent].incrementMinesCount();
+            }
         }
     }
 }
@@ -177,7 +188,6 @@ sf::Vector2i Level::M_getCellPositionFromPixels(const int x, const int y)const
 }
 void Level::M_pressAdjacentCells(const sf::Vector2i index)
 {
-    const sf::Vector2i direction[8] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
     for(std::size_t i = 0; i < 9; ++i)
     {
         const int line = index.y + direction[i].y;
@@ -217,7 +227,6 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 }
 void Level::M_releaseAdjacentCells(const sf::Vector2i index)
 {
-    const sf::Vector2i direction[8] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
     for(std::size_t i = 0; i < 8; ++i)
     {
         const int line = index.y + direction[i].y;
@@ -228,7 +237,6 @@ void Level::M_releaseAdjacentCells(const sf::Vector2i index)
 }
 void Level::M_revealAdjacentCells(const sf::Vector2i index)
 {
-    const sf::Vector2i direction[8] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
     for(std::size_t i = 0; i < 8; ++i)
     {
         const int line = index.y + direction[i].y;

@@ -51,6 +51,10 @@ void Cell::reveal(const bool game_over)
     }
 }
 
+void Cell::incrementMinesCount()
+{
+    ++m_mines_count;
+}
 void Cell::setMine()
 {
     m_has_mine = true;
@@ -96,6 +100,10 @@ bool Cell::release()
     return true;
 }
 
+sf::Uint8 Cell::getMinesCount()const
+{
+    return m_mines_count;
+}
 bool Cell::hasMine()const
 {
     return m_has_mine;

@@ -152,9 +152,7 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 
             }
             else
-            {
-
-            }
+                cell.flag();
         }
     }
 }

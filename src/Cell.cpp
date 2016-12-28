@@ -1,4 +1,5 @@
 #include "Cell.hpp"
+#include <cassert>
 
 void Cell::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
@@ -6,7 +7,7 @@ void Cell::draw(sf::RenderTarget& target, sf::RenderStates states)const
     target.draw(m_sprite, states);
 }
 
-Cell::Cell() : m_sprite(), m_mines_count(0), m_has_mine(false), m_revealed(false)
+Cell::Cell() : m_sprite(), m_mines_count(0), m_has_mine(false), m_flag(false), m_revealed(false)
 {}
 
 void Cell::initialize(const sf::Texture& textures)
@@ -22,6 +23,7 @@ void Cell::reset()
     m_sprite.setTextureRect(cell[Indexes::CellNormal]);
     m_mines_count = 0;
     m_has_mine = false;
+    m_flag     = false;
     m_revealed = false;
 }
 
@@ -29,12 +31,21 @@ void Cell::setMine()
 {
     m_has_mine = 0;
 }
-Cell& Cell::reveal(const bool game_over = false)
+void Cell::flag()
+{
+    if(m_revealed == false)
+        m_flag = true;
+}
+
+Cell& Cell::reveal(const bool game_over)
 {
     using namespace Resources::Textures::Rectangles;
 
     if(game_over == true)
+    {
+        assert(m_has_mine == true);
         m_sprite.setTextureRect(cell[Indexes::CellMine]);
+    }
     else if(m_revealed == false)
     {
         m_revealed = true;
@@ -45,6 +56,7 @@ Cell& Cell::reveal(const bool game_over = false)
     }
     return *this;
 }
+
 void Cell::press()
 {
     if(m_revealed == false)
@@ -65,6 +77,10 @@ void Cell:release()
 bool Cell::hasMine()const
 {
     return m_has_mine;
+}
+bool Cell::hasFlag()const
+{
+    return m_flag;
 }
 bool Cell::isRevealed()const
 {

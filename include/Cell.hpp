@@ -18,8 +18,8 @@ private:
     sf::Sprite m_sprite;
     sf::Uint8  m_mines_count;
     bool       m_has_mine;
+    bool       m_flag;
     bool       m_revealed;
-    bool       m_pressed;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
@@ -30,11 +30,13 @@ public:
     void reset();
 
     void setMine();
+    void flag();
     bool reveal(const bool game_over = false);
     void press();
     void release();
 
     bool hasMine()const;
+    bool hasFlag()const;
     bool isRevealed()const;
 };
 

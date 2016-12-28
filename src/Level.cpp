@@ -29,7 +29,8 @@ void Level::M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const
 
 
 /* Constructor / Destructor */
-Level::Level(sf::RenderWindow& window, const sf::Texture& texture) : m_window(window), m_textures(texture), m_background(), m_cells()
+Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
+    : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_cells(), Cell* m_pressed_cell(nullptr)
 {
     Random::seed(std::time(nullptr));
 }
@@ -69,6 +70,11 @@ void Level::M_initializeBackground(const Level::Difficulty difficulty)
 }
 void Level::M_initializeCells()
 {
+    m_cells_area.left   = Cell::LEFT_OFFSET;
+    m_cells_area.top    = s_MENU_HEIGHT + Cell::TOP_OFFSET;
+    m_cells_area.width  = Cell::width * m_cells.columns();
+    m_cells_area.height = Cell::height * m_cells.lines();
+
     for(std::size_t i = 0; i < m_cells.lines(); ++i)
         for(std::size_t j = 0; j < m_cells.columns(); ++j)
         {
@@ -106,55 +112,52 @@ void Level::M_resizeWindow()
 /* Events */
 void Level::onClosed()
 {
-
+    m_cells.destroy();
 }
 
-void Level::onResized(const sf::Event::SizeEvent&)
-{
-
-}
+void Level::onResized(const sf::Event::SizeEvent& event)
+{}
 
 void Level::onLostFocus()
-{
-
-}
+{}
 
 void Level::onGainedFocus()
+{}
+
+void Level::onTextEntered(const sf::Event::TextEvent& event)
+{}
+
+void Level::onKeyPressed(const sf::Event::KeyEvent& event)
+{}
+
+void Level::onKeyReleased(const sf::Event::KeyEvent& event)
+{}
+
+void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event)
+{}
+
+void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
+{
+    if(m_cells_area.contains(event.x, event.y) == true)
+    {
+        const sf::Vector2u index = M_getCellPositionFromPixels(event.x, event.y);
+        if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+        {
+            m_cells[index.y][index.x]
+        }
+    }
+}
+sf::Vector2u Level::M_getCellPositionFromPixels(const int x, const int y)const
+{
+    return sf::Vector2u((x - m_cells_area.left) / Cell::width, (y - m_cells_area.top) / Cell::height);
+}
+
+void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
 
 }
 
-void Level::onTextEntered(const sf::Event::TextEvent&)
-{
-
-}
-
-void Level::onKeyPressed(const sf::Event::KeyEvent&)
-{
-
-}
-
-void Level::onKeyReleased(const sf::Event::KeyEvent&)
-{
-
-}
-
-void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent&)
-{
-
-}
-
-void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent&)
-{
-
-}
-
-void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent&)
-{
-
-}
-
-void Level::onMouseMoved(const sf::Event::MouseMoveEvent&)
+void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
 
 }

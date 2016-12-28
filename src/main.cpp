@@ -2,6 +2,18 @@
 #include "Exception.hpp"
 #include "def.hpp"
 
+#ifndef NDEGUB
+    #include <iostream>
+    using namespace std;
+
+    void log(const Exception error)
+    {
+        cout << error.what() << '\n';
+    }
+#else
+    #define log(error)
+#endif
+
 int main()
 {
     Game game;
@@ -13,6 +25,7 @@ int main()
     }
     catch(Exception error)
     {
+        log(error);
         return error.code();
     }
 

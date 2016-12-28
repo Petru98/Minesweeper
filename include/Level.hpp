@@ -47,8 +47,10 @@ private:
 
     sf::RenderWindow&  m_window;
     const sf::Texture& m_textures;
+    sf::IntRect        m_cells_area;
     Background         m_background;
     Matrix<Cell>       m_cells;
+    Cell*              m_pressed_cell;
 
     void M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const;
     void M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const;
@@ -57,6 +59,8 @@ private:
     void M_initializeCells();
     void M_placeMines(Difficulty difficulty);
     void M_resizeWindow();
+
+    sf::Vector2u M_getCellPositionFromPixels(const int x, const int y)const;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 

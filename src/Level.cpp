@@ -112,18 +112,14 @@ void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event)
 
 void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_cells_area.contains(event.x, event.y) == true)
-    {
-
-    }
+    if(m_table.contains(event.x, event.y) == true)
+        m_table.onMouseButtonPressed(event);
 }
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_cells_area.contains(event.x, event.y) == true)
-    {
-
-    }
+    if(m_table.contains(event.x, event.y) == true)
+        m_table.onMouseButtonReleased(event);
 }
 
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)

@@ -86,19 +86,6 @@ sf::Vector2f Table::getSize()const
 Cell* Table::operator[] (const sf::Uint16 index)            {return m_table[index];}
 const Cell* Table::operator[] (const sf::Uint16 index)const {return m_table[index];}
 
-
-template<typename T> bool Table::contains(const T x, const T y)const
-{
-    const sf::Vector2f position = this->getPosition();
-    const float right = position.x + Cell::width * m_table.columns();
-    const float bottom = position.y + Cell::height * m_table.lines();
-
-    return x >= position.x && x < right && y >= position.y && y < bottom;
-}
-template<typename T> bool Table::outOfBounds(const T line, const T column)const
-    {return m_table.outOfBounds(line, column);}
-
-
 /* Events */
 void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {

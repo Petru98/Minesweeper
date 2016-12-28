@@ -46,12 +46,20 @@ public:
     Cell* operator[] (const sf::Uint16 index);
     const Cell* operator[] (const sf::Uint16 index)const;
 
-    template<typename T> bool contains(const T x, const T y)const;
-    template<typename T> bool outOfBounds(const T line, const T column)const;
-
     void onMouseButtonPressed(const sf::Event::MouseButtonEvent&);
     bool onMouseButtonReleased(const sf::Event::MouseButtonEvent&);
     void onMouseMoved(const sf::Event::MouseMoveEvent&);
+
+    template<typename T> bool contains(const T x, const T y)const
+    {
+        const sf::Vector2f position = this->getPosition();
+        const float right = position.x + Cell::width * m_table.columns();
+        const float bottom = position.y + Cell::height * m_table.lines();
+
+        return x >= position.x && x < right && y >= position.y && y < bottom;
+    }
+    template<typename T> bool outOfBounds(const T line, const T column)const
+        {return m_table.outOfBounds(line, column);}
 };
 
 #endif

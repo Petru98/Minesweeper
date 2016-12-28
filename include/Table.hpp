@@ -12,6 +12,8 @@ private:
     sf::Uint16   m_mines;
     sf::Uint16   m_flags;
 
+    void M_initializeCells();
+
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:

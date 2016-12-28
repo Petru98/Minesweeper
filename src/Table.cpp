@@ -5,12 +5,30 @@
 Table::Table() : m_table(), m_mines(0), m_flags(0)
 {}
 
-bool Table::create(const sf::Uint8 lines, const sf::Uint8 columns, const sf::Uint16 mines)
+bool Table::create(const sf::Uint8 lines, const sf::Uint8 columns, const sf::Uint16 mines, const sf::Texture& textures)
 {
     if(m_table.create(lines, columns) == false)
         return false;
+    M_initializeCells(textures);
     return true;
 }
+void Table::M_initializeCells(const sf::Texture& textures)
+{
+    sf::Vector2f position(0.0f, 0.0f);
+
+    for(std::size_t i = 0; i < m_table.lines(); ++i)
+    {
+        for(std::size_t j = 0; j < m_table.columns(); ++j)
+        {
+            m_table[i][j].initialize(textures);
+            m_table[i][j].setPosition(position);
+            position.x += Cell::width;
+        }
+        position.y += Cell::height;
+        position.x = 0.0f;
+    }
+}
+
 void Table::destroy()
 {
 

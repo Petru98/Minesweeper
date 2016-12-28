@@ -30,7 +30,7 @@ void Level::M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
-    : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_cells(), Cell* m_pressed_cell(nullptr)
+    : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_cells(), sf::Vector2i m_pressed_cell_index(-1,-1)
 {
     Random::seed(std::time(nullptr));
 }
@@ -140,30 +140,59 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
     if(m_cells_area.contains(event.x, event.y) == true)
     {
-        const sf::Vector2u index = M_getCellPositionFromPixels(event.x, event.y);
+        const sf::Vector2i index = M_getCellPositionFromPixels(event.x, event.y);
         Cell& cell = m_cells[index.y][index.x];
 
-        if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
-            cell.press();
-        else if(event.button == sf::Mouse::Right)
+        if(cell.isRevealed() == false)
         {
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+            if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
             {
-
+                cell.press();
+                m_pressed_cell_index = index;
             }
-            else
-                cell.flag();
+            else if(event.button == sf::Mouse::Right)
+            {
+                if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+                {
+                    m_pressed_cell_index = index;
+                    M_pressAdjacentCells(index);
+                }
+                else
+                    cell.flag();
+            }
         }
     }
 }
-sf::Vector2u Level::M_getCellPositionFromPixels(const int x, const int y)const
+sf::Vector2i Level::M_getCellPositionFromPixels(const int x, const int y)const
 {
     return sf::Vector2u((x - m_cells_area.left) / Cell::width, (y - m_cells_area.top) / Cell::height);
+}
+void Level::M_pressAdjacentCells(const sf::Vector2i index)
+{
+    const sf::Vector2i direction[9] = {{0,0},{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
+    for(std::size_t i = 0; i < 9; ++i)
+    {
+        const int line = index.y + direction[i].y;
+        const int column = index.x + direction[i].x;
+        if(line >= 0 && line < m_cells.lines() && column >= 0 && column < m_cells.columns())
+            m_cells[line][column].press();
+    }
 }
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
 
+}
+void Level::M_releaseAdjacentCells(const sf::Vector2i index)
+{
+    const sf::Vector2i direction[9] = {{0,0},{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
+    for(std::size_t i = 0; i < 9; ++i)
+    {
+        const int line = index.y + direction[i].y;
+        const int column = index.x + direction[i].x;
+        if(line >= 0 && line < m_cells.lines() && column >= 0 && column < m_cells.columns())
+            m_cells[line][column].release();
+    }
 }
 
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)

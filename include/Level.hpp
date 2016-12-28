@@ -50,6 +50,7 @@ private:
     sf::IntRect        m_cells_area;
     Background         m_background;
     Matrix<Cell>       m_cells;
+    sf::Vector2i       m_pressed_cell_index;
 
     void M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const;
     void M_drawCells(sf::RenderTarget& target, sf::RenderStates& states)const;
@@ -59,7 +60,9 @@ private:
     void M_placeMines(Difficulty difficulty);
     void M_resizeWindow();
 
-    sf::Vector2u M_getCellPositionFromPixels(const int x, const int y)const;
+    sf::Vector2i M_getCellPositionFromPixels(const int x, const int y)const;
+    void M_pressAdjacentCells(const sf::Vector2i index);
+    void M_releaseAdjacentCells(const sf::Vector2i index);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 

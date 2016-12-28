@@ -29,12 +29,16 @@ void Cell::reset()
 
 void Cell::setMine()
 {
-    m_has_mine = 0;
+    m_has_mine = true;
 }
 void Cell::flag()
 {
     if(m_revealed == false)
+    {
+        using namespace Resources::Textures::Rectangles;
         m_flag = true;
+        m_sprite.setTextureRect(cell[Indexes::CellFlag]);
+    }
 }
 
 Cell& Cell::reveal(const bool game_over)
@@ -46,7 +50,7 @@ Cell& Cell::reveal(const bool game_over)
         assert(m_has_mine == true);
         m_sprite.setTextureRect(cell[Indexes::CellMine]);
     }
-    else if(m_revealed == false)
+    else if(m_revealed == false && m_flag == false)
     {
         m_revealed = true;
         if(m_has_mine == true)
@@ -59,7 +63,7 @@ Cell& Cell::reveal(const bool game_over)
 
 void Cell::press()
 {
-    if(m_revealed == false)
+    if(m_revealed == false && m_flag == false)
     {
         using namespace Resources::Textures::Rectangles;
         m_sprite.setTextureRect(cell[Indexes::CellEmpty]);
@@ -67,7 +71,7 @@ void Cell::press()
 }
 void Cell:release()
 {
-    if(m_revealed == false)
+    if(m_revealed == false && m_flag == false)
     {
         using namespace Resources::Textures::Rectangles;
         m_sprite.setTextureRect(cell[Indexes::CellNormal]);

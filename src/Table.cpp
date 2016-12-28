@@ -2,7 +2,7 @@
 
 #include "random.hpp"
 
-const sf::Vector2i Table::directions[Level::DIRECTIONS_COUNT] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
+const sf::Vector2i Table::directions[Table::DIRECTIONS_COUNT] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
 
 void Table::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
@@ -49,18 +49,18 @@ void Table::M_placeMines(sf::Uint16 mines)
         const std::size_t line = Random::rand() % m_table.lines();
         const std::size_t column = Random::rand() % m_table.columns();
 
-        if(m_cells[line][column].hasMine() == false)
+        if(m_table[line][column].hasMine() == false)
         {
-            m_cells[line][column].setMine();
-            --difficulty.mines;
+            m_table[line][column].setMine();
+            --mines;
 
             for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
             {
                 const std::size_t line_adjacent = line + directions[i].y;
                 const std::size_t column_adjacent = column + directions[i].x;
 
-                if(m_cells.outOfBounds(line_adjacent, column_adjacent) == false)
-                    m_cells[line_adjacent][column_adjacent].incrementMinesCount();
+                if(m_table.outOfBounds(line_adjacent, column_adjacent) == false)
+                    m_table[line_adjacent][column_adjacent].incrementMinesCount();
             }
         }
     }
@@ -86,6 +86,7 @@ sf::Vector2f Table::getSize()const
 Cell* Table::operator[] (const sf::Uint16 index)            {return m_table[index];}
 const Cell* Table::operator[] (const sf::Uint16 index)const {return m_table[index];}
 
+
 template<typename T> bool Table::contains(const T x, const T y)const
 {
     const sf::Vector2f position = this->getPosition();
@@ -96,6 +97,7 @@ template<typename T> bool Table::contains(const T x, const T y)const
 }
 template<typename T> bool Table::outOfBounds(const T line, const T column)const
     {return m_table.outOfBounds(line, column);}
+
 
 /* Events */
 void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
@@ -122,7 +124,7 @@ void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 }
 sf::Vector2i Table::M_getCellPositionFromPixels(const int x, const int y)const
 {
-    return sf::Vector2i((x - this->getPosition().x) / Cell::width, (y - this->getPosition().y) / Cell::height);
+    return sf::Vector2i((y - this->getPosition().y) / Cell::height, (x - this->getPosition().x) / Cell::width);
 }
 void Table::M_pressAdjacentCells(const sf::Vector2i index)
 {
@@ -136,26 +138,57 @@ void Table::M_pressAdjacentCells(const sf::Vector2i index)
     }
 }
 
-void Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
+bool Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
+    const sf::Vector2i index = m_pressed_cell_index;
 
+    if(m_table.outOfBounds(index.y, index.x) == false)
+    {
+        m_pressed_cell_index.x = -1;
+        m_pressed_cell_index.y = -1;
+        Cell& cell = m_table[index.y][index.x];
+
+        if(event.button == sf::Mouse::Left)
+        {
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+            {
+                cell.reveal();
+                if(cell.isRevealed() == true && cell.hasMine() == true)
+                    return false;
+            }
+            else
+            {
+                cell.reveal();
+                M_revealAdjacentCells(index);
+            }
+        }
+        else if(event.button == sf::Mouse::Right)
+        {
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+                M_releaseAdjacentCells(index);
+        }
+    }
+
+    return true;
 }
 void Table::M_releaseAdjacentCells(const sf::Vector2i index)
 {
-    for(std::size_t i = 0; i < 8; ++i)
+    for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
     {
-        const int line = index.y + direction[i].y;
-        const int column = index.x + direction[i].x;
+        const int line = index.y + directions[i].y;
+        const int column = index.x + directions[i].x;
+
         if(m_table.outOfBounds(line, column) == false)
             m_table[line][column].release();
     }
 }
 void Table::M_revealAdjacentCells(const sf::Vector2i index)
 {
-    for(std::size_t i = 0; i < 8; ++i)
+    for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
     {
-        const int line = index.y + direction[i].y;
-        const int column = index.x + direction[i].x;
+        const int line = index.y + directions[i].y;
+        const int column = index.x + directions[i].x;
+
         if(m_table.outOfBounds(line, column) == false)
             m_table[line][column].reveal();
     }

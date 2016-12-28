@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <new>
+#include <type_traits>
 
 template <typename T>
 class Matrix

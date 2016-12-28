@@ -87,6 +87,7 @@
 		<Unit filename="src/Scene.cpp" />
 		<Unit filename="src/Table.cpp" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/random.cpp" />
 		<Unit filename="src/textures.cpp" />
 		<Extensions>
 			<code_completion />

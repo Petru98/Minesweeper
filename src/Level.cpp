@@ -21,7 +21,7 @@ Level::~Level()
 void Level::create(Level::Difficulty difficulty)
 {
     difficulty = S_correctDifficulty(difficulty);
-    if(m_table.create(difficulty.lines, difficulty.columns, difficulty.mines) == false)
+    if(m_table.create(difficulty.lines, difficulty.columns, difficulty.mines, m_textures) == false)
         throw Exception(Error::Allocate, Error::messages[Error::Allocate]);
 
     M_initializeBackground(difficulty);
@@ -118,33 +118,11 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
     }
 }
 
-
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.outOfBounds(m_pressed_cell_index.y, m_pressed_cell_index.x) == false)
+    if(m_cells_area.contains(event.x, event.y) == true)
     {
-        const sf::Vector2i index = m_pressed_cell_index;
-        Cell& cell = m_table[index.y][index.x];
 
-        if(event.button == sf::Mouse::Left)
-        {
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
-            {
-                cell.reveal();
-                if(cell.isRevealed() == true && cell.hasMine() == true)
-                    lose();
-            }
-            else
-            {
-                cell.reveal();
-                M_revealAdjacentCells(index);
-            }
-        }
-        else if(event.button == sf::Mouse::Right)
-        {
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
-                M_releaseAdjacentCells(index);
-        }
     }
 }
 

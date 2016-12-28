@@ -31,13 +31,14 @@ private:
 public:
     Table();
 
-    bool create(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines);
+    bool create(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines, const sf::Texture& textures);
     void destroy();
 
     bool isCreated()const;
 
     sf::Uint16 lines()const;
     sf::Uint16 columns()const;
+    sf::Uint16 mines()const;
     sf::Uint16 flags()const;
 
     sf::Vector2f getSize()const;
@@ -49,7 +50,7 @@ public:
     template<typename T> bool outOfBounds(const T line, const T column)const;
 
     void onMouseButtonPressed(const sf::Event::MouseButtonEvent&);
-    void onMouseButtonReleased(const sf::Event::MouseButtonEvent&);
+    bool onMouseButtonReleased(const sf::Event::MouseButtonEvent&);
     void onMouseMoved(const sf::Event::MouseMoveEvent&);
 };
 

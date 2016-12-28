@@ -194,20 +194,24 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         const sf::Vector2i index = m_pressed_cell_index;
         Cell& cell = m_cells[index.y][index.x];
 
-        if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+        if(event.button == sf::Mouse::Left)
         {
-            cell.reveal();
-            if(cell.isRevealed() == true && cell.hasMine() == true)
-                lose();
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+            {
+                cell.reveal();
+                if(cell.isRevealed() == true && cell.hasMine() == true)
+                    lose();
+            }
+            else
+            {
+                cell.reveal();
+                M_revealAdjacentCells(index);
+            }
         }
         else if(event.button == sf::Mouse::Right)
         {
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
-            {
-                m_pressed_cell_index = index;
-                cell.press();
-                M_pressAdjacentCells(index);
-            }
+                M_releaseAdjacentCells(index);
         }
     }
 }
@@ -220,6 +224,17 @@ void Level::M_releaseAdjacentCells(const sf::Vector2i index)
         const int column = index.x + direction[i].x;
         if(m_cells.outOfBounds(line, column) == false)
             m_cells[line][column].release();
+    }
+}
+void Level::M_revealAdjacentCells(const sf::Vector2i index)
+{
+    const sf::Vector2i direction[8] = {{-1,-1},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0}};
+    for(std::size_t i = 0; i < 8; ++i)
+    {
+        const int line = index.y + direction[i].y;
+        const int column = index.x + direction[i].x;
+        if(m_cells.outOfBounds(line, column) == false)
+            m_cells[line][column].reveal();
     }
 }
 

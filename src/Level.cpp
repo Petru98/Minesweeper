@@ -9,7 +9,7 @@ const Level::Difficulty Level::hard   = {16, 30, 99};
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
-    : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_table()
+    : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_table(), m_game_over(false)
 {
     Random::seed(std::time(nullptr));
 }
@@ -27,6 +27,7 @@ void Level::create(Level::Difficulty difficulty)
     M_initializeBackground(difficulty);
     m_table.setPosition(m_background.getPosition() + m_background.table_position);
     M_resizeWindow();
+    m_game_over = false;
 }
 Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
 {
@@ -63,11 +64,11 @@ void Level::M_resizeWindow()
 /* Win / Lose */
 void Level::win()
 {
-
+    m_game_over = true;
 }
 void Level::lose()
 {
-
+    m_game_over = true;
 }
 
 /* Draw */
@@ -113,20 +114,34 @@ void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event)
 void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
     if(m_table.contains(event.x, event.y) == true)
-        m_table.onMouseButtonPressed(event);
+    {
+        if(m_game_over == false)
+            m_table.onMouseButtonPressed(event);
+    }
 }
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
     if(m_table.contains(event.x, event.y) == true)
-        m_table.onMouseButtonReleased(event);
+    {
+        if(m_game_over == false)
+        {
+            int status = m_table.onMouseButtonReleased(event);
+
+            if(status == 1)
+                win();
+            else if(status == -1)
+                lose();
+        }
+    }
 }
 
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
     {
-        m_table.onMouseMoved(event);
+        if(m_game_over == false)
+            m_table.onMouseMoved(event);
     }
 }
 

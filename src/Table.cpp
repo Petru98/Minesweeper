@@ -145,7 +145,7 @@ int Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
             else
             {
                 M_revealFromCell(index);
-                return m_table[index.y][index.x].hasMine() == false;
+                return (m_table[index.y][index.x].hasMine() == false) ? 0 : -1;
             }
         }
         else if(event.button == sf::Mouse::Right)

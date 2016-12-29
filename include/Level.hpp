@@ -49,6 +49,7 @@ private:
     sf::IntRect        m_cells_area;
     Background         m_background;
     Table              m_table;
+    bool               m_game_over;
 
     void M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const;
 

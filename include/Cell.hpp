@@ -21,6 +21,9 @@ private:
     bool       m_flag;
     bool       m_revealed;
 
+    void M_revealGameOver();
+    void M_revealInGame();
+
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:

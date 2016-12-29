@@ -74,6 +74,10 @@ void Level::win()
 void Level::lose()
 {
     m_game_over = true;
+
+    for(std::size_t i = 0; i < m_table.lines(); ++i)
+        for(std::size_t j = 0; j < m_table.columns(); ++j)
+            m_table[i][j].reveal(true);
 }
 
 /* Draw */

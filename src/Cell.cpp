@@ -34,21 +34,35 @@ void Cell::reveal(const bool game_over)
     if(m_revealed == false)
     {
         if(game_over == true)
-        {
-            assert(m_has_mine == true);
-
-            m_flag = false;
-            m_sprite.setTextureRect(cell[Indexes::CellMine]);
-        }
+            M_revealGameOver();
         else if(m_flag == false)
-        {
-            m_revealed = true;
-            if(m_has_mine == true)
-                m_sprite.setTextureRect(cell[Indexes::CellMineClicked]);
-            else
-                m_sprite.setTextureRect(cell[m_mines_count]);
-        }
+            M_revealInGame();
     }
+}
+void Cell::M_revealGameOver()
+{
+    using namespace Resources::Textures::Rectangles;
+
+    if(m_has_mine == true)
+    {
+        if(m_flag == false)
+            m_sprite.setTextureRect(cell[Indexes::CellMine]);
+    }
+    else
+    {
+        if(m_flag == true)
+            m_sprite.setTextureRect(cell[Indexes::CellMineWrong]);
+    }
+}
+void Cell::M_revealInGame()
+{
+    using namespace Resources::Textures::Rectangles;
+    m_revealed = true;
+
+    if(m_has_mine == true)
+        m_sprite.setTextureRect(cell[Indexes::CellMineClicked]);
+    else
+        m_sprite.setTextureRect(cell[m_mines_count]);
 }
 
 void Cell::incrementMinesCount()

@@ -1,6 +1,7 @@
 #ifndef MINESWEEPER_TABLE_HPP_INCLUDED
 #define MINESWEEPER_TABLE_HPP_INCLUDED
 
+#include "Smiley.hpp"
 #include "Matrix.hpp"
 #include "Cell.hpp"
 #include "Exception.hpp"

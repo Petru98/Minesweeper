@@ -35,9 +35,9 @@ public:
         Difficulty(const sf::Uint16 w, const sf::Uint16 h, const sf::Uint16 m) : lines(w), columns(h), mines(m) {}
     };
 
-    static const Difficulty easy;
-    static const Difficulty medium;
-    static const Difficulty hard;
+    static const Difficulty beginner;
+    static const Difficulty intermediate;
+    static const Difficulty expert;
 
     static constexpr unsigned int s_MENU_HEIGHT = 19;
 

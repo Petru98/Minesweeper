@@ -3,9 +3,9 @@
 #include "random.hpp"
 #include <ctime>
 
-const Level::Difficulty Level::easy   = {9 , 9 , 10};
-const Level::Difficulty Level::medium = {16, 16, 40};
-const Level::Difficulty Level::hard   = {16, 30, 99};
+const Level::Difficulty Level::beginner     = {9 , 9 , 10};
+const Level::Difficulty Level::intermediate = {16, 16, 40};
+const Level::Difficulty Level::expert       = {16, 30, 99};
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)

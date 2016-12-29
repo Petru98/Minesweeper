@@ -15,7 +15,7 @@ void Game::initialize()
     if(textures.loadFromMemory(Textures::pack.data, Textures::pack.size) == false)
         throw Exception(Error::LoadTextures, Error::messages[Error::LoadTextures]);
 
-    level.create(Level::hard);
+    level.create(Level::beginner);
 }
 
 void Game::run()

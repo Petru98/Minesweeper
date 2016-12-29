@@ -20,8 +20,8 @@ private:
     void M_initializeCells(const sf::Texture& textures);
     void M_placeMines(sf::Uint16 mines);
 
-    bool M_revealFromArea(const sf::Vector2i index);
-    bool M_revealAdjacentCells(const sf::Vector2i index);
+    int M_revealFromArea(const sf::Vector2i index);
+    int M_revealAdjacentCells(const sf::Vector2i index);
     sf::Uint16 M_countAdjacentFlags(const sf::Vector2i index);
     void M_releaseAdjacentCells(const sf::Vector2i index);
     void M_revealFromCell(const sf::Vector2i index);
@@ -51,7 +51,7 @@ public:
     const Cell* operator[] (const sf::Uint16 index)const;
 
     void onMouseButtonPressed(const sf::Event::MouseButtonEvent&);
-    bool onMouseButtonReleased(const sf::Event::MouseButtonEvent&);
+    int  onMouseButtonReleased(const sf::Event::MouseButtonEvent&);
     void onMouseMoved(const sf::Event::MouseMoveEvent&);
 
     template<typename T> bool contains(const T x, const T y)const

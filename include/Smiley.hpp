@@ -22,7 +22,12 @@ public:
     void initialize(const sf::Texture& textures);
     void reset();
 
+    void press();
+    void release();
 
+    void setWin();
+    void setLose();
+    void setScared();
 };
 
 #endif

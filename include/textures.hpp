@@ -42,7 +42,7 @@ namespace Resources
                 enum Smiley
                 {
                     SmileyNormal,
-                    SmileyNormalPressed,
+                    SmileyPressed,
                     SmileyScared,
                     SmileyWin,
                     SmileyLose

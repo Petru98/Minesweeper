@@ -20,5 +20,37 @@ void Smiley::reset()
     using namespace Resources::Textures::Rectangles;
 
     m_rect = smiley[Indexes::SmileyNormal];
-    m_sprite.setTextureRect(rect);
+    m_sprite.setTextureRect(m_rect);
+}
+
+void Smiley::press()
+{
+    using namespace Resources::Textures::Rectangles;
+    m_sprite.setTextureRect(smiley[Indexes::SmileyPressed]);
+}
+void Smiley::release()
+{
+    m_sprite.setTextureRect(m_rect);
+}
+
+void Smiley::setWin()
+{
+    using namespace Resources::Textures::Rectangles;
+
+    m_rect = smiley[Indexes::SmileyWin];
+    m_sprite.setTextureRect(m_rect);
+}
+void Smiley::setLose()
+{
+    using namespace Resources::Textures::Rectangles;
+
+    m_rect = smiley[Indexes::SmileyLose];
+    m_sprite.setTextureRect(m_rect);
+}
+void Smiley::setScared()
+{
+    using namespace Resources::Textures::Rectangles;
+
+    m_rect = smiley[Indexes::SmileyWin];
+    m_sprite.setTextureRect(m_rect);
 }

@@ -54,6 +54,7 @@ void Table::M_placeMines(sf::Uint16 mines)
         if(m_table[line][column].hasMine() == false)
         {
             m_table[line][column].setMine();
+            m_table[line][column].incrementMinesCount();
             --mines;
 
             for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
@@ -134,23 +135,17 @@ bool Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 
     if(m_table.outOfBounds(index.y, index.x) == false)
     {
-        Cell& cell = m_table[index.y][index.x];
-
         if(event.button == sf::Mouse::Left)
         {
             m_pressed_cell_index.x = -1;
             m_pressed_cell_index.y = -1;
 
-            M_reveal(index);
-            if(cell.isRevealed() == true)
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
+                return M_revealFromArea(index);
+            else
             {
-                if(cell.hasMine() == true)
-                {
-                    M_releaseAdjacentCells(index);
-                    return false;
-                }
-                if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
-                    M_revealAdjacentCells(index);
+                M_revealFromCell(index);
+                return m_table[index.y][index.x].hasMine() == false;
             }
         }
         else if(event.button == sf::Mouse::Right)
@@ -162,20 +157,33 @@ bool Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 
     return true;
 }
-void Table::M_reveal(const sf::Vector2i index)
+bool Table::M_revealFromArea(const sf::Vector2i index)
 {
-    if(m_table.outOfBounds(index.y, index.x) == false)
-    {
-        Cell& cell = m_table[index.y][index.x];
+    Cell& cell = m_table[index.y][index.x];
 
-        if(cell.isRevealed() == false && cell.hasFlag() == false)
+    if(cell.isRevealed() == true && M_countAdjacentFlags(index) == cell.getMinesCount())
+        return M_revealAdjacentCells(index);
+
+    cell.release();
+    M_releaseAdjacentCells(index);
+    return true;
+}
+sf::Uint16 Table::M_countAdjacentFlags(const sf::Vector2i index)
+{
+    sf::Uint16 flags_count = 0;
+    for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
+    {
+        const sf::Vector2i next_index = index + directions[i];
+
+        if(m_table.outOfBounds(next_index.y, next_index.x) == false)
         {
-            cell.reveal();
-            if(cell.getMinesCount() == 0)
-                for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
-                    M_reveal(index + directions[i]);
+            Cell& cell = m_table[next_index.y][next_index.x];
+
+            if(cell.hasFlag() == true)
+                ++flags_count;
         }
     }
+    return flags_count;
 }
 void Table::M_releaseAdjacentCells(const sf::Vector2i index)
 {
@@ -188,14 +196,39 @@ void Table::M_releaseAdjacentCells(const sf::Vector2i index)
             m_table[line][column].release();
     }
 }
-void Table::M_revealAdjacentCells(const sf::Vector2i index)
+bool Table::M_revealAdjacentCells(const sf::Vector2i index)
 {
+    bool ok = true;
+
     for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
     {
         const sf::Vector2i next_index = {index.x + directions[i].x, index.y + directions[i].y};
 
         if(m_table.outOfBounds(next_index.y, next_index.x) == false)
-            M_reveal(next_index);
+        {
+            M_revealFromCell(next_index);
+            Cell& cell = m_table[next_index.y][next_index.x];
+
+            if(cell.hasMine() == true && cell.isRevealed() == true)
+                ok = false;
+        }
+    }
+
+    return ok;
+}
+void Table::M_revealFromCell(const sf::Vector2i index)
+{
+    if(m_table.outOfBounds(index.y, index.x) == false)
+    {
+        Cell& cell = m_table[index.y][index.x];
+
+        if(cell.isRevealed() == false && cell.hasFlag() == false)
+        {
+            cell.reveal();
+            if(cell.getMinesCount() == 0)
+                for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
+                    M_revealFromCell(index + directions[i]);
+        }
     }
 }
 

@@ -6,6 +6,7 @@
 class Background : public sf::Drawable, public sf::Transformable
 {
 public:
+    static const sf::Vector2f header_position;
     static const sf::Vector2f table_position;
 
 private:

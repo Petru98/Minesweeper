@@ -130,17 +130,14 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.contains(event.x, event.y) == true)
+    if(m_table.contains(event.x, event.y) == true && m_game_over == false)
     {
-        if(m_game_over == false)
-        {
             int status = m_table.onMouseButtonReleased(event);
 
             if(status == 1)
                 win();
             else if(status == -1)
                 lose();
-        }
     }
 }
 

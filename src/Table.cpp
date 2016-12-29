@@ -41,9 +41,9 @@ void Table::M_initializeCells(const sf::Texture& textures)
         {
             m_table[i][j].initialize(textures);
             m_table[i][j].setPosition(position);
-            position.x += Cell::width;
+            position.x += Cell::WIDTH;
         }
-        position.y += Cell::height;
+        position.y += Cell::HEIGHT;
         position.x = 0.0f;
     }
 }
@@ -89,7 +89,7 @@ sf::Uint16 Table::cellsLeft()const {return m_cells_left;}
 sf::Uint16 Table::flags()const     {return m_flags;}
 
 sf::Vector2f Table::getSize()const
-    {return sf::Vector2f(Cell::width * m_table.columns(), Cell::height * m_table.lines());}
+    {return sf::Vector2f(Cell::WIDTH * m_table.columns(), Cell::HEIGHT * m_table.lines());}
 
 Cell* Table::operator[] (const sf::Uint16 index)            {return m_table[index];}
 const Cell* Table::operator[] (const sf::Uint16 index)const {return m_table[index];}
@@ -120,7 +120,7 @@ void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 sf::Vector2i Table::M_getCellPositionFromPixels(const int x, const int y)const
 {
     const sf::Vector2f position = this->getPosition();
-    return sf::Vector2i((x - position.x) / Cell::width, (y - position.y) / Cell::height);
+    return sf::Vector2i((x - position.x) / Cell::WIDTH, (y - position.y) / Cell::HEIGHT);
 }
 void Table::M_pressAdjacentCells(const sf::Vector2i index)
 {
@@ -150,7 +150,8 @@ int Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
             else
             {
                 M_revealFromCell(index);
-                return (m_table[index.y][index.x].hasMine() == false) ? 0 : -1;
+                if(m_table[index.y][index.x].hasMine() == true)
+                    return -1;
             }
         }
         else if(event.button == sf::Mouse::Right)

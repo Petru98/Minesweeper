@@ -20,6 +20,9 @@ void Game::initialize()
 
 void Game::run()
 {
+    window.draw(level);
+    window.display();
+
     sf::Event event;
     while(window.waitEvent(event))
     {

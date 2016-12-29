@@ -9,7 +9,7 @@ const Level::Difficulty Level::expert       = {16, 30, 99};
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
-    : m_window(window), m_textures(texture), m_cells_area(), m_background(), m_table(), m_game_over(false)
+    : m_window(window), m_textures(texture), m_background(), m_table(), m_game_over(false)
 {
     Random::seed(std::time(nullptr));
 }
@@ -24,7 +24,7 @@ void Level::create(Level::Difficulty difficulty)
     if(m_table.create(difficulty.lines, difficulty.columns, difficulty.mines, m_textures) == false)
         throw Exception(Error::Allocate, Error::messages[Error::Allocate]);
 
-    M_initializeBackground(difficulty);
+    M_initializeBackground();
     m_table.setPosition(m_background.getPosition() + m_background.table_position);
     M_resizeWindow();
     m_game_over = false;
@@ -41,11 +41,10 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
         difficulty.mines = difficulty.lines*difficulty.columns;
     return difficulty;
 }
-void Level::M_initializeBackground(const Level::Difficulty difficulty)
+void Level::M_initializeBackground()
 {
     m_background.setPosition(0.0f, s_MENU_HEIGHT);
-    m_background.setSize(Cell::width * difficulty.columns + Cell::LEFT_OFFSET + Cell::RIGHT_OFFSET,
-                         Cell::height* difficulty.lines   + Cell::TOP_OFFSET  + Cell::BOTTOM_OFFSET);
+    m_background.setSize(m_table.getSize() + sf::Vector2f(Table::LEFT_OFFSET + Table::RIGHT_OFFSET, Table::TOP_OFFSET + Table::BOTTOM_OFFSET));
 }
 
 void Level::M_resizeWindow()

@@ -6,7 +6,8 @@ void Background::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
     states.transform.combine(this->getTransform());
 
-    sf::RectangleShape rect(m_size);
+    sf::RectangleShape rect;
+    rect.setSize(sf::Vector2f(m_size.x, m_size.y));
     rect.setFillColor(sf::Color::White);
     target.draw(rect, states);
 
@@ -40,11 +41,6 @@ void Background::draw(sf::RenderTarget& target, sf::RenderStates states)const
 Background::Background() : m_size()
 {}
 
-void Background::setSize(const float width, const float height)
-{
-    m_size.x = width;
-    m_size.y = height;
-}
 sf::Vector2f Background::getSize()const
 {
     return m_size;

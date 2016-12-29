@@ -16,7 +16,17 @@ private:
 public:
     Background();
 
-    void setSize(const float width, const float height);
+    template<typename T> void setSize(const T width, const T height)
+    {
+        m_size.x = width;
+        m_size.y = height;
+    }
+    template<typename T> void setSize(const sf::Vector2<T> size)
+    {
+        m_size.x = size.x;
+        m_size.y = size.y;
+    }
+
     sf::Vector2f getSize()const;
 };
 

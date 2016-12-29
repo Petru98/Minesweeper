@@ -46,14 +46,13 @@ private:
 
     sf::RenderWindow&  m_window;
     const sf::Texture& m_textures;
-    sf::IntRect        m_cells_area;
     Background         m_background;
     Table              m_table;
     bool               m_game_over;
 
     void M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const;
 
-    void M_initializeBackground(const Difficulty difficulty);
+    void M_initializeBackground();
     void M_resizeWindow();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;

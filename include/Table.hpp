@@ -7,8 +7,13 @@
 
 class Table : public sf::Drawable, public sf::Transformable
 {
-private:
+public:
+    static constexpr std::size_t LEFT_OFFSET = 12;
+    static constexpr std::size_t TOP_OFFSET = 56;
+    static constexpr std::size_t RIGHT_OFFSET = 8;
+    static constexpr std::size_t BOTTOM_OFFSET = 8;
 
+private:
     static constexpr std::size_t DIRECTIONS_COUNT = 8;
     static const sf::Vector2i directions[DIRECTIONS_COUNT];
 
@@ -59,8 +64,8 @@ public:
     template<typename T> bool contains(const T x, const T y)const
     {
         const sf::Vector2f position = this->getPosition();
-        const float right = position.x + Cell::width * m_table.columns();
-        const float bottom = position.y + Cell::height * m_table.lines();
+        const float right = position.x + Cell::WIDTH * m_table.columns();
+        const float bottom = position.y + Cell::HEIGHT * m_table.lines();
 
         return x >= position.x && x < right && y >= position.y && y < bottom;
     }

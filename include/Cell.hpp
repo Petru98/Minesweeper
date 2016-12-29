@@ -7,12 +7,8 @@
 class Cell : public sf::Drawable, public sf::Transformable
 {
 public:
-    static constexpr std::size_t width = Resources::Textures::CELL_WIDTH;
-    static constexpr std::size_t height = Resources::Textures::CELL_HEIGHT;
-    static constexpr std::size_t LEFT_OFFSET = 12;
-    static constexpr std::size_t TOP_OFFSET = 56;
-    static constexpr std::size_t RIGHT_OFFSET = 8;
-    static constexpr std::size_t BOTTOM_OFFSET = 8;
+    static constexpr std::size_t WIDTH = Resources::Textures::CELL_WIDTH;
+    static constexpr std::size_t HEIGHT = Resources::Textures::CELL_HEIGHT;
 
 private:
     sf::Sprite m_sprite;

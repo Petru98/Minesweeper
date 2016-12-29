@@ -9,7 +9,7 @@ const Level::Difficulty Level::expert       = {16, 30, 99};
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
-    : m_window(window), m_textures(texture), m_background(), m_table(), m_game_over(false)
+    : m_window(window), m_textures(texture), m_header(), m_table(), m_background(), m_game_over(false)
 {
     Random::seed(std::time(nullptr));
 }
@@ -25,7 +25,9 @@ void Level::create(Level::Difficulty difficulty)
         throw Exception(Error::Allocate, Error::messages[Error::Allocate]);
 
     M_initializeBackground();
+    M_initializeHeader();
     m_table.setPosition(m_background.getPosition() + m_background.table_position);
+
     M_resizeWindow();
     m_game_over = false;
 }
@@ -45,6 +47,12 @@ void Level::M_initializeBackground()
 {
     m_background.setPosition(0.0f, s_MENU_HEIGHT);
     m_background.setSize(m_table.getSize() + sf::Vector2f(Table::LEFT_OFFSET + Table::RIGHT_OFFSET, Table::TOP_OFFSET + Table::BOTTOM_OFFSET));
+}
+void Level::M_initializeHeader()
+{
+    m_header.setPosition(m_background.getPosition() + m_background.header_position);
+    m_header.setSize(sf::Vector2f(m_table.getSize().x + 2.0f, Header::HEIGHT));
+    m_header.initialize(m_textures);
 }
 
 void Level::M_resizeWindow()
@@ -84,12 +92,8 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
     //M_drawMenu(target, states);
     target.draw(m_background, states);
-    M_drawHead(target, states);
+    target.draw(m_header, states);
     target.draw(m_table, states);
-}
-void Level::M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const
-{
-
 }
 
 /* Events */

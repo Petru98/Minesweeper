@@ -3,6 +3,7 @@
 
 #include "Scene.hpp"
 #include "Table.hpp"
+#include "Header.hpp"
 #include "Background.hpp"
 
 class Level : public Scene
@@ -46,13 +47,13 @@ private:
 
     sf::RenderWindow&  m_window;
     const sf::Texture& m_textures;
-    Background         m_background;
+    Header             m_header;
     Table              m_table;
+    Background         m_background;
     bool               m_game_over;
 
-    void M_drawHead(sf::RenderTarget& target, sf::RenderStates& states)const;
-
     void M_initializeBackground();
+    void M_initializeHeader();
     void M_resizeWindow();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;

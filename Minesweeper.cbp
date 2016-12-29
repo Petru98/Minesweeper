@@ -65,6 +65,7 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="include/Game.hpp" />
+		<Unit filename="include/Header.hpp" />
 		<Unit filename="include/Level.hpp" />
 		<Unit filename="include/Matrix.hpp" />
 		<Unit filename="include/Resource.hpp">
@@ -85,6 +86,7 @@
 		<Unit filename="src/Background.cpp" />
 		<Unit filename="src/Cell.cpp" />
 		<Unit filename="src/Game.cpp" />
+		<Unit filename="src/Header.cpp" />
 		<Unit filename="src/Level.cpp" />
 		<Unit filename="src/Scene.cpp" />
 		<Unit filename="src/Smiley.cpp" />

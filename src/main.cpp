@@ -10,8 +10,16 @@
     {
         cout << error.what() << '\n';
     }
+    template<typename T> void log(T x)
+    {
+        cout << x << '\n';
+    }
+    template<typename T> void log()
+    {
+        cout << sizeof(T) << '\n';
+    }
 #else
-    #define log(error)
+    #define log(x)
 #endif
 
 int main()

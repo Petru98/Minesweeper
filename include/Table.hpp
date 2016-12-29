@@ -14,6 +14,7 @@ private:
 
     Matrix<Cell> m_table;
     sf::Uint16   m_mines;
+    sf::Uint16   m_cells_left;
     sf::Uint16   m_flags;
     sf::Vector2i m_pressed_cell_index;
 
@@ -43,6 +44,7 @@ public:
     sf::Uint16 lines()const;
     sf::Uint16 columns()const;
     sf::Uint16 mines()const;
+    sf::Uint16 cellsLeft()const;
     sf::Uint16 flags()const;
 
     sf::Vector2f getSize()const;

@@ -13,7 +13,7 @@ void Table::draw(sf::RenderTarget& target, sf::RenderStates states)const
             target.draw(m_table[i][j], states);
 }
 
-Table::Table() : m_table(), m_mines(0), m_flags(0), m_pressed_cell_index(-1,-1)
+Table::Table() : m_table(), m_mines(0), m_cells_left(0), m_flags(0), m_pressed_cell_index(-1,-1)
 {}
 Table::~Table()
 {}
@@ -22,9 +22,12 @@ bool Table::create(const sf::Uint16 lines, const sf::Uint16 columns, const sf::U
 {
     if(m_table.create(lines, columns) == false)
         return false;
+
     M_initializeCells(textures);
     M_placeMines(mines);
+
     m_mines = mines;
+    m_cells_left = lines * columns;
     m_flags = 0;
     return true;
 }
@@ -73,15 +76,17 @@ void Table::destroy()
 {
     m_table.destroy();
     m_mines = 0;
+    m_cells_left = 0;
     m_flags = 0;
 }
 
-bool Table::isCreated()const     {return m_table.isCreated();}
+bool Table::isCreated()const       {return m_table.isCreated();}
 
-sf::Uint16 Table::lines()const   {return m_table.lines();}
-sf::Uint16 Table::columns()const {return m_table.columns();}
-sf::Uint16 Table::mines()const   {return m_mines;}
-sf::Uint16 Table::flags()const   {return m_flags;}
+sf::Uint16 Table::lines()const     {return m_table.lines();}
+sf::Uint16 Table::columns()const   {return m_table.columns();}
+sf::Uint16 Table::mines()const     {return m_mines;}
+sf::Uint16 Table::cellsLeft()const {return m_cells_left;}
+sf::Uint16 Table::flags()const     {return m_flags;}
 
 sf::Vector2f Table::getSize()const
     {return sf::Vector2f(Cell::width * m_table.columns(), Cell::height * m_table.lines());}

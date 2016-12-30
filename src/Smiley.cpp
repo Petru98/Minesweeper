@@ -53,6 +53,6 @@ void Smiley::setScared()
 {
     using namespace Resources::Textures::Rectangles;
 
-    m_rect = smiley[Indexes::SmileyWin];
+    m_rect = smiley[Indexes::SmileyScared];
     m_sprite.setTextureRect(m_rect);
 }

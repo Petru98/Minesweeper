@@ -240,7 +240,7 @@ void Table::M_revealFromCell(const sf::Vector2i index)
     }
 }
 
-void Table::onMouseMoved(const sf::Event::MouseMoveEvent& event)
+bool Table::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
     if(m_table.outOfBounds(m_pressed_cell_index.y, m_pressed_cell_index.x) == false)
     {
@@ -258,10 +258,10 @@ void Table::onMouseMoved(const sf::Event::MouseMoveEvent& event)
             M_pressAdjacentCells(index);
 
         m_pressed_cell_index = index;
+        return true;
     }
-    else
-    {
-        m_pressed_cell_index.x = -1;
-        m_pressed_cell_index.y = -1;
-    }
+
+    m_pressed_cell_index.x = -1;
+    m_pressed_cell_index.y = -1;
+    return false;
 }

@@ -127,10 +127,10 @@ void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event)
 
 void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.contains(event.x, event.y) == true)
+    if(m_table.contains(event.x, event.y) == true && m_game_over == false)
     {
-        if(m_game_over == false)
-            m_table.onMouseButtonPressed(event);
+        m_table.onMouseButtonPressed(event);
+        m_header.smiley.setScared();
     }
 }
 
@@ -144,6 +144,8 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
                 win();
             else if(status == -1)
                 lose();
+            else
+                m_header.smiley.reset();
     }
 }
 
@@ -152,7 +154,12 @@ void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
     {
         if(m_game_over == false)
-            m_table.onMouseMoved(event);
+        {
+            if(m_table.onMouseMoved(event) == true)
+                m_header.smiley.setScared();
+            else
+                m_header.smiley.reset();
+        }
     }
 }
 

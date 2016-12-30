@@ -60,7 +60,7 @@ public:
 
     void onMouseButtonPressed(const sf::Event::MouseButtonEvent&);
     int  onMouseButtonReleased(const sf::Event::MouseButtonEvent&);
-    void onMouseMoved(const sf::Event::MouseMoveEvent&);
+    bool onMouseMoved(const sf::Event::MouseMoveEvent&);
 
     template<typename T> bool contains(const T x, const T y)const
     {

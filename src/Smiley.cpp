@@ -8,6 +8,8 @@ void Smiley::draw(sf::RenderTarget& target, sf::RenderStates states)const
 
 Smiley::Smiley() : m_sprite(), m_rect()
 {}
+Smiley::~Smiley()
+{}
 
 void Smiley::initialize(const sf::Texture& textures)
 {

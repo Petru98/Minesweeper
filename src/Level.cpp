@@ -72,6 +72,7 @@ void Level::M_resizeWindow()
 void Level::win()
 {
     m_game_over = true;
+    m_header.smiley.setWin();
 
     for(std::size_t i = 0; i < m_table.lines(); ++i)
         for(std::size_t j = 0; j < m_table.columns(); ++j)
@@ -81,6 +82,7 @@ void Level::win()
 void Level::lose()
 {
     m_game_over = true;
+    m_header.smiley.setLose();
 
     for(std::size_t i = 0; i < m_table.lines(); ++i)
         for(std::size_t j = 0; j < m_table.columns(); ++j)

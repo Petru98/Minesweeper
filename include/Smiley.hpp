@@ -18,6 +18,7 @@ private:
 
 public:
     Smiley();
+    ~Smiley();
 
     void initialize(const sf::Texture& textures);
     void reset();

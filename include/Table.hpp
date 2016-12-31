@@ -27,14 +27,15 @@ private:
     void M_initializeCells(const sf::Texture& textures);
     void M_placeMines(sf::Uint16 mines);
 
+    sf::Vector2i M_getCellPositionFromPixels(const int x, const int y)const;
+    void M_pressArea(const sf::Vector2i index);
+    void M_pressAdjacentCells(const sf::Vector2i index);
+
     int M_revealFromArea(const sf::Vector2i index);
     int M_revealAdjacentCells(const sf::Vector2i index);
     sf::Uint16 M_countAdjacentFlags(const sf::Vector2i index);
     void M_releaseAdjacentCells(const sf::Vector2i index);
     void M_revealFromCell(const sf::Vector2i index);
-
-    sf::Vector2i M_getCellPositionFromPixels(const int x, const int y)const;
-    void M_pressAdjacentCells(const sf::Vector2i index);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 

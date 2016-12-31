@@ -130,22 +130,26 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
     if(m_table.contains(event.x, event.y) == true && m_game_over == false)
     {
         m_table.onMouseButtonPressed(event);
-        m_header.smiley.setScared();
+        if(event.button == sf::Mouse::Left)
+            m_header.smiley.setScared();
     }
 }
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.contains(event.x, event.y) == true && m_game_over == false)
+    if(m_game_over == false)
     {
-            int status = m_table.onMouseButtonReleased(event);
+        if(m_table.contains(event.x, event.y) == true)
+        {
+                int status = m_table.onMouseButtonReleased(event);
 
-            if(status == 1)
-                win();
-            else if(status == -1)
-                lose();
-            else
-                m_header.smiley.reset();
+                if(status == 1)
+                    win();
+                else if(status == -1)
+                    lose();
+                else if(event.button == sf::Mouse::Left)
+                    m_header.smiley.reset();
+        }
     }
 }
 

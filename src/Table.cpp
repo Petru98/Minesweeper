@@ -100,19 +100,20 @@ void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
     const sf::Vector2i index = M_getCellPositionFromPixels(event.x, event.y);
     Cell& cell = m_table[index.y][index.x];
 
-    if(event.button == sf::Mouse::Left && sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+    if(event.button == sf::Mouse::Left)
     {
-        if(cell.press() == true)
-        m_pressed_cell_index = index;
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+        {
+            if(cell.press() == true)
+                m_pressed_cell_index = index;
+        }
+        else
+            M_pressArea(index);
     }
     else if(event.button == sf::Mouse::Right)
     {
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
-        {
-            m_pressed_cell_index = index;
-            cell.press();
-            M_pressAdjacentCells(index);
-        }
+            M_pressArea(index);
         else
             cell.toggleFlag();
     }
@@ -121,6 +122,12 @@ sf::Vector2i Table::M_getCellPositionFromPixels(const int x, const int y)const
 {
     const sf::Vector2f position = this->getPosition();
     return sf::Vector2i((x - position.x) / Cell::WIDTH, (y - position.y) / Cell::HEIGHT);
+}
+void Table::M_pressArea(const sf::Vector2i index)
+{
+    m_table[index.y][index.x].press();
+    m_pressed_cell_index = index;
+    M_pressAdjacentCells(index);
 }
 void Table::M_pressAdjacentCells(const sf::Vector2i index)
 {

@@ -6,14 +6,15 @@ void Smiley::draw(sf::RenderTarget& target, sf::RenderStates states)const
     target.draw(m_sprite, states);
 }
 
-Smiley::Smiley() : m_sprite(), m_rect()
+Smiley::Smiley() : m_sprite(), m_sprite_rect(), m_position_offset()
 {}
 Smiley::~Smiley()
 {}
 
-void Smiley::initialize(const sf::Texture& textures)
+void Smiley::initialize(const sf::Texture& textures, const sf::Vector2f position_offset)
 {
     m_sprite.setTexture(textures);
+    m_position_offset = position_offset;
     this->reset();
 }
 
@@ -21,8 +22,8 @@ void Smiley::reset()
 {
     using namespace Resources::Textures::Rectangles;
 
-    m_rect = smiley[Indexes::SmileyNormal];
-    m_sprite.setTextureRect(m_rect);
+    m_sprite_rect = smiley[Indexes::SmileyNormal];
+    m_sprite.setTextureRect(m_sprite_rect);
 }
 
 void Smiley::press()
@@ -32,27 +33,27 @@ void Smiley::press()
 }
 void Smiley::release()
 {
-    m_sprite.setTextureRect(m_rect);
+    m_sprite.setTextureRect(m_sprite_rect);
 }
 
 void Smiley::setWin()
 {
     using namespace Resources::Textures::Rectangles;
 
-    m_rect = smiley[Indexes::SmileyWin];
-    m_sprite.setTextureRect(m_rect);
+    m_sprite_rect = smiley[Indexes::SmileyWin];
+    m_sprite.setTextureRect(m_sprite_rect);
 }
 void Smiley::setLose()
 {
     using namespace Resources::Textures::Rectangles;
 
-    m_rect = smiley[Indexes::SmileyLose];
-    m_sprite.setTextureRect(m_rect);
+    m_sprite_rect = smiley[Indexes::SmileyLose];
+    m_sprite.setTextureRect(m_sprite_rect);
 }
 void Smiley::setScared()
 {
     using namespace Resources::Textures::Rectangles;
 
-    m_rect = smiley[Indexes::SmileyScared];
-    m_sprite.setTextureRect(m_rect);
+    m_sprite_rect = smiley[Indexes::SmileyScared];
+    m_sprite.setTextureRect(m_sprite_rect);
 }

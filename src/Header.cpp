@@ -16,7 +16,7 @@ Header::~Header()
 
 void Header::initialize(const sf::Texture& textures)
 {
-    smiley.initialize(textures);
+    smiley.initialize(textures, this->getPosition());
     smiley.setPosition(static_cast<int>(m_size.x) / 2, static_cast<int>(m_size.y) / 2);
 }
 

@@ -127,43 +127,47 @@ void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event)
 
 void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.contains(event.x, event.y) == true && m_game_over == false)
+    if(m_table.contains(event.x, event.y) == true)
     {
-        m_table.onMouseButtonPressed(event);
-        if(event.button == sf::Mouse::Left)
-            m_header.smiley.setScared();
+        if(m_game_over == false)
+        {
+            m_table.onMouseButtonPressed(event);
+            if(event.button == sf::Mouse::Left)
+                m_header.smiley.setScared();
+        }
     }
+    else if(m_header.smiley.contains(event.x, event.y) == true)
+        m_header.smiley.press();
 }
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_game_over == false)
+    if(m_table.contains(event.x, event.y) == true)
     {
-        if(m_table.contains(event.x, event.y) == true)
+        if(m_game_over == false)
         {
-                int status = m_table.onMouseButtonReleased(event);
+            int status = m_table.onMouseButtonReleased(event);
 
-                if(status == 1)
-                    win();
-                else if(status == -1)
-                    lose();
-                else if(event.button == sf::Mouse::Left)
-                    m_header.smiley.reset();
+            if(status == 1)
+                win();
+            else if(status == -1)
+                lose();
+            else if(event.button == sf::Mouse::Left)
+                m_header.smiley.reset();
         }
     }
+    else if(m_header.smiley.contains(event.x, event.y) == true)
+        m_header.smiley.release();
 }
 
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
     {
-        if(m_game_over == false)
-        {
-            if(m_table.onMouseMoved(event) == true)
-                m_header.smiley.setScared();
-            else
-                m_header.smiley.reset();
-        }
+        if(m_game_over == false && m_table.onMouseMoved(event) == true)
+            m_header.smiley.setScared();
+        else if(m_header.smiley.contains(event.x, event.y) == false)
+            m_header.smiley.release();
     }
 }
 

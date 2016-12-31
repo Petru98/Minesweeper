@@ -18,8 +18,11 @@ void Game::initialize()
     level.create(Level::beginner);
 }
 
-#include <iostream>
-using namespace std;
+#ifndef NDEBUG
+    #include <iostream>
+    using namespace std;
+#endif
+
 void Game::run()
 {
     window.draw(level);
@@ -30,23 +33,20 @@ void Game::run()
     {
         if(event.type != sf::Event::Closed)
         {
+            #ifndef NDEBUG
             sf::Clock clock;
             sf::Time time;
-
             clock.restart();
+            #endif
+
             level.handleEvent(event);
-            time = clock.getElapsedTime();
-            cout << time.asMicroseconds() << '\n';
-
-            clock.restart();
             window.draw(level);
-            time = clock.getElapsedTime();
-            cout << time.asMicroseconds() << '\n';
-
-            clock.restart();
             window.display();
+
+            #ifndef NDEBUG
             time = clock.getElapsedTime();
             cout << time.asMicroseconds() << "\n\n";
+            #endif
         }
         else
         {

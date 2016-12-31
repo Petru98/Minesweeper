@@ -20,6 +20,7 @@ private:
 
 public:
     Background();
+    virtual ~Background();
 
     template<typename T> void setSize(const T width, const T height)
     {

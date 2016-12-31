@@ -12,6 +12,8 @@ void Background::draw(sf::RenderTarget& target, sf::RenderStates states)const
 
 Background::Background() : m_cache(), m_sprite(m_cache.getTexture()), m_size()
 {}
+Background::~Background()
+{}
 
 void Background::M_update()
 {

@@ -13,15 +13,9 @@ public:
     virtual ~Button() {}
 
     virtual void press() = 0;
-    virtual void release() = 0;
-    virtual void enable() = 0;
-    virtual void disable() = 0;
-    virtual void show() = 0;
-    virtual void hide() = 0;
+    virtual bool release() = 0;
 
     virtual bool isPressed()const = 0;
-    virtual bool isDisabled()const = 0;
-    virtual bool isHidden()const = 0;
 };
 
 #endif

@@ -48,6 +48,7 @@ private:
 
     sf::RenderWindow&  m_window;
     const sf::Texture& m_textures;
+    Menu               m_menu;
     Header             m_header;
     Table              m_table;
     Background         m_background;

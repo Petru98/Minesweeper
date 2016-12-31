@@ -9,7 +9,7 @@ const Level::Difficulty Level::expert       = {16, 30, 99};
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
-    : m_window(window), m_textures(texture), m_header(), m_table(), m_background(), m_game_over(false)
+    : m_window(window), m_textures(texture), m_menu(), m_header(), m_table(), m_background(), m_game_over(false)
 {
     Random::seed(std::time(nullptr));
 }

@@ -12,8 +12,11 @@ namespace Resources
         constexpr int CELL_HEIGHT = 16;
         constexpr int SMILEY_WIDTH = 26;
         constexpr int SMILEY_HEIGHT = 26;
-        constexpr int DIGIT_WIDTH = 13;
-        constexpr int DIGIT_HEIGHT = 23;
+        constexpr int COUNTER_DIGIT_WIDTH = 13;
+        constexpr int COUNTER_DIGIT_HEIGHT = 23;
+        constexpr int TEXT_HEIGHT = 23;
+        constexpr int DIGIT_WIDTH = 12;
+        constexpr int DIGIT_HEIGHT = 10;
 
         namespace Rectangles
         {
@@ -39,6 +42,7 @@ namespace Resources
                     CellMark,
                     CellMarkPressed
                 };
+
                 enum Smiley
                 {
                     SmileyNormal,
@@ -47,14 +51,25 @@ namespace Resources
                     SmileyWin,
                     SmileyLose
                 };
-                enum Digit
+
+                enum CounterDigit
                 {
                     None = 10
+                };
+
+                enum Text
+                {
+                    Game,
+                    Beginner,
+                    Intermediate,
+                    Expert
                 };
             }
 
             extern const sf::IntRect cell[];
             extern const sf::IntRect smiley[];
+            extern const sf::IntRect counter_digit[];
+            extern const sf::IntRect text[];
             extern const sf::IntRect digit[];
         }
 

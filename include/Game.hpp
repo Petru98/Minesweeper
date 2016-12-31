@@ -1,7 +1,6 @@
 #ifndef MINESWEEPER_GAME_HPP_INCLUDED
 #define MINESWEEPER_GAME_HPP_INCLUDED
 
-#include "textures.hpp"
 #include "Level.hpp"
 
 class Game

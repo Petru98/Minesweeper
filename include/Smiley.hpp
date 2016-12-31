@@ -35,9 +35,9 @@ public:
 
     template<typename T> bool contains(const T x, const T y)const
     {
-        const sf::Vector2f position = this->getPosition() + m_position_offset - sf::Vector2f(Smiley::WIDTH/2.0f, Smiley::HEIGHT/2.0f);
-        const float right = position.x + Smiley::WIDTH;
-        const float bottom = position.y + Smiley::HEIGHT;
+        const sf::Vector2f position = this->getPosition() + m_position_offset - sf::Vector2f(this->WIDTH/2.0f, this->HEIGHT/2.0f);
+        const float right = position.x + this->WIDTH;
+        const float bottom = position.y + this->HEIGHT;
 
         return x >= position.x && x < right && y >= position.y && y < bottom;
     }

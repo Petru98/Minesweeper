@@ -5,6 +5,10 @@
 
 class Menu : public sf::Drawable, public sf::Transformable
 {
+public:
+    static constexpr std::size_t HEIGHT = 19;
+    static const sf::Vector2f ITEM_OFFSET;
+
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 

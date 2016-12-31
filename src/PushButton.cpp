@@ -35,3 +35,9 @@ bool PushButton::isPressed()const
 {
     return m_pressed;
 }
+
+sf::Vector2f PushButton::getSize()const
+{
+    const sf::IntRect rect = m_sprite.getTextureRect();
+    return sf::Vector2f(rect.width, rect.height);
+}

@@ -32,6 +32,7 @@ void Level::create(Level::Difficulty difficulty)
     if(m_table.create(difficulty.lines, difficulty.columns, difficulty.mines, m_textures) == false)
         throw Exception(Error::Allocate, Error::messages[Error::Allocate]);
 
+    M_initializeMenu();
     M_initializeBackground();
     M_initializeHeader();
     m_table.setPosition(m_background.getPosition() + m_background.table_position);
@@ -58,9 +59,14 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
 
     return difficulty;
 }
+void Level::M_initializeMenu()
+{
+    m_menu.initialize(m_textures);
+    m_menu.setSize(sf::Vector2f(m_table.getSize().x + Table::LEFT_OFFSET + Table::RIGHT_OFFSET, Menu::HEIGHT));
+}
 void Level::M_initializeBackground()
 {
-    m_background.setPosition(0.0f, s_MENU_HEIGHT);
+    m_background.setPosition(0.0f, Menu::HEIGHT);
     m_background.setSize(m_table.getSize() + sf::Vector2f(Table::LEFT_OFFSET + Table::RIGHT_OFFSET, Table::TOP_OFFSET + Table::BOTTOM_OFFSET));
 }
 void Level::M_initializeHeader()
@@ -72,7 +78,7 @@ void Level::M_initializeHeader()
 
 void Level::M_resizeWindow()
 {
-    const sf::Vector2u size(m_background.getSize().x, m_background.getSize().y + s_MENU_HEIGHT);
+    const sf::Vector2u size(m_background.getSize().x, m_background.getSize().y + Menu::HEIGHT);
     if(m_window.isOpen() == false)
     {
         m_window.create(sf::VideoMode(size.x, size.y), "Minesweeper", sf::Style::Titlebar | sf::Style::Close);
@@ -171,11 +177,24 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == false)
+        return;
+
+    if(m_game_over == false)
     {
-        if(m_game_over == false && m_table.onMouseMoved(event) == true)
+        if(m_table.onMouseMoved(event) == true)
             m_header.smiley.setScared();
         else if(m_header.smiley.contains(event.x, event.y) == false)
+        {
+            if(m_header.smiley.isPressed() == true)
+                m_header.smiley.release();
+            else
+                m_header.smiley.reset();
+        }
+    }
+    else
+    {
+        if(m_header.smiley.contains(event.x, event.y) == false)
             m_header.smiley.release();
     }
 }

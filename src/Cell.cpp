@@ -1,5 +1,4 @@
 #include "Cell.hpp"
-#include <cassert>
 
 void Cell::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {

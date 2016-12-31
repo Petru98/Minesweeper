@@ -41,8 +41,6 @@ public:
     static const Difficulty intermediate;
     static const Difficulty expert;
 
-    static constexpr unsigned int s_MENU_HEIGHT = 19;
-
 private:
     static Difficulty S_correctDifficulty(Difficulty difficulty);
 
@@ -54,6 +52,7 @@ private:
     Background         m_background;
     bool               m_game_over;
 
+    void M_initializeMenu();
     void M_initializeBackground();
     void M_initializeHeader();
     void M_resizeWindow();

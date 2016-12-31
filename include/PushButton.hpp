@@ -22,6 +22,8 @@ public:
 
     bool isPressed()const;
 
+    sf::Vector2f getSize()const;
+
     template<typename T> bool contains(const T x, const T y)const
     {
         const sf::Vector2f position = this->getPosition();

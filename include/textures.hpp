@@ -14,7 +14,7 @@ namespace Resources
         constexpr int SMILEY_HEIGHT = 26;
         constexpr int COUNTER_DIGIT_WIDTH = 13;
         constexpr int COUNTER_DIGIT_HEIGHT = 23;
-        constexpr int TEXT_HEIGHT = 23;
+        constexpr int TEXT_HEIGHT = 11;
         constexpr int DIGIT_WIDTH = 12;
         constexpr int DIGIT_HEIGHT = 10;
 

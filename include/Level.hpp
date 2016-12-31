@@ -34,7 +34,7 @@ public:
         sf::Uint16 mines;
 
         Difficulty() : lines(0), columns(0), mines(0) {}
-        Difficulty(const sf::Uint16 w, const sf::Uint16 h, const sf::Uint16 m) : lines(w), columns(h), mines(m) {}
+        Difficulty(const sf::Uint16 l, const sf::Uint16 c, const sf::Uint16 m) : lines(l), columns(c), mines(m) {}
     };
 
     static const Difficulty beginner;

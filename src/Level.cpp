@@ -35,12 +35,19 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
 {
     if(difficulty.lines == 0)
         difficulty.lines = 1;
+    else if(difficulty.lines > 35)
+        difficulty.lines = 35;
+
     if(difficulty.columns < 8)
         difficulty.columns = 8;
+    else if(difficulty.columns > 75)
+        difficulty.columns = 75;
+
     if(difficulty.mines == 0)
         difficulty.mines = 1;
     else if(difficulty.mines >= difficulty.lines*difficulty.columns)
         difficulty.mines = difficulty.lines*difficulty.columns;
+
     return difficulty;
 }
 void Level::M_initializeBackground()

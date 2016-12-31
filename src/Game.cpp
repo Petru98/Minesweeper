@@ -18,6 +18,8 @@ void Game::initialize()
     level.create(Level::beginner);
 }
 
+#include <iostream>
+using namespace std;
 void Game::run()
 {
     window.draw(level);
@@ -28,9 +30,23 @@ void Game::run()
     {
         if(event.type != sf::Event::Closed)
         {
+            sf::Clock clock;
+            sf::Time time;
+
+            clock.restart();
             level.handleEvent(event);
+            time = clock.getElapsedTime();
+            cout << time.asMicroseconds() << '\n';
+
+            clock.restart();
             window.draw(level);
+            time = clock.getElapsedTime();
+            cout << time.asMicroseconds() << '\n';
+
+            clock.restart();
             window.display();
+            time = clock.getElapsedTime();
+            cout << time.asMicroseconds() << "\n\n";
         }
         else
         {

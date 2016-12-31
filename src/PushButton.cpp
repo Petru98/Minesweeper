@@ -3,11 +3,11 @@
 void PushButton::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
     states.transform.combine(this->getTransform());
+    target.draw(m_sprite, states);
 }
 
 PushButton::PushButton() : m_sprite(), m_pressed(false)
-{
-}
+{}
 
 PushButton::~PushButton()
 {}

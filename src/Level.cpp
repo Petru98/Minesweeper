@@ -7,6 +7,14 @@ const Level::Difficulty Level::beginner     = {9 , 9 , 10};
 const Level::Difficulty Level::intermediate = {16, 16, 40};
 const Level::Difficulty Level::expert       = {16, 30, 99};
 
+void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
+{
+    target.draw(m_menu, states);
+    target.draw(m_background, states);
+    target.draw(m_header, states);
+    target.draw(m_table, states);
+}
+
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
     : m_window(window), m_textures(texture), m_menu(), m_header(), m_table(), m_background(), m_game_over(false)
@@ -94,15 +102,6 @@ void Level::lose()
     for(std::size_t i = 0; i < m_table.lines(); ++i)
         for(std::size_t j = 0; j < m_table.columns(); ++j)
             m_table[i][j].reveal(true);
-}
-
-/* Draw */
-void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
-{
-    //M_drawMenu(target, states);
-    target.draw(m_background, states);
-    target.draw(m_header, states);
-    target.draw(m_table, states);
 }
 
 /* Events */

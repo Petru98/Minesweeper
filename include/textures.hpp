@@ -54,15 +54,15 @@ namespace Resources
 
                 enum CounterDigit
                 {
-                    None = 10
+                    CounterDigitNone = 10
                 };
 
                 enum Text
                 {
-                    Game,
-                    Beginner,
-                    Intermediate,
-                    Expert
+                    TextGame,
+                    TextBeginner,
+                    TextIntermediate,
+                    TextExpert
                 };
             }
 

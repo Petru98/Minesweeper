@@ -2,9 +2,10 @@
 #define MINESWEEPER_LEVEL_HPP_INCLUDED
 
 #include "Scene.hpp"
-#include "Table.hpp"
-#include "Header.hpp"
+#include "Menu.hpp"
 #include "Background.hpp"
+#include "Header.hpp"
+#include "Table.hpp"
 
 class Level : public Scene
 {

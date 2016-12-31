@@ -60,6 +60,7 @@
 			<Add directory="lib/SFML" />
 		</Linker>
 		<Unit filename="include/Background.hpp" />
+		<Unit filename="include/Button.hpp" />
 		<Unit filename="include/Cell.hpp" />
 		<Unit filename="include/Exception.hpp">
 			<Option target="&lt;{~None~}&gt;" />

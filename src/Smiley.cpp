@@ -57,3 +57,9 @@ void Smiley::setScared()
     m_sprite_rect = smiley[Indexes::SmileyScared];
     m_sprite.setTextureRect(m_sprite_rect);
 }
+
+bool Smiley::isPressed()const
+{
+    using namespace Resources::Textures::Rectangles;
+    return m_sprite.getTextureRect() == smiley[Indexes::SmileyPressed];
+}

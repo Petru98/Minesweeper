@@ -31,6 +31,8 @@ public:
     void setLose();
     void setScared();
 
+    bool isPressed()const;
+
     template<typename T> bool contains(const T x, const T y)const
     {
         const sf::Vector2f position = this->getPosition() + m_position_offset - sf::Vector2f(Smiley::WIDTH/2.0f, Smiley::HEIGHT/2.0f);

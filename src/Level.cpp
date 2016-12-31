@@ -157,7 +157,10 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         }
     }
     else if(m_header.smiley.contains(event.x, event.y) == true)
-        m_header.smiley.release();
+    {
+        if(m_header.smiley.isPressed() == true)
+            this->create(Difficulty(m_table.lines(), m_table.columns(), m_table.mines()));
+    }
 }
 
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)

@@ -1,12 +1,12 @@
 #ifndef MINESWEEPER_TEXTBOX_HPP_INCLUDED
 #define MINESWEEPER_TEXTBOX_HPP_INCLUDED
 
-#include "Scene.hpp"
+#include "TextBoxBase.hpp"
 #include "LineShape.hpp"
 #include "textures.hpp"
 
 template <std::size_t N>
-class TextBox : public sf::Drawable, public sf::Transformable
+class TextBox : public TextBoxBase
 {
 private:
     static const sf::Vector2f TEXT_OFFSET;
@@ -26,17 +26,24 @@ public:
 
     void initialize(const sf::Texture& textures);
 
-    void showCursor();
-    void hideCursor();
-    bool isCursorVisible()const;
+    virtual void showCursor();
+    virtual void hideCursor();
+    virtual bool isCursorVisible()const;
 
-    sf::Vector2f getSize()const;
+    virtual sf::Vector2f getSize()const;
 
-    void clear();
-    const char* getText()const;
-    std::size_t getTextLength()const;
+    virtual void clear();
+    virtual const char* getText()const;
+    virtual std::size_t getTextLength()const;
 
-    void onTextEntered(const sf::Event::TextEvent& event);
+    virtual void onTextEntered(const sf::Event::TextEvent& event);
+
+    template<typename T> bool contains(const T x, const T y)const
+    {
+        const sf::Vector2f position = this->getPosition();
+        const sf::Vector2f size = m_background.getSize();
+        return (x >= position.x) && (x < position.x + size.x) && (y >= position.y) && (y < position.y + size.y);
+    }
 };
 
 /* Implementation */

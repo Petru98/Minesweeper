@@ -103,7 +103,21 @@ void GameMenu::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& even
 
 void GameMenu::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
+    float relative_x = event.x - this->getPosition().x;
+    float relative_y = event.y - this->getPosition().y;
 
+    if(m_lines.contains(relative_x, relative_y) == true)
+        M_setFocus(m_lines);
+    else if(m_columns.contains(relative_x, relative_y) == true)
+        M_setFocus(m_columns);
+    else if(m_mines.contains(relative_x, relative_y) == true)
+        M_setFocus(m_mines);
+}
+void GameMenu::M_setFocus(TextBoxBase& text_box)
+{
+    m_focus->hideCursor();
+    m_focus = &text_box;
+    m_focus->showCursor();
 }
 
 void GameMenu::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)

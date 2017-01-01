@@ -30,9 +30,11 @@ private:
     PushButton         m_buttons[4];
     TextBox<2>         m_lines;
     TextBox<2>         m_columns;
-    TextBox<2>         m_mines;
-    TextBox<2>*        m_focus;
+    TextBox<3>         m_mines;
+    TextBoxBase*       m_focus;
     bool               m_open;
+
+    void M_setFocus(TextBoxBase& text_box);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 

@@ -25,8 +25,8 @@ Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
     : m_game_menu(), m_menu(), m_header(), m_table(), m_background(), m_window(window), m_textures(textures), m_game_over(false)
 {
     Random::seed(std::time(nullptr));
-    m_game_menu.initialize(m_textures);
     m_game_menu.setPosition(sf::Vector2f(0.0f, Menu::HEIGHT));
+    m_game_menu.initialize(m_textures);
 }
 
 Level::~Level()

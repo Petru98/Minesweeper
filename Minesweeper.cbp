@@ -80,6 +80,9 @@
 		<Unit filename="include/Smiley.hpp" />
 		<Unit filename="include/Table.hpp" />
 		<Unit filename="include/TextBox.hpp" />
+		<Unit filename="include/TextBoxBase.hpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="include/def.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

@@ -65,6 +65,9 @@ template<std::size_t N> TextBox<N>::TextBox() : m_background(), m_cursor(), m_in
     m_cursor.points[0].color = sf::Color::Black;
     m_cursor.points[1].color = sf::Color::Black;
     m_cursor.setPosition(this->TEXT_OFFSET);
+
+    for(std::size_t i = 0; i < N; ++i)
+        m_sprites[i].setPosition(this->TEXT_OFFSET + sf::Vector2f(i * DIGIT_WIDTH, 0.0f));
 }
 
 template<std::size_t N> TextBox<N>::~TextBox()
@@ -135,9 +138,9 @@ template<std::size_t N> void TextBox<N>::onTextEntered(const sf::Event::TextEven
     }
     else if(m_index_current > 0 && event.unicode == '\b')
     {
+        --m_index_current;
         m_text[m_index_current] = 0;
         m_sprites[m_index_current].setTextureRect(digit[Indexes::DigitNone]);
-        --m_index_current;
         m_cursor.move(-DIGIT_WIDTH, 0.0f);
     }
 }

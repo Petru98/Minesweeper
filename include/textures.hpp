@@ -64,6 +64,11 @@ namespace Resources
                     TextIntermediate,
                     TextExpert
                 };
+
+                enum Digit
+                {
+                    DigitNone = 10
+                };
             }
 
             extern const sf::IntRect cell[];

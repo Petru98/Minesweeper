@@ -1,4 +1,6 @@
 #include "GameMenu.hpp"
+#include "Level.hpp"
+#include "string.hpp"
 
 const sf::Vector2f GameMenu::TEXT_OFFSET = {4.0f, 4.0f};
 
@@ -15,7 +17,7 @@ void GameMenu::draw(sf::RenderTarget& target, sf::RenderStates states)const
         target.draw(m_buttons[i], states);
 }
 
-GameMenu::GameMenu() : m_background(), m_lines(), m_columns(), m_mines(), m_focus(nullptr), m_open(false)
+GameMenu::GameMenu(Level* level) : m_background(), m_lines(), m_columns(), m_mines(), m_focus(nullptr), m_level(level), m_open(false)
 {}
 
 GameMenu::~GameMenu()
@@ -112,6 +114,16 @@ void GameMenu::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         M_setFocus(m_columns);
     else if(m_mines.contains(relative_x, relative_y) == true)
         M_setFocus(m_mines);
+    else if(m_buttons[Buttons::NewGame].contains(relative_x, relative_y) == true)
+    {
+        Level::Difficulty difficulty;
+        difficulty.lines = stringToUint16(m_lines.getText());
+        difficulty.columns = stringToUint16(m_columns.getText());
+        difficulty.mines = stringToUint16(m_mines.getText());
+
+        m_level->create(difficulty);
+        this->close();
+    }
 }
 void GameMenu::M_setFocus(TextBoxBase& text_box)
 {

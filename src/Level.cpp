@@ -22,7 +22,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
-    : m_game_menu(), m_menu(), m_header(), m_table(), m_background(), m_window(window), m_textures(textures), m_game_over(false)
+    : m_game_menu(this), m_menu(), m_header(), m_table(), m_background(), m_window(window), m_textures(textures), m_game_over(false)
 {
     Random::seed(std::time(nullptr));
     m_game_menu.setPosition(sf::Vector2f(0.0f, Menu::HEIGHT));
@@ -62,7 +62,7 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
     if(difficulty.mines == 0)
         difficulty.mines = 1;
     else if(difficulty.mines >= difficulty.lines*difficulty.columns)
-        difficulty.mines = difficulty.lines*difficulty.columns;
+        difficulty.mines = difficulty.lines*difficulty.columns - 1;
 
     return difficulty;
 }
@@ -137,7 +137,9 @@ void Level::onClosed()
 }
 
 void Level::onResized(const sf::Event::SizeEvent& event)
-{}
+{
+    m_window.setView(sf::View(sf::FloatRect(0, 0, event.width, event.height)));
+}
 
 void Level::onLostFocus()
 {}

@@ -5,6 +5,8 @@
 #include "PushButton.hpp"
 #include "TextBox.hpp"
 
+class Level;
+
 class GameMenu : public Scene, public sf::Transformable
 {
 private:
@@ -32,6 +34,7 @@ private:
     TextBox<2>         m_columns;
     TextBox<3>         m_mines;
     TextBoxBase*       m_focus;
+    Level*             m_level;
     bool               m_open;
 
     void M_setFocus(TextBoxBase& text_box);
@@ -39,7 +42,7 @@ private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:
-    GameMenu();
+    GameMenu(Level* level);
     virtual ~GameMenu();
 
     void initialize(const sf::Texture& textures);

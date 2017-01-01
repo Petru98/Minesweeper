@@ -89,6 +89,9 @@
 		<Unit filename="include/random.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="include/string.hpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="include/textures.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

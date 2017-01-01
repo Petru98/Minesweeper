@@ -26,6 +26,9 @@ private:
     TextBox<2>         m_lines;
     TextBox<2>         m_columns;
     TextBox<2>         m_mines;
+    TextBox<2>*        m_focus;
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:
     GameMenu();

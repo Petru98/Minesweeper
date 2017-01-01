@@ -1,6 +1,17 @@
 #include "GameMenu.hpp"
 
-GameMenu::GameMenu() : m_background(), m_lines(), m_columns(), m_mines()
+void GameMenu::draw(sf::RenderTarget& target, sf::RenderStates states)const
+{
+    target.draw(m_background, states);
+    target.draw(m_lines, states);
+    target.draw(m_columns, states);
+    target.draw(m_mines, states);
+
+    for(std::size_t i = 0; i < Buttons::Count; ++i)
+        target.draw(m_buttons[i], states);
+}
+
+GameMenu::GameMenu() : m_background(), m_lines(), m_columns(), m_mines(), m_focus(nullptr)
 {}
 
 GameMenu::~GameMenu()
@@ -9,11 +20,25 @@ GameMenu::~GameMenu()
 void GameMenu::initialize(const sf::Texture& textures)
 {
     using namespace Resources::Textures::Rectangles;
+    using namespace Resources::Textures;
 
-    m_buttons[Buttons::Beginner].initialize(textures, text[Indexes::TextBeginner]);
-    m_buttons[Buttons::Intermediate].initialize(textures, text[Indexes::TextIntermediate]);
-    m_buttons[Buttons::Expert].initialize(textures, text[Indexes::TextExpert]);
-    m_buttons[Buttons::NewGame].initialize(textures, text[Indexes::TextNewGame]);
+    PushButton& beginner     = m_buttons[Buttons::Beginner];
+    PushButton& intermediate = m_buttons[Buttons::Intermediate];
+    PushButton& expert       = m_buttons[Buttons::Expert];
+    PushButton& new_game     = m_buttons[Buttons::NewGame];
+
+    beginner.initialize(textures, text[Indexes::TextBeginner]);
+    intermediate.initialize(textures, text[Indexes::TextIntermediate]);
+    expert.initialize(textures, text[Indexes::TextExpert]);
+    new_game.initialize(textures, text[Indexes::TextNewGame]);
+
+    beginner.setPosition(3.0f, 3.0f);
+    intermediate.setPosition(beginner.getPosition() + sf::Vector2f(beginner.getSize().x + 8.0f, 0.0f));
+    expert.setPosition(intermediate.getPosition() + sf::Vector2f(intermediate.getSize().x + 8.0f, 0.0f));
+    new_game.setPosition(sf::Vector2f(3.0f, 3.0f + TEXT_HEIGHT + 3.0f + m_lines.getSize().y + 8.0f));
+
+    m_focus = &m_lines;
+    m_focus->showCursor();
 }
 
 void GameMenu::onClosed()

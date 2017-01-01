@@ -28,6 +28,9 @@ public:
     void hideCursor();
     bool isCursorVisible()const;
 
+    sf::Vector2f getSize()const;
+
+    void clear();
     const char* getText()const;
     std::size_t getTextLength()const;
 
@@ -84,6 +87,22 @@ template<std::size_t N> bool TextBox<N>::isCursorVisible()const
     return m_cursor_visible;
 }
 
+template<std::size_t N> sf::Vector2f TextBox<N>::getSize()const
+{
+    return m_background.getSize();
+}
+
+template<std::size_t N> void TextBox<N>::clear()
+{
+    using namespace Resources::Textures::Rectangles;
+
+    for(std::size_t i = 0; i < m_index_current; ++i)
+    {
+        m_sprites[i].setTextureRect(digit[Indexes::DigitNone]);
+        m_text[i] = 0;
+    }
+    m_index_current = 0;
+}
 template<std::size_t N> const char* TextBox<N>::getText()const
 {
     return m_text;

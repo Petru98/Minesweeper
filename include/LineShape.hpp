@@ -13,6 +13,9 @@ public:
 
     LineShape();
     virtual ~LineShape();
+
+    virtual std::size_t getPointCount()const;
+    virtual sf::Vector2f getPoint(std::size_t index)const;
 };
 
 #endif

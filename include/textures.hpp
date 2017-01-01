@@ -60,6 +60,8 @@ namespace Resources
                 enum Text
                 {
                     TextGame,
+                    TextScores,
+                    TextNewGame,
                     TextBeginner,
                     TextIntermediate,
                     TextExpert

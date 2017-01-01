@@ -2,6 +2,7 @@
 #define MINESWEEPER_TEXTBOX_HPP_INCLUDED
 
 #include "Scene.hpp"
+#include "LineShape.hpp"
 #include "textures.hpp"
 
 template <std::size_t N>
@@ -92,9 +93,10 @@ template<std::size_t N> std::size_t TextBox<N>::getTextLength()const
     return m_index_current;
 }
 
-template<std::size_t N> void TextBox<N>::onTextEntered(const sf::Event::TextEvent& event);
+template<std::size_t N> void TextBox<N>::onTextEntered(const sf::Event::TextEvent& event)
 {
     using namespace Resources::Textures::Rectangles;
+    using namespace Resources::Textures;
 
     if(m_index_current < N && event.unicode >= '0' && event.unicode <= '9')
     {

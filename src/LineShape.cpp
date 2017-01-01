@@ -11,3 +11,12 @@ LineShape::LineShape()
 
 LineShape::~LineShape()
 {}
+
+std::size_t LineShape::getPointCount()const
+{
+    return 2;
+}
+sf::Vector2f LineShape::getPoint(std::size_t index)const
+{
+    return points[index].position;
+}

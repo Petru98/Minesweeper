@@ -16,6 +16,8 @@ public:
     virtual sf::Vector2f getSize()const = 0;
 
     virtual void clear() = 0;
+    virtual void setText(const char* str) = 0;
+
     virtual const char* getText()const = 0;
     virtual std::size_t getTextLength()const = 0;
 

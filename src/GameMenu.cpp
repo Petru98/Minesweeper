@@ -114,13 +114,33 @@ void GameMenu::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         M_setFocus(m_columns);
     else if(m_mines.contains(relative_x, relative_y) == true)
         M_setFocus(m_mines);
+    else if(m_buttons[Buttons::Beginner].contains(relative_x, relative_y) == true)
+    {
+        char buffer[4];
+        m_lines.setText(Uint16ToString(Level::beginner.lines, buffer));
+        m_columns.setText(Uint16ToString(Level::beginner.columns, buffer));
+        m_mines.setText(Uint16ToString(Level::beginner.mines, buffer));
+    }
+    else if(m_buttons[Buttons::Intermediate].contains(relative_x, relative_y) == true)
+    {
+        char buffer[4];
+        m_lines.setText(Uint16ToString(Level::intermediate.lines, buffer));
+        m_columns.setText(Uint16ToString(Level::intermediate.columns, buffer));
+        m_mines.setText(Uint16ToString(Level::intermediate.mines, buffer));
+    }
+    else if(m_buttons[Buttons::Expert].contains(relative_x, relative_y) == true)
+    {
+        char buffer[4];
+        m_lines.setText(Uint16ToString(Level::expert.lines, buffer));
+        m_columns.setText(Uint16ToString(Level::expert.columns, buffer));
+        m_mines.setText(Uint16ToString(Level::expert.mines, buffer));
+    }
     else if(m_buttons[Buttons::NewGame].contains(relative_x, relative_y) == true)
     {
         Level::Difficulty difficulty;
-        difficulty.lines = stringToUint16(m_lines.getText());
+        difficulty.lines   = stringToUint16(m_lines.getText());
         difficulty.columns = stringToUint16(m_columns.getText());
-        difficulty.mines = stringToUint16(m_mines.getText());
-
+        difficulty.mines   = stringToUint16(m_mines.getText());
         m_level->create(difficulty);
         this->close();
     }

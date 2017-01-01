@@ -10,12 +10,13 @@ class TextBox : public TextBoxBase
 {
 private:
     static const sf::Vector2f TEXT_OFFSET;
+    static const sf::Vector2f CURSOR_START_POSITION;
 
     sf::RectangleShape m_background;
     sf::Sprite         m_sprites[N];
     LineShape          m_cursor;
     std::size_t        m_index_current;
-    char               m_text[N];
+    char               m_text[N + 1];
     bool               m_cursor_visible;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
@@ -33,6 +34,8 @@ public:
     virtual sf::Vector2f getSize()const;
 
     virtual void clear();
+    virtual void setText(const char* str);
+
     virtual const char* getText()const;
     virtual std::size_t getTextLength()const;
 
@@ -48,6 +51,7 @@ public:
 
 /* Implementation */
 template<std::size_t N> const sf::Vector2f TextBox<N>::TEXT_OFFSET = {4.0f, 3.0f};
+template<std::size_t N> const sf::Vector2f TextBox<N>::CURSOR_START_POSITION = TextBox<N>::TEXT_OFFSET - sf::Vector2f(0.0f, 1.0f);
 
 template<std::size_t N> void TextBox<N>::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
@@ -68,13 +72,17 @@ template<std::size_t N> TextBox<N>::TextBox() : m_background(), m_cursor(), m_in
     m_background.setOutlineThickness(-1.0f);
     m_background.setOutlineColor(sf::Color::Black);
     m_cursor.points[0].position = sf::Vector2f(0.0f, 0.0f);
-    m_cursor.points[1].position = sf::Vector2f(0.0f, DIGIT_HEIGHT);
+    m_cursor.points[1].position = sf::Vector2f(0.0f, DIGIT_HEIGHT + 2.0f);
     m_cursor.points[0].color = sf::Color::Black;
     m_cursor.points[1].color = sf::Color::Black;
-    m_cursor.setPosition(this->TEXT_OFFSET);
+    m_cursor.setPosition(this->CURSOR_START_POSITION);
 
     for(std::size_t i = 0; i < N; ++i)
+    {
         m_sprites[i].setPosition(this->TEXT_OFFSET + sf::Vector2f(i * DIGIT_WIDTH, 0.0f));
+        m_text[i] = 0;
+    }
+    m_text[N] = 0;
 }
 
 template<std::size_t N> TextBox<N>::~TextBox()
@@ -120,8 +128,26 @@ template<std::size_t N> void TextBox<N>::clear()
         m_text[i] = 0;
     }
     m_index_current = 0;
-    m_cursor.setPosition(this->TEXT_OFFSET);
+    m_cursor.setPosition(this->CURSOR_START_POSITION);
 }
+template<std::size_t N> void TextBox<N>::setText(const char* str)
+{
+    using namespace Resources::Textures::Rectangles;
+    using namespace Resources::Textures;
+
+    m_index_current = 0;
+    while(str[m_index_current] != 0)
+    {
+        const std::size_t value = str[m_index_current] - '0';
+        m_text[m_index_current] = str[m_index_current];
+
+        m_sprites[m_index_current].setTextureRect(digit[value]);
+        ++m_index_current;
+    }
+    m_text[m_index_current] = 0;
+    m_cursor.setPosition(this->CURSOR_START_POSITION + sf::Vector2f(m_index_current * DIGIT_WIDTH, 0.0f));
+}
+
 template<std::size_t N> const char* TextBox<N>::getText()const
 {
     return m_text;

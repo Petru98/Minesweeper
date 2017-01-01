@@ -9,17 +9,24 @@ const Level::Difficulty Level::expert       = {16, 30, 99};
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
-    target.draw(m_menu, states);
-    target.draw(m_background, states);
-    target.draw(m_header, states);
-    target.draw(m_table, states);
+    if(m_game_menu.isOpen() == true)
+        target.draw(m_game_menu, states);
+    else
+    {
+        target.draw(m_menu, states);
+        target.draw(m_background, states);
+        target.draw(m_header, states);
+        target.draw(m_table, states);
+    }
 }
 
 /* Constructor / Destructor */
-Level::Level(sf::RenderWindow& window, const sf::Texture& texture)
-    : m_window(window), m_textures(texture), m_menu(), m_header(), m_table(), m_background(), m_game_over(false)
+Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
+    : m_game_menu(), m_menu(), m_header(), m_table(), m_background(), m_window(window), m_textures(textures), m_game_over(false)
 {
     Random::seed(std::time(nullptr));
+    m_game_menu.initialize(m_textures);
+    m_game_menu.setPosition(sf::Vector2f(0.0f, Menu::HEIGHT));
 }
 
 Level::~Level()
@@ -111,6 +118,19 @@ void Level::lose()
 }
 
 /* Events */
+void Level::handleEvent(const sf::Event& event)
+{
+    if(event.type == sf::Event::Closed)
+    {
+        m_game_menu.onClosed();
+        this->onClosed();
+    }
+    else if(m_game_menu.isOpen() == true)
+        m_game_menu.handleEvent(event);
+    else
+        Scene::handleEvent(event);
+}
+
 void Level::onClosed()
 {
     m_table.destroy();
@@ -139,40 +159,38 @@ void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event)
 
 void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.contains(event.x, event.y) == true)
+    if(m_table.contains(event.x, event.y) == true && m_game_over == false)
     {
-        if(m_game_over == false)
-        {
-            m_table.onMouseButtonPressed(event);
-            if(event.button == sf::Mouse::Left)
-                m_header.smiley.setScared();
-        }
+        m_table.onMouseButtonPressed(event);
+        if(event.button == sf::Mouse::Left)
+            m_header.smiley.setScared();
     }
     else if(m_header.smiley.contains(event.x, event.y) == true)
         m_header.smiley.press();
+    else if(m_menu.game_button.contains(event.x, event.y) == true)
+        m_menu.game_button.press();
 }
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.contains(event.x, event.y) == true)
+    if(m_table.contains(event.x, event.y) == true && m_game_over == false)
     {
-        if(m_game_over == false)
-        {
-            int status = m_table.onMouseButtonReleased(event);
+        int status = m_table.onMouseButtonReleased(event);
 
-            if(status == 1)
-                win();
-            else if(status == -1)
-                lose();
-            else if(event.button == sf::Mouse::Left)
-                m_header.smiley.reset();
-        }
+        if(status == 1)
+            win();
+        else if(status == -1)
+            lose();
+        else if(event.button == sf::Mouse::Left)
+            m_header.smiley.reset();
     }
     else if(m_header.smiley.contains(event.x, event.y) == true)
     {
         if(m_header.smiley.isPressed() == true)
             this->create(Difficulty(m_table.lines(), m_table.columns(), m_table.mines()));
     }
+    else if(m_menu.game_button.release() == true)
+        m_game_menu.open();
 }
 
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)

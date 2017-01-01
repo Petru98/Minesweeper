@@ -3,6 +3,7 @@
 
 #include "Scene.hpp"
 #include "Menu.hpp"
+#include "GameMenu.hpp"
 #include "Background.hpp"
 #include "Header.hpp"
 #include "Table.hpp"
@@ -44,12 +45,13 @@ public:
 private:
     static Difficulty S_correctDifficulty(Difficulty difficulty);
 
-    sf::RenderWindow&  m_window;
-    const sf::Texture& m_textures;
+    GameMenu           m_game_menu;
     Menu               m_menu;
     Header             m_header;
     Table              m_table;
     Background         m_background;
+    sf::RenderWindow&  m_window;
+    const sf::Texture& m_textures;
     bool               m_game_over;
 
     void M_initializeMenu();
@@ -67,6 +69,8 @@ public:
 
     void win();
     void lose();
+
+    void handleEvent(const sf::Event& event);
 
     virtual void onClosed();
     virtual void onResized(const sf::Event::SizeEvent&);

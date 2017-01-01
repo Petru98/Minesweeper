@@ -1,7 +1,12 @@
 #include "GameMenu.hpp"
 
+const sf::Vector2f GameMenu::TEXT_OFFSET = {3.0f, 3.0f};
+const sf::Vector2f GameMenu::INNER_SPACE = {8.0f, 8.0f};
+
 void GameMenu::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
+    states.transform.combine(this->getTransform());
+
     target.draw(m_background, states);
     target.draw(m_lines, states);
     target.draw(m_columns, states);
@@ -11,7 +16,7 @@ void GameMenu::draw(sf::RenderTarget& target, sf::RenderStates states)const
         target.draw(m_buttons[i], states);
 }
 
-GameMenu::GameMenu() : m_background(), m_lines(), m_columns(), m_mines(), m_focus(nullptr)
+GameMenu::GameMenu() : m_background(), m_lines(), m_columns(), m_mines(), m_focus(nullptr), m_open(false)
 {}
 
 GameMenu::~GameMenu()
@@ -31,14 +36,39 @@ void GameMenu::initialize(const sf::Texture& textures)
     intermediate.initialize(textures, text[Indexes::TextIntermediate]);
     expert.initialize(textures, text[Indexes::TextExpert]);
     new_game.initialize(textures, text[Indexes::TextNewGame]);
+    m_lines.initialize(textures);
+    m_columns.initialize(textures);
+    m_mines.initialize(textures);
 
-    beginner.setPosition(3.0f, 3.0f);
+    beginner.setPosition(this->TEXT_OFFSET);
     intermediate.setPosition(beginner.getPosition() + sf::Vector2f(beginner.getSize().x + 8.0f, 0.0f));
     expert.setPosition(intermediate.getPosition() + sf::Vector2f(intermediate.getSize().x + 8.0f, 0.0f));
-    new_game.setPosition(sf::Vector2f(3.0f, 3.0f + TEXT_HEIGHT + 3.0f + m_lines.getSize().y + 8.0f));
+    m_lines.setPosition(sf::Vector2f(this->TEXT_OFFSET.x, beginner.getPosition().y + beginner.getSize().y + this->INNER_SPACE.y));
+    m_columns.setPosition(sf::Vector2f(m_lines.getPosition().x + m_lines.getSize().x + this->INNER_SPACE.x, m_lines.getPosition().y));
+    m_mines.setPosition(sf::Vector2f(m_columns.getPosition().x + m_columns.getSize().x + this->INNER_SPACE.x, m_columns.getPosition().y));
+    new_game.setPosition(this->TEXT_OFFSET + sf::Vector2f(0.0f, m_lines.getPosition().y + m_lines.getSize().y + 8.0f));
+
+    m_background.setOutlineThickness(-1.0f);
+    m_background.setOutlineColor(sf::Color::Black);
+    m_background.setFillColor(sf::Color(236, 233, 216));
+    m_background.setSize(sf::Vector2f(expert.getPosition().x + expert.getSize().x + this->TEXT_OFFSET.x,
+                                      new_game.getPosition().y + new_game.getSize().y + this->TEXT_OFFSET.y));
 
     m_focus = &m_lines;
     m_focus->showCursor();
+}
+
+void GameMenu::open()
+{
+    m_open = true;
+}
+void GameMenu::close()
+{
+    m_open = false;
+}
+bool GameMenu::isOpen()const
+{
+    return m_open;
 }
 
 void GameMenu::onClosed()
@@ -54,7 +84,12 @@ void GameMenu::onGainedFocus()
 {}
 
 void GameMenu::onTextEntered(const sf::Event::TextEvent& event)
-{}
+{
+    if(event.unicode == '\33')
+        this->close();
+    else
+        m_focus->onTextEntered(event);
+}
 
 void GameMenu::onKeyPressed(const sf::Event::KeyEvent& event)
 {}

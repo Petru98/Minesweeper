@@ -5,7 +5,7 @@
 #include "PushButton.hpp"
 #include "TextBox.hpp"
 
-class GameMenu : public Scene
+class GameMenu : public Scene, public sf::Transformable
 {
 private:
     struct Buttons
@@ -21,12 +21,16 @@ private:
         };
     };
 
+    static const sf::Vector2f TEXT_OFFSET;
+    static const sf::Vector2f INNER_SPACE;
+
     sf::RectangleShape m_background;
     PushButton         m_buttons[4];
     TextBox<2>         m_lines;
     TextBox<2>         m_columns;
     TextBox<2>         m_mines;
     TextBox<2>*        m_focus;
+    bool               m_open;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
@@ -35,6 +39,10 @@ public:
     virtual ~GameMenu();
 
     void initialize(const sf::Texture& textures);
+
+    void open();
+    void close();
+    bool isOpen()const;
 
     virtual void onClosed();
     virtual void onResized(const sf::Event::SizeEvent&);

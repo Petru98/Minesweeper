@@ -1,7 +1,6 @@
 #include "GameMenu.hpp"
 
-const sf::Vector2f GameMenu::TEXT_OFFSET = {3.0f, 3.0f};
-const sf::Vector2f GameMenu::INNER_SPACE = {8.0f, 8.0f};
+const sf::Vector2f GameMenu::TEXT_OFFSET = {4.0f, 4.0f};
 
 void GameMenu::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
@@ -36,16 +35,18 @@ void GameMenu::initialize(const sf::Texture& textures)
     intermediate.initialize(textures, text[Indexes::TextIntermediate]);
     expert.initialize(textures, text[Indexes::TextExpert]);
     new_game.initialize(textures, text[Indexes::TextNewGame]);
+
     m_lines.initialize(textures);
     m_columns.initialize(textures);
     m_mines.initialize(textures);
 
     beginner.setPosition(this->TEXT_OFFSET);
-    intermediate.setPosition(beginner.getPosition() + sf::Vector2f(beginner.getSize().x + 8.0f, 0.0f));
-    expert.setPosition(intermediate.getPosition() + sf::Vector2f(intermediate.getSize().x + 8.0f, 0.0f));
-    m_lines.setPosition(sf::Vector2f(this->TEXT_OFFSET.x, beginner.getPosition().y + beginner.getSize().y + this->INNER_SPACE.y));
-    m_columns.setPosition(sf::Vector2f(m_lines.getPosition().x + m_lines.getSize().x + this->INNER_SPACE.x, m_lines.getPosition().y));
-    m_mines.setPosition(sf::Vector2f(m_columns.getPosition().x + m_columns.getSize().x + this->INNER_SPACE.x, m_columns.getPosition().y));
+    intermediate.setPosition(beginner.getPosition() + sf::Vector2f(beginner.getSize().x + this->TEXT_INNER_SPACE, 0.0f));
+    expert.setPosition(intermediate.getPosition() + sf::Vector2f(intermediate.getSize().x + this->TEXT_INNER_SPACE, 0.0f));
+
+    m_lines.setPosition(sf::Vector2f(this->TEXT_OFFSET.x, beginner.getPosition().y + beginner.getSize().y + this->VERTICAL_SPACE));
+    m_columns.setPosition(sf::Vector2f(m_lines.getPosition().x + m_lines.getSize().x + this->TEXTBOX_INNER_SPACE, m_lines.getPosition().y));
+    m_mines.setPosition(sf::Vector2f(m_columns.getPosition().x + m_columns.getSize().x + this->TEXTBOX_INNER_SPACE, m_columns.getPosition().y));
     new_game.setPosition(this->TEXT_OFFSET + sf::Vector2f(0.0f, m_lines.getPosition().y + m_lines.getSize().y + 8.0f));
 
     m_background.setOutlineThickness(-1.0f);

@@ -22,7 +22,9 @@ private:
     };
 
     static const sf::Vector2f TEXT_OFFSET;
-    static const sf::Vector2f INNER_SPACE;
+    static constexpr float TEXT_INNER_SPACE = 6.0f;
+    static constexpr float TEXTBOX_INNER_SPACE = 16.0f;
+    static constexpr float VERTICAL_SPACE = 8.0f;
 
     sf::RectangleShape m_background;
     PushButton         m_buttons[4];

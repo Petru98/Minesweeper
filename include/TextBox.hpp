@@ -9,6 +9,8 @@ template <std::size_t N>
 class TextBox : public sf::Drawable, public sf::Transformable
 {
 private:
+    static const sf::Vector2f TEXT_OFFSET;
+
     sf::RectangleShape m_background;
     sf::Sprite         m_sprites[N];
     LineShape          m_cursor;
@@ -38,6 +40,8 @@ public:
 };
 
 /* Implementation */
+template<std::size_t N> const sf::Vector2f TextBox<N>::TEXT_OFFSET = {4.0f, 3.0f};
+
 template<std::size_t N> void TextBox<N>::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
     states.transform.combine(this->getTransform());
@@ -45,18 +49,22 @@ template<std::size_t N> void TextBox<N>::draw(sf::RenderTarget& target, sf::Rend
     target.draw(m_background, states);
     for(std::size_t i = 0; i < m_index_current; ++i)
         target.draw(m_sprites[i], states);
-    target.draw(m_cursor, states);
+    if(m_cursor_visible == true)
+        target.draw(m_cursor, states);
 }
 
 template<std::size_t N> TextBox<N>::TextBox() : m_background(), m_cursor(), m_index_current(0), m_cursor_visible(false)
 {
     using namespace Resources::Textures;
 
-    m_background.setSize(sf::Vector2f(N * DIGIT_WIDTH + 2*3, DIGIT_HEIGHT + 2*3));
+    m_background.setSize(sf::Vector2f(N * DIGIT_WIDTH + 2*this->TEXT_OFFSET.x, DIGIT_HEIGHT + 2*this->TEXT_OFFSET.y));
     m_background.setOutlineThickness(-1.0f);
     m_background.setOutlineColor(sf::Color::Black);
-    m_cursor.points[0].position = sf::Vector2f(1.0f, 0.0f);
-    m_cursor.points[1].position = sf::Vector2f(1.0f, DIGIT_HEIGHT);
+    m_cursor.points[0].position = sf::Vector2f(0.0f, 0.0f);
+    m_cursor.points[1].position = sf::Vector2f(0.0f, DIGIT_HEIGHT);
+    m_cursor.points[0].color = sf::Color::Black;
+    m_cursor.points[1].color = sf::Color::Black;
+    m_cursor.setPosition(this->TEXT_OFFSET);
 }
 
 template<std::size_t N> TextBox<N>::~TextBox()
@@ -102,6 +110,7 @@ template<std::size_t N> void TextBox<N>::clear()
         m_text[i] = 0;
     }
     m_index_current = 0;
+    m_cursor.setPosition(this->TEXT_OFFSET);
 }
 template<std::size_t N> const char* TextBox<N>::getText()const
 {

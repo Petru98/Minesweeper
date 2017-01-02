@@ -4,6 +4,8 @@
 #include <SFML/Config.hpp>
 #include <cstddef>
 
+#define FUNCTION_NO_DUPLICATES inline
+
 #ifdef WIN32
     #define main WinMain
 #endif

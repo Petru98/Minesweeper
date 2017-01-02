@@ -38,7 +38,7 @@ void Table::M_initializeCells(const sf::Texture& textures)
     {
         for(std::size_t j = 0; j < m_table.columns(); ++j)
         {
-            m_table[i][j].initialize(textures);
+            m_table[i][j].setTexture(textures);
             m_table[i][j].setPosition(position);
             position.x += Cell::WIDTH;
         }

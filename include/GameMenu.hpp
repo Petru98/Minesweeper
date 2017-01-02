@@ -2,7 +2,7 @@
 #define MINESWEEPER_GAMEMENU_HPP_INCLUDED
 
 #include "Scene.hpp"
-#include "PushButton.hpp"
+#include "SpriteButton.hpp"
 #include "TextBox.hpp"
 
 class Level;
@@ -29,7 +29,7 @@ private:
     static constexpr float VERTICAL_SPACE = 8.0f;
 
     sf::RectangleShape m_background;
-    PushButton         m_buttons[4];
+    SpriteButton       m_buttons[Buttons::Count];
     TextBox<2>         m_lines;
     TextBox<2>         m_columns;
     TextBox<3>         m_mines;

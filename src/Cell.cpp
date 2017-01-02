@@ -8,8 +8,10 @@ void Cell::draw(sf::RenderTarget& target, sf::RenderStates states)const
 
 Cell::Cell() : m_sprite(), m_mines_count(0), m_has_mine(false), m_flag(false), m_revealed(false)
 {}
+Cell::~Cell()
+{}
 
-void Cell::initialize(const sf::Texture& textures)
+void Cell::setTexture(const sf::Texture& textures)
 {
     m_sprite.setTexture(textures);
     this->reset();
@@ -64,10 +66,6 @@ void Cell::M_revealInGame()
         m_sprite.setTextureRect(cell[m_mines_count]);
 }
 
-void Cell::incrementMinesCount()
-{
-    ++m_mines_count;
-}
 void Cell::setMine()
 {
     m_has_mine = true;
@@ -91,6 +89,15 @@ bool Cell::toggleFlag()
     }
     return true;
 }
+void Cell::incrementMinesCount()
+{
+    ++m_mines_count;
+}
+
+bool Cell::hasMine()const            {return m_has_mine;}
+bool Cell::hasFlag()const            {return m_flag;}
+bool Cell::isRevealed()const         {return m_revealed;}
+sf::Uint8 Cell::getMinesCount()const {return m_mines_count;}
 
 bool Cell::press()
 {
@@ -112,20 +119,13 @@ bool Cell::release()
     m_sprite.setTextureRect(cell[Indexes::CellNormal]);
     return true;
 }
+bool Cell::isPressed()const
+{
+    using namespace Resources::Textures::Rectangles;
+    return m_revealed == false && m_sprite.getTextureRect() == cell[Indexes::CellEmpty];
+}
 
-sf::Uint8 Cell::getMinesCount()const
+sf::Vector2f Cell::getSize()const
 {
-    return m_mines_count;
-}
-bool Cell::hasMine()const
-{
-    return m_has_mine;
-}
-bool Cell::hasFlag()const
-{
-    return m_flag;
-}
-bool Cell::isRevealed()const
-{
-    return m_revealed;
+    return sf::Vector2f(this->WIDTH, this->HEIGHT);
 }

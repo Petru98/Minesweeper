@@ -28,15 +28,15 @@ void GameMenu::initialize(const sf::Texture& textures)
     using namespace Resources::Textures::Rectangles;
     using namespace Resources::Textures;
 
-    PushButton& beginner     = m_buttons[Buttons::Beginner];
-    PushButton& intermediate = m_buttons[Buttons::Intermediate];
-    PushButton& expert       = m_buttons[Buttons::Expert];
-    PushButton& new_game     = m_buttons[Buttons::NewGame];
+    SpriteButton& beginner     = m_buttons[Buttons::Beginner];
+    SpriteButton& intermediate = m_buttons[Buttons::Intermediate];
+    SpriteButton& expert       = m_buttons[Buttons::Expert];
+    SpriteButton& new_game     = m_buttons[Buttons::NewGame];
 
-    beginner.initialize(textures, text[Indexes::TextBeginner]);
-    intermediate.initialize(textures, text[Indexes::TextIntermediate]);
-    expert.initialize(textures, text[Indexes::TextExpert]);
-    new_game.initialize(textures, text[Indexes::TextNewGame]);
+    beginner.setTexture(textures, text[Indexes::TextBeginner]);
+    intermediate.setTexture(textures, text[Indexes::TextIntermediate]);
+    expert.setTexture(textures, text[Indexes::TextExpert]);
+    new_game.setTexture(textures, text[Indexes::TextNewGame]);
 
     m_lines.initialize(textures);
     m_columns.initialize(textures);
@@ -114,14 +114,13 @@ void GameMenu::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         M_setFocus(m_columns);
     else if(m_mines.contains(relative_x, relative_y) == true)
         M_setFocus(m_mines);
-    else if(m_buttons[Buttons::Beginner].contains(relative_x, relative_y) == true)
-        m_buttons[Buttons::Beginner].press();
-    else if(m_buttons[Buttons::Intermediate].contains(relative_x, relative_y) == true)
-        m_buttons[Buttons::Intermediate].press();
-    else if(m_buttons[Buttons::Expert].contains(relative_x, relative_y) == true)
-        m_buttons[Buttons::Expert].press();
-    else if(m_buttons[Buttons::NewGame].contains(relative_x, relative_y) == true)
-        m_buttons[Buttons::NewGame].press();
+    else
+        for(std::size_t i = 0; i < Buttons::Count; ++i)
+            if(m_buttons[i].contains(relative_x, relative_y) == true)
+            {
+                m_buttons[i].press();
+                break;
+            }
 }
 void GameMenu::M_setFocus(TextBoxBase& text_box)
 {
@@ -172,9 +171,7 @@ void GameMenu::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 }
 
 void GameMenu::onMouseMoved(const sf::Event::MouseMoveEvent& event)
-{
-
-}
+{}
 
 void GameMenu::onMouseEntered()
 {}

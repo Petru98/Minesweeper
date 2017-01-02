@@ -2,9 +2,9 @@
 #define MINESWEEPER_CELL_HPP_INCLUDED
 
 #include "textures.hpp"
-#include <SFML/Graphics.hpp>
+#include "Button.hpp"
 
-class Cell : public sf::Drawable, public sf::Transformable
+class Cell : public Button
 {
 public:
     static constexpr std::size_t WIDTH = Resources::Textures::CELL_WIDTH;
@@ -24,22 +24,28 @@ private:
 
 public:
     Cell();
+    virtual ~Cell();
 
-    void initialize(const sf::Texture& textures);
+    void setTexture(const sf::Texture& textures);
+
     void reset();
 
     void reveal(const bool game_over = false);
 
-    void incrementMinesCount();
     void setMine();
     bool toggleFlag();
-    bool press();
-    bool release();
+    void incrementMinesCount();
 
-    sf::Uint8 getMinesCount()const;
     bool hasMine()const;
     bool hasFlag()const;
     bool isRevealed()const;
+    sf::Uint8 getMinesCount()const;
+
+    virtual bool press();
+    virtual bool release();
+    virtual bool isPressed()const;
+
+    virtual sf::Vector2f getSize()const;
 };
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef MINESWEEPER_MENU_HPP_INCLUDED
 #define MINESWEEPER_MENU_HPP_INCLUDED
 
-#include "PushButton.hpp"
+#include "SpriteButton.hpp"
 
 class Menu : public sf::Drawable, public sf::Transformable
 {
@@ -14,7 +14,7 @@ private:
 
     sf::RectangleShape m_background;
 public:
-    PushButton game_button;
+    SpriteButton game_button;
 
     Menu();
     ~Menu();

@@ -35,17 +35,33 @@ void Counter::initialize(const sf::Texture& textures)
 void Counter::increment()
 {
     ++m_count;
+    M_update();
 }
 void Counter::decrement()
 {
     --m_count;
+    M_update();
 }
 
 void Counter::setCount(const sf::Uint16 count)
 {
     m_count = count;
+    M_update();
 }
 sf::Uint16 Counter::getCount()const
 {
     return m_count;
+}
+
+void Counter::M_update()
+{
+    using namespace Resources::Textures::Rectangles;
+
+    sf::Uint16 number = m_count;
+
+    for(std::size_t i = N; i > 0; --i)
+    {
+        m_sprites[i-1].setTextureRect(counter[number % 10]);
+        number /= 10;
+    }
 }

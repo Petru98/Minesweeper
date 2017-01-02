@@ -5,13 +5,14 @@
 
 class Counter : public sf::Drawable, public sf::Transformable
 {
-private:
+protected:
     static constexpr std::size_t N = 3;
 
     sf::Sprite m_sprites[N];
     sf::Uint16 m_count;
 
-protected:
+    void M_update();
+
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:

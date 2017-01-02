@@ -108,7 +108,6 @@
 		<Unit filename="src/GameMenu.cpp" />
 		<Unit filename="src/Header.cpp" />
 		<Unit filename="src/Level.cpp" />
-		<Unit filename="src/LineShape.cpp" />
 		<Unit filename="src/MenuBar.cpp" />
 		<Unit filename="src/Scene.cpp" />
 		<Unit filename="src/Smiley.cpp" />

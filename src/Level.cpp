@@ -2,6 +2,7 @@
 
 #include "random.hpp"
 #include <ctime>
+#include "file.hpp"
 
 const Level::Difficulty Level::beginner     = {9 , 9 , 10};
 const Level::Difficulty Level::intermediate = {16, 16, 40};
@@ -43,7 +44,6 @@ void Level::create(Level::Difficulty difficulty)
     M_initializeBackground();
     M_initializeHeader();
     m_table.setPosition(m_background.getPosition() + m_background.table_position);
-
     M_resizeWindow();
     m_game_over = false;
 }
@@ -167,7 +167,7 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         if(event.button == sf::Mouse::Left)
             m_header.smiley.setScared();
     }
-    else if(m_header.smiley.contains(event.x, event.y) == true)
+    else if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == true)
         m_header.smiley.press();
     else if(m_menu.game_button.contains(event.x, event.y) == true)
         m_menu.game_button.press();
@@ -186,7 +186,7 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         else if(event.button == sf::Mouse::Left)
             m_header.smiley.reset();
     }
-    else if(m_header.smiley.contains(event.x, event.y) == true)
+    else if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == true)
     {
         if(m_header.smiley.isPressed() == true)
             this->create(Difficulty(m_table.lines(), m_table.columns(), m_table.mines()));
@@ -204,7 +204,7 @@ void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
     {
         if(m_table.onMouseMoved(event) == true)
             m_header.smiley.setScared();
-        else if(m_header.smiley.contains(event.x, event.y) == false)
+        else if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == false)
         {
             if(m_header.smiley.isPressed() == true)
                 m_header.smiley.release();
@@ -214,7 +214,7 @@ void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
     }
     else
     {
-        if(m_header.smiley.contains(event.x, event.y) == false)
+        if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == false)
             m_header.smiley.release();
     }
 }

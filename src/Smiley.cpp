@@ -6,15 +6,14 @@ void Smiley::draw(sf::RenderTarget& target, sf::RenderStates states)const
     target.draw(m_sprite, states);
 }
 
-Smiley::Smiley() : m_sprite(), m_sprite_rect(), m_position_offset()
+Smiley::Smiley() : m_sprite(), m_sprite_rect()
 {}
 Smiley::~Smiley()
 {}
 
-void Smiley::initialize(const sf::Texture& textures, const sf::Vector2f position_offset)
+void Smiley::initialize(const sf::Texture& textures)
 {
     m_sprite.setTexture(textures);
-    m_position_offset = position_offset;
     this->reset();
 }
 

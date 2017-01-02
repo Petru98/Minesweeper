@@ -66,6 +66,9 @@
 		<Unit filename="include/Exception.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="include/File.hpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="include/Game.hpp" />
 		<Unit filename="include/GameMenu.hpp" />
 		<Unit filename="include/Header.hpp" />
@@ -99,6 +102,7 @@
 		<Unit filename="src/Background.cpp" />
 		<Unit filename="src/Cell.cpp" />
 		<Unit filename="src/Counter.cpp" />
+		<Unit filename="src/File.cpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/GameMenu.cpp" />
 		<Unit filename="src/Header.cpp" />

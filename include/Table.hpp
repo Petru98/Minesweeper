@@ -4,6 +4,7 @@
 #include "Smiley.hpp"
 #include "Matrix.hpp"
 #include "Cell.hpp"
+#include "file.hpp"
 #include "Exception.hpp"
 
 class Table : public sf::Drawable, public sf::Transformable
@@ -22,7 +23,6 @@ private:
     sf::Vector2i m_pressed_cell_index;
     sf::Uint16   m_mines;
     sf::Uint16   m_cells_left;
-    sf::Uint16   m_flags;
 
     void M_initializeCells(const sf::Texture& textures);
     void M_placeMines(sf::Uint16 mines);
@@ -52,7 +52,6 @@ public:
     sf::Uint16 columns()const;
     sf::Uint16 mines()const;
     sf::Uint16 cellsLeft()const;
-    sf::Uint16 flags()const;
 
     sf::Vector2f getSize()const;
 

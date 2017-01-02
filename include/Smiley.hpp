@@ -13,7 +13,6 @@ public:
 private:
     sf::Sprite   m_sprite;
     sf::IntRect  m_sprite_rect;
-    sf::Vector2f m_position_offset;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
@@ -21,7 +20,7 @@ public:
     Smiley();
     ~Smiley();
 
-    void initialize(const sf::Texture& textures, const sf::Vector2f position_offset);
+    void initialize(const sf::Texture& textures);
     void reset();
 
     void press();
@@ -35,11 +34,19 @@ public:
 
     template<typename T> bool contains(const T x, const T y)const
     {
-        const sf::Vector2f position = this->getPosition() + m_position_offset - sf::Vector2f(this->WIDTH/2.0f, this->HEIGHT/2.0f);
+        const sf::Vector2f position = this->getPosition() - sf::Vector2f(this->WIDTH/2.0f, this->HEIGHT/2.0f);
         const float right = position.x + this->WIDTH;
         const float bottom = position.y + this->HEIGHT;
 
         return x >= position.x && x < right && y >= position.y && y < bottom;
+    }
+    template<typename T> bool contains(const sf::Vector2<T> point)const
+    {
+        const sf::Vector2f position = this->getPosition() - this->getOrigin();
+        const float right = position.x + this->WIDTH;
+        const float bottom = position.y + this->HEIGHT;
+
+        return (point.x >= position.x) && (point.x < right) && (point.y >= position.y) && (point.y < bottom);
     }
 };
 

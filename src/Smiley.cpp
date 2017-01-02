@@ -20,7 +20,6 @@ void Smiley::setTexture(const sf::Texture& textures)
 {
     m_sprite.setTexture(textures);
 }
-
 void Smiley::reset()
 {
     using namespace Resources::Textures::Rectangles;

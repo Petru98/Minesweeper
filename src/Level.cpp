@@ -68,7 +68,7 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
 }
 void Level::M_initializeMenu()
 {
-    m_menu_bar.setTexture(m_textures);
+    m_menu_bar.initialize(m_textures);
     m_menu_bar.setSize(sf::Vector2f(m_table.getSize().x + Table::LEFT_OFFSET + Table::RIGHT_OFFSET, MenuBar::HEIGHT));
 }
 void Level::M_initializeBackground()
@@ -167,7 +167,7 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         if(event.button == sf::Mouse::Left)
             m_header.smiley.setScared();
     }
-    else if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == true)
+    else if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == true)
         m_header.smiley.press();
     else if(m_menu_bar.game_button.contains(event.x, event.y) == true)
         m_menu_bar.game_button.press();
@@ -186,7 +186,7 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         else if(event.button == sf::Mouse::Left)
             m_header.smiley.reset();
     }
-    else if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == true)
+    else if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == true)
     {
         if(m_header.smiley.isPressed() == true)
             this->create(Difficulty(m_table.lines(), m_table.columns(), m_table.mines()));
@@ -206,7 +206,7 @@ void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
             m_header.smiley.setScared();
         else
         {
-            if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == false)
+            if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == false)
             {
                 if(m_header.smiley.isPressed() == true)
                     m_header.smiley.release();
@@ -219,7 +219,7 @@ void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
     }
     else
     {
-        if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == false)
+        if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == false)
             m_header.smiley.release();
         if(m_menu_bar.game_button.contains(event.x, event.y) == false)
             m_menu_bar.game_button.release();

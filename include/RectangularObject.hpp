@@ -16,6 +16,8 @@ public:
     virtual sf::Vector2f getSize()const = 0;
 
     sf::FloatRect getRect()const;
+    sf::Vector2f getRelativePoint(const float x, const float y)const;
+    sf::Vector2f getRelativePoint(const sf::Vector2f point)const;
 
     bool contains(const float x, const float y)const;
     bool contains(const sf::Vector2f point)const;
@@ -30,6 +32,14 @@ public:
 FUNCTION_NO_DUPLICATES sf::FloatRect RectangularObject::getRect()const
 {
     return sf::FloatRect(this->getPosition(), this->getSize());
+}
+FUNCTION_NO_DUPLICATES sf::Vector2f RectangularObject::getRelativePoint(const float x, const float y)const
+{
+    return this->getRelativePoint(sf::Vector2f(x,y));
+}
+FUNCTION_NO_DUPLICATES sf::Vector2f RectangularObject::getRelativePoint(const sf::Vector2f point)const
+{
+    return point - this->getPosition();
 }
 
 FUNCTION_NO_DUPLICATES bool RectangularObject::contains(const sf::Vector2f point)const

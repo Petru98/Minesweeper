@@ -36,7 +36,7 @@ namespace Resources
                 {4*SMILEY_WIDTH, 2*CELL_HEIGHT, SMILEY_WIDTH, SMILEY_HEIGHT}
             };
 
-            const sf::IntRect counter_digit[] =
+            const sf::IntRect counter[] =
             {
                 {0 *COUNTER_DIGIT_WIDTH, 2*CELL_HEIGHT + SMILEY_HEIGHT, COUNTER_DIGIT_WIDTH, COUNTER_DIGIT_HEIGHT},
                 {1 *COUNTER_DIGIT_WIDTH, 2*CELL_HEIGHT + SMILEY_HEIGHT, COUNTER_DIGIT_WIDTH, COUNTER_DIGIT_HEIGHT},

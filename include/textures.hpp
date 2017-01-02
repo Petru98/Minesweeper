@@ -52,9 +52,9 @@ namespace Resources
                     SmileyLose
                 };
 
-                enum CounterDigit
+                enum Counter
                 {
-                    CounterDigitNone = 10
+                    CounterMinus = 10
                 };
 
                 enum Text
@@ -75,7 +75,7 @@ namespace Resources
 
             extern const sf::IntRect cell[];
             extern const sf::IntRect smiley[];
-            extern const sf::IntRect counter_digit[];
+            extern const sf::IntRect counter[];
             extern const sf::IntRect text[];
             extern const sf::IntRect digit[];
         }

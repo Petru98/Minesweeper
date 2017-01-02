@@ -33,10 +33,10 @@ void GameMenu::initialize(const sf::Texture& textures)
     SpriteButton& expert       = m_buttons[Buttons::Expert];
     SpriteButton& new_game     = m_buttons[Buttons::NewGame];
 
-    beginner.setTexture(textures, text[Indexes::TextBeginner]);
-    intermediate.setTexture(textures, text[Indexes::TextIntermediate]);
-    expert.setTexture(textures, text[Indexes::TextExpert]);
-    new_game.setTexture(textures, text[Indexes::TextNewGame]);
+    beginner.initialize(textures, text[Indexes::TextBeginner]);
+    intermediate.initialize(textures, text[Indexes::TextIntermediate]);
+    expert.initialize(textures, text[Indexes::TextExpert]);
+    new_game.initialize(textures, text[Indexes::TextNewGame]);
 
     m_lines.initialize(textures);
     m_columns.initialize(textures);

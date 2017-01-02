@@ -17,9 +17,10 @@ private:
 
 public:
     Header();
-    ~Header();
+    virtual ~Header();
 
     void initialize(const sf::Texture& textures);
+    void setTexture(const sf::Texture& textures);
 
     template<typename T> void setSize(const T width, const T height)
     {

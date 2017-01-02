@@ -17,14 +17,19 @@ MenuBar::MenuBar() : m_background(), game_button()
 MenuBar::~MenuBar()
 {}
 
-void MenuBar::setTexture(const sf::Texture& textures)
+void MenuBar::initialize(const sf::Texture& textures)
 {
     using namespace Resources::Textures::Rectangles;
 
     game_button.setPosition(this->ITEM_OFFSET);
-    game_button.setTexture(textures, text[Indexes::TextGame]);
+    game_button.initialize(textures, text[Indexes::TextGame]);
     m_background.setOutlineThickness(-1.0f);
     m_background.setOutlineColor(sf::Color(192, 192, 192));
+}
+void MenuBar::setTexture(const sf::Texture& textures)
+{
+    using namespace Resources::Textures::Rectangles;
+    game_button.setTexture(textures, text[Indexes::TextGame]);
 }
 
 void MenuBar::setSize(const float width, const float height)

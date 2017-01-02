@@ -11,10 +11,14 @@ Cell::Cell() : m_sprite(), m_mines_count(0), m_has_mine(false), m_flag(false), m
 Cell::~Cell()
 {}
 
+void Cell::initialize(const sf::Texture& textures)
+{
+    this->setTexture(textures);
+    this->reset();
+}
 void Cell::setTexture(const sf::Texture& textures)
 {
     m_sprite.setTexture(textures);
-    this->reset();
 }
 
 void Cell::reset()

@@ -15,6 +15,7 @@ public:
     SpriteButton();
     virtual ~SpriteButton();
 
+    void initialize(const sf::Texture& textures, const sf::IntRect rect);
     void setTexture(const sf::Texture& textures, const sf::IntRect rect);
 
     virtual bool press();

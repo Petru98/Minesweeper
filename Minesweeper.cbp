@@ -74,6 +74,9 @@
 		<Unit filename="include/LineShape.hpp" />
 		<Unit filename="include/Matrix.hpp" />
 		<Unit filename="include/MenuBar.hpp" />
+		<Unit filename="include/RectangularObject.hpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="include/Resource.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

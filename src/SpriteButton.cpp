@@ -11,11 +11,15 @@ SpriteButton::SpriteButton() : m_sprite(), m_pressed(false)
 SpriteButton::~SpriteButton()
 {}
 
+void SpriteButton::initialize(const sf::Texture& textures, const sf::IntRect rect)
+{
+    this->setTexture(textures, rect);
+    m_pressed = false;
+}
 void SpriteButton::setTexture(const sf::Texture& textures, const sf::IntRect rect)
 {
     m_sprite.setTexture(textures);
     m_sprite.setTextureRect(rect);
-    m_pressed = false;
 }
 
 bool SpriteButton::press()

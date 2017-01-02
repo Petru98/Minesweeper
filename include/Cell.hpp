@@ -26,6 +26,7 @@ public:
     Cell();
     virtual ~Cell();
 
+    void initialize(const sf::Texture& textures);
     void setTexture(const sf::Texture& textures);
 
     void reset();

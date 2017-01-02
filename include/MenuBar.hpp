@@ -19,6 +19,7 @@ public:
     MenuBar();
     ~MenuBar();
 
+    void initialize(const sf::Texture& textures);
     void setTexture(const sf::Texture& textures);
 
     void setSize(const float width, const float height);

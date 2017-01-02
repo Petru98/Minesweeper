@@ -103,7 +103,7 @@ bool Cell::press()
 {
     using namespace Resources::Textures::Rectangles;
 
-    if(m_revealed == true || m_flag == true)
+    if(this->isPressed() == true || m_revealed == true || m_flag == true)
         return false;
 
     m_sprite.setTextureRect(cell[Indexes::CellEmpty]);
@@ -113,7 +113,7 @@ bool Cell::release()
 {
     using namespace Resources::Textures::Rectangles;
 
-    if(m_revealed == true || m_flag == true)
+    if(this->isPressed() == false || m_revealed == true || m_flag == true)
         return false;
 
     m_sprite.setTextureRect(cell[Indexes::CellNormal]);

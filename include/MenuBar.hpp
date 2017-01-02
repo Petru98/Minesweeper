@@ -3,7 +3,7 @@
 
 #include "SpriteButton.hpp"
 
-class Menu : public sf::Drawable, public sf::Transformable
+class MenuBar : public sf::Drawable, public sf::Transformable
 {
 public:
     static constexpr std::size_t HEIGHT = 19;
@@ -16,19 +16,13 @@ private:
 public:
     SpriteButton game_button;
 
-    Menu();
-    ~Menu();
+    MenuBar();
+    ~MenuBar();
 
-    void initialize(const sf::Texture& textures);
+    void setTexture(const sf::Texture& textures);
 
-    template<typename T> void setSize(const T width, const T height)
-    {
-        m_background.setSize(sf::Vector2f(width, height));
-    }
-    template<typename T> void setSize(const sf::Vector2<T> size)
-    {
-        m_background.setSize(sf::Vector2f(size.x, size.y));
-    }
+    void setSize(const float width, const float height);
+    void setSize(const sf::Vector2f size);
 
     sf::Vector2f getSize()const;
 };

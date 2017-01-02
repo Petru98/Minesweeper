@@ -1,8 +1,8 @@
 #include "Level.hpp"
 
 #include "random.hpp"
+#include "File.hpp"
 #include <ctime>
-#include "file.hpp"
 
 const Level::Difficulty Level::beginner     = {9 , 9 , 10};
 const Level::Difficulty Level::intermediate = {16, 16, 40};
@@ -14,7 +14,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
         target.draw(m_game_menu, states);
     else
     {
-        target.draw(m_menu, states);
+        target.draw(m_menu_bar, states);
         target.draw(m_background, states);
         target.draw(m_header, states);
         target.draw(m_table, states);
@@ -23,10 +23,10 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
-    : m_game_menu(this), m_menu(), m_header(), m_table(), m_background(), m_window(window), m_textures(textures), m_game_over(false)
+    : m_game_menu(this), m_menu_bar(), m_header(), m_table(), m_background(), m_window(window), m_textures(textures), m_game_over(false)
 {
     Random::seed(std::time(nullptr));
-    m_game_menu.setPosition(sf::Vector2f(0.0f, Menu::HEIGHT));
+    m_game_menu.setPosition(sf::Vector2f(0.0f, MenuBar::HEIGHT));
     m_game_menu.initialize(m_textures);
 }
 
@@ -68,12 +68,12 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
 }
 void Level::M_initializeMenu()
 {
-    m_menu.initialize(m_textures);
-    m_menu.setSize(sf::Vector2f(m_table.getSize().x + Table::LEFT_OFFSET + Table::RIGHT_OFFSET, Menu::HEIGHT));
+    m_menu_bar.setTexture(m_textures);
+    m_menu_bar.setSize(sf::Vector2f(m_table.getSize().x + Table::LEFT_OFFSET + Table::RIGHT_OFFSET, MenuBar::HEIGHT));
 }
 void Level::M_initializeBackground()
 {
-    m_background.setPosition(0.0f, Menu::HEIGHT);
+    m_background.setPosition(0.0f, MenuBar::HEIGHT);
     m_background.setSize(m_table.getSize() + sf::Vector2f(Table::LEFT_OFFSET + Table::RIGHT_OFFSET, Table::TOP_OFFSET + Table::BOTTOM_OFFSET));
 }
 void Level::M_initializeHeader()
@@ -85,7 +85,7 @@ void Level::M_initializeHeader()
 
 void Level::M_resizeWindow()
 {
-    const sf::Vector2u size(m_background.getSize().x, m_background.getSize().y + Menu::HEIGHT);
+    const sf::Vector2u size(m_background.getSize().x, m_background.getSize().y + MenuBar::HEIGHT);
     if(m_window.isOpen() == false)
     {
         m_window.create(sf::VideoMode(size.x, size.y), "Minesweeper", sf::Style::Titlebar | sf::Style::Close);
@@ -169,8 +169,8 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
     }
     else if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == true)
         m_header.smiley.press();
-    else if(m_menu.game_button.contains(event.x, event.y) == true)
-        m_menu.game_button.press();
+    else if(m_menu_bar.game_button.contains(event.x, event.y) == true)
+        m_menu_bar.game_button.press();
 }
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
@@ -191,7 +191,7 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         if(m_header.smiley.isPressed() == true)
             this->create(Difficulty(m_table.lines(), m_table.columns(), m_table.mines()));
     }
-    else if(m_menu.game_button.release() == true)
+    else if(m_menu_bar.game_button.release() == true)
         m_game_menu.open();
 }
 
@@ -204,18 +204,25 @@ void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
     {
         if(m_table.onMouseMoved(event) == true)
             m_header.smiley.setScared();
-        else if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == false)
+        else
         {
-            if(m_header.smiley.isPressed() == true)
-                m_header.smiley.release();
-            else
-                m_header.smiley.reset();
+            if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == false)
+            {
+                if(m_header.smiley.isPressed() == true)
+                    m_header.smiley.release();
+                else
+                    m_header.smiley.reset();
+            }
+            if(m_menu_bar.game_button.contains(event.x, event.y) == false)
+                m_menu_bar.game_button.release();
         }
     }
     else
     {
         if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == false)
             m_header.smiley.release();
+        if(m_menu_bar.game_button.contains(event.x, event.y) == false)
+            m_menu_bar.game_button.release();
     }
 }
 

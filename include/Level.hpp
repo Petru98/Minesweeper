@@ -2,7 +2,7 @@
 #define MINESWEEPER_LEVEL_HPP_INCLUDED
 
 #include "Scene.hpp"
-#include "Menu.hpp"
+#include "MenuBar.hpp"
 #include "GameMenu.hpp"
 #include "Background.hpp"
 #include "Header.hpp"
@@ -46,7 +46,7 @@ private:
     static Difficulty S_correctDifficulty(Difficulty difficulty);
 
     GameMenu           m_game_menu;
-    Menu               m_menu;
+    MenuBar            m_menu_bar;
     Header             m_header;
     Table              m_table;
     Background         m_background;

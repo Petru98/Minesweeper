@@ -32,30 +32,32 @@ void Cell::reset()
     m_revealed = false;
 }
 
-void Cell::reveal(const bool game_over)
+bool Cell::reveal(const bool game_over)
 {
     using namespace Resources::Textures::Rectangles;
 
-    if(m_revealed == false)
+    if(this->canReveal() == true)
     {
         if(game_over == true)
             M_revealGameOver();
-        else if(m_flag == false)
+        else if(this->hasFlag() == false)
             M_revealInGame();
+        return true;
     }
+    return false;
 }
 void Cell::M_revealGameOver()
 {
     using namespace Resources::Textures::Rectangles;
 
-    if(m_has_mine == true)
+    if(this->hasMine() == true)
     {
-        if(m_flag == false)
+        if(this->hasFlag() == false)
             m_sprite.setTextureRect(cell[Indexes::CellMine]);
     }
     else
     {
-        if(m_flag == true)
+        if(this->hasFlag() == true)
             m_sprite.setTextureRect(cell[Indexes::CellMineWrong]);
     }
 }
@@ -64,7 +66,7 @@ void Cell::M_revealInGame()
     using namespace Resources::Textures::Rectangles;
     m_revealed = true;
 
-    if(m_has_mine == true)
+    if(this->hasMine() == true)
         m_sprite.setTextureRect(cell[Indexes::CellMineClicked]);
     else
         m_sprite.setTextureRect(cell[m_mines_count]);
@@ -73,15 +75,20 @@ void Cell::M_revealInGame()
 void Cell::setMine()
 {
     m_has_mine = true;
+    this->incrementMinesCount();
+}
+void Cell::incrementMinesCount()
+{
+    ++m_mines_count;
 }
 bool Cell::toggleFlag()
 {
     using namespace Resources::Textures::Rectangles;
 
-    if(m_revealed == true)
+    if(this->isRevealed() == true)
         return false;
 
-    if(m_flag == false)
+    if(this->hasFlag() == false)
     {
         m_flag = true;
         m_sprite.setTextureRect(cell[Indexes::CellFlag]);
@@ -93,35 +100,37 @@ bool Cell::toggleFlag()
     }
     return true;
 }
-void Cell::incrementMinesCount()
-{
-    ++m_mines_count;
-}
+
+sf::Uint8 Cell::getMinesCount()const {return m_mines_count;}
 
 bool Cell::hasMine()const            {return m_has_mine;}
 bool Cell::hasFlag()const            {return m_flag;}
 bool Cell::isRevealed()const         {return m_revealed;}
-sf::Uint8 Cell::getMinesCount()const {return m_mines_count;}
+bool Cell::canPress()const           {return m_revealed == false && m_flag == false && this->isPressed() == false;}
+bool Cell::canRelease()const         {return this->isPressed() == true;}
+bool Cell::canReveal()const          {return m_revealed == false && m_flag == false;}
 
 bool Cell::press()
 {
     using namespace Resources::Textures::Rectangles;
 
-    if(this->isPressed() == true || m_revealed == true || m_flag == true)
-        return false;
-
-    m_sprite.setTextureRect(cell[Indexes::CellEmpty]);
-    return true;
+    if(this->canPress() == true)
+    {
+        m_sprite.setTextureRect(cell[Indexes::CellEmpty]);
+        return true;
+    }
+    return false;
 }
 bool Cell::release()
 {
     using namespace Resources::Textures::Rectangles;
 
-    if(this->isPressed() == false || m_revealed == true || m_flag == true)
-        return false;
-
-    m_sprite.setTextureRect(cell[Indexes::CellNormal]);
-    return true;
+    if(this->canRelease() == true)
+    {
+        m_sprite.setTextureRect(cell[Indexes::CellNormal]);
+        return true;
+    }
+    return false;
 }
 bool Cell::isPressed()const
 {

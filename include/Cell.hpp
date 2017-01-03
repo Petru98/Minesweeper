@@ -31,16 +31,20 @@ public:
 
     void reset();
 
-    void reveal(const bool game_over = false);
+    bool reveal(const bool game_over = false);
 
     void setMine();
     bool toggleFlag();
     void incrementMinesCount();
 
+    sf::Uint8 getMinesCount()const;
+
     bool hasMine()const;
     bool hasFlag()const;
     bool isRevealed()const;
-    sf::Uint8 getMinesCount()const;
+    bool canPress()const;
+    bool canRelease()const;
+    bool canReveal()const;
 
     virtual bool press();
     virtual bool release();

@@ -1,14 +1,14 @@
 #ifndef MINESWEEPER_GAMEMENU_HPP_INCLUDED
 #define MINESWEEPER_GAMEMENU_HPP_INCLUDED
 
-#include "Scene.hpp"
-#include "RectangularObject.hpp"
+#include "Menu.hpp"
 #include "SpriteButton.hpp"
+#include "MenuBar.hpp"
 #include "IntegralTextBox.hpp"
 
 class Level;
 
-class GameMenu : public Scene, public RectangularObject
+class GameMenu : public Menu
 {
 private:
     struct Buttons
@@ -39,6 +39,8 @@ private:
     bool               m_open;
 
     void M_setFocus(TextBoxBase& text_box);
+    void M_startNewGame();
+    void M_setNewGameInfo(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
@@ -48,9 +50,9 @@ public:
 
     void initialize(const sf::Texture& textures);
 
-    void open();
-    void close();
-    bool isOpen()const;
+    virtual void open();
+    virtual void close();
+    virtual bool isOpen()const;
 
     virtual sf::Vector2f getSize()const;
 

@@ -4,7 +4,6 @@
 
 Game::Game() : window(), textures(), level(window, textures)
 {}
-
 Game::~Game()
 {}
 
@@ -15,7 +14,7 @@ void Game::initialize()
     if(textures.loadFromMemory(Textures::pack.data, Textures::pack.size) == false)
         throw Exception(Error::LoadTextures, Error::messages[Error::LoadTextures]);
 
-    level.create(Level::beginner);
+    level.create(Level::Difficulty::beginner);
 }
 
 #ifndef NDEBUG

@@ -36,11 +36,11 @@ public:
 
         Difficulty() : lines(0), columns(0), mines(0) {}
         Difficulty(const sf::Uint16 l, const sf::Uint16 c, const sf::Uint16 m) : lines(l), columns(c), mines(m) {}
-    };
 
-    static const Difficulty beginner;
-    static const Difficulty intermediate;
-    static const Difficulty expert;
+        static const Difficulty beginner;
+        static const Difficulty intermediate;
+        static const Difficulty expert;
+    };
 
 private:
     static Difficulty S_correctDifficulty(Difficulty difficulty);

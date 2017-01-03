@@ -14,7 +14,7 @@ void Table::draw(sf::RenderTarget& target, sf::RenderStates states)const
             target.draw(m_table[i][j], states);
 }
 
-Table::Table() : m_table(), m_pressed_cell_index(-1,-1), m_mines(0), m_cells_left(0)
+Table::Table() : m_table(), m_pressed_cell_index(this->INVALID_INDEX), m_mines(0), m_cells_left(0)
 {}
 Table::~Table()
 {}

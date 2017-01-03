@@ -4,17 +4,16 @@
 #include "File.hpp"
 #include <ctime>
 
-const Level::Difficulty Level::beginner     = {9 , 9 , 10};
-const Level::Difficulty Level::intermediate = {16, 16, 40};
-const Level::Difficulty Level::expert       = {16, 30, 99};
+const Level::Difficulty Level::Difficulty::beginner     = {9 , 9 , 10};
+const Level::Difficulty Level::Difficulty::intermediate = {16, 16, 40};
+const Level::Difficulty Level::Difficulty::expert       = {16, 30, 99};
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
-    if(m_game_menu.isOpen() == true)
-        target.draw(m_game_menu, states);
-    else
+    target.draw(m_menu_bar, states);
+
+    if(m_menu_bar.getOpenMenu() == nullptr)
     {
-        target.draw(m_menu_bar, states);
         target.draw(m_background, states);
         target.draw(m_header, states);
         target.draw(m_table, states);
@@ -26,8 +25,8 @@ Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
     : m_game_menu(this), m_menu_bar(), m_header(), m_table(), m_background(), m_window(window), m_textures(textures), m_game_over(false)
 {
     Random::seed(std::time(nullptr));
-    m_game_menu.setPosition(sf::Vector2f(0.0f, MenuBar::HEIGHT));
     m_game_menu.initialize(m_textures);
+    m_menu_bar.addMenu(m_game_menu);
 }
 
 Level::~Level()
@@ -68,7 +67,6 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
 }
 void Level::M_initializeMenu()
 {
-    m_menu_bar.initialize(m_textures);
     m_menu_bar.setSize(sf::Vector2f(m_table.getSize().x + Table::LEFT_OFFSET + Table::RIGHT_OFFSET, MenuBar::HEIGHT));
 }
 void Level::M_initializeBackground()
@@ -121,12 +119,9 @@ void Level::lose()
 void Level::handleEvent(const sf::Event& event)
 {
     if(event.type == sf::Event::Closed)
-    {
-        m_game_menu.onClosed();
         this->onClosed();
-    }
-    else if(m_game_menu.isOpen() == true)
-        m_game_menu.handleEvent(event);
+    else if(m_menu_bar.getOpenMenu() != nullptr)
+        m_menu_bar.handleEvent(event);
     else
         Scene::handleEvent(event);
 }
@@ -141,27 +136,16 @@ void Level::onResized(const sf::Event::SizeEvent& event)
     m_window.setView(sf::View(sf::FloatRect(0, 0, event.width, event.height)));
 }
 
-void Level::onLostFocus()
-{}
-
-void Level::onGainedFocus()
-{}
-
-void Level::onTextEntered(const sf::Event::TextEvent& event)
-{}
-
-void Level::onKeyPressed(const sf::Event::KeyEvent& event)
-{}
-
-void Level::onKeyReleased(const sf::Event::KeyEvent& event)
-{}
-
-void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event)
-{}
+void Level::onLostFocus() {}
+void Level::onGainedFocus() {}
+void Level::onTextEntered(const sf::Event::TextEvent& event) {}
+void Level::onKeyPressed(const sf::Event::KeyEvent& event) {}
+void Level::onKeyReleased(const sf::Event::KeyEvent& event) {}
+void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event) {}
 
 void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.contains(event.x, event.y) == true && m_game_over == false)
+    if(m_game_over == false && m_table.contains(event.x, event.y) == true)
     {
         m_table.onMouseButtonPressed(event);
         if(event.button == sf::Mouse::Left)
@@ -169,13 +153,13 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
     }
     else if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == true)
         m_header.smiley.press();
-    else if(m_menu_bar.game_button.contains(event.x, event.y) == true)
-        m_menu_bar.game_button.press();
+    else if(m_menu_bar.contains(event.x, event.y) == true)
+        m_menu_bar.onMouseButtonPressed(event);
 }
 
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.contains(event.x, event.y) == true && m_game_over == false)
+    if(m_game_over == false && m_table.contains(event.x, event.y) == true)
     {
         int status = m_table.onMouseButtonReleased(event);
 
@@ -191,8 +175,8 @@ void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         if(m_header.smiley.isPressed() == true)
             this->create(Difficulty(m_table.lines(), m_table.columns(), m_table.mines()));
     }
-    else if(m_menu_bar.game_button.release() == true)
-        m_game_menu.open();
+    else if(m_menu_bar.contains(event.x, event.y) == true)
+        m_menu_bar.onMouseButtonReleased(event);
 }
 
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
@@ -204,30 +188,22 @@ void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
     {
         if(m_table.onMouseMoved(event) == true)
             m_header.smiley.setScared();
-        else
+        else if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == false)
         {
-            if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == false)
-            {
-                if(m_header.smiley.isPressed() == true)
-                    m_header.smiley.release();
-                else
-                    m_header.smiley.reset();
-            }
-            if(m_menu_bar.game_button.contains(event.x, event.y) == false)
-                m_menu_bar.game_button.release();
+            if(m_header.smiley.isPressed() == true)
+                m_header.smiley.release();
+            else
+                m_header.smiley.reset();
         }
     }
     else
     {
         if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == false)
             m_header.smiley.release();
-        if(m_menu_bar.game_button.contains(event.x, event.y) == false)
-            m_menu_bar.game_button.release();
     }
+
+    m_menu_bar.onMouseMoved(event);
 }
 
-void Level::onMouseEntered()
-{}
-
-void Level::onMouseLeft()
-{}
+void Level::onMouseEntered() {}
+void Level::onMouseLeft() {}

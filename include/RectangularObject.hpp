@@ -1,10 +1,10 @@
-#ifndef MINESWEEPER_RECTANGLEAREA_HPP_INCLUDED
-#define MINESWEEPER_RECTANGLEAREA_HPP_INCLUDED
+#ifndef MINESWEEPER_RECTANGULAROBJECT_HPP_INCLUDED
+#define MINESWEEPER_RECTANGULAROBJECT_HPP_INCLUDED
 
 #include "def.hpp"
 #include <SFML/Graphics.hpp>
 
-class RectangularObject : virtual public sf::Drawable, virtual public sf::Transformable
+class RectangularObject : virtual public sf::Drawable, public sf::Transformable
 {
 protected:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const = 0;

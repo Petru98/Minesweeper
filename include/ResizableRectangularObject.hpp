@@ -6,6 +6,9 @@
 class ResizableRectangularObject : public RectangularObject
 {
 public:
+    ResizableRectangularObject() {}
+    virtual ~ResizableRectangularObject() {}
+
     virtual void setSize(const float width, const float height) = 0;
     virtual void setSize(const sf::Vector2f size) = 0;
 };

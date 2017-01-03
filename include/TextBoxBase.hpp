@@ -6,6 +6,9 @@
 class TextBoxBase : public RectangularObject
 {
 public:
+    TextBoxBase() {}
+    virtual ~TextBoxBase() {}
+
     virtual void showCursor() = 0;
     virtual void hideCursor() = 0;
     virtual bool isCursorVisible()const = 0;

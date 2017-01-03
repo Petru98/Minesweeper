@@ -85,8 +85,15 @@ sf::Uint16 Table::columns()const    {return m_table.columns();}
 sf::Uint16 Table::mines()const      {return m_mines;}
 sf::Uint16 Table::cellsLeft()const  {return m_cells_left;}
 
+bool Table::outOfBounds(const int line, const int column)const
+{
+    return m_table.outOfBounds(line, column);
+}
+
 sf::Vector2f Table::getSize()const
-    {return sf::Vector2f(Cell::WIDTH * m_table.columns(), Cell::HEIGHT * m_table.lines());}
+{
+    return sf::Vector2f(Cell::WIDTH * m_table.columns(), Cell::HEIGHT * m_table.lines());
+}
 
 Cell* Table::operator[] (const sf::Uint16 index)            {return m_table[index];}
 const Cell* Table::operator[] (const sf::Uint16 index)const {return m_table[index];}

@@ -4,7 +4,7 @@
 #include "def.hpp"
 #include <SFML/Graphics.hpp>
 
-class RectangularObject : public sf::Drawable, public sf::Transformable
+class RectangularObject : virtual public sf::Drawable, virtual public sf::Transformable
 {
 protected:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const = 0;

@@ -1,19 +1,14 @@
 #ifndef MINESWEEPER_TEXTBOXBASE_HPP_INCLUDED
 #define MINESWEEPER_TEXTBOXBASE_HPP_INCLUDED
 
-#include <SFML/Graphics.hpp>
+#include "RectangularObject.hpp"
 
-class TextBoxBase : public sf::Drawable, public sf::Transformable
+class TextBoxBase : public RectangularObject
 {
-protected:
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const = 0;
-
 public:
     virtual void showCursor() = 0;
     virtual void hideCursor() = 0;
     virtual bool isCursorVisible()const = 0;
-
-    virtual sf::Vector2f getSize()const = 0;
 
     virtual void clear() = 0;
     virtual void setText(const char* str) = 0;

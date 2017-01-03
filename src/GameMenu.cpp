@@ -74,6 +74,11 @@ bool GameMenu::isOpen()const
     return m_open;
 }
 
+sf::Vector2f GameMenu::getSize()const
+{
+    return m_background.getSize();
+}
+
 void GameMenu::onClosed()
 {}
 
@@ -168,6 +173,8 @@ void GameMenu::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         m_level->create(difficulty);
         this->close();
     }
+    else if(this->contains(relative_x, relative_y) == false)
+        this->close();
 }
 
 void GameMenu::onMouseMoved(const sf::Event::MouseMoveEvent& event)

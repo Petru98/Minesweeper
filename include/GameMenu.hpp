@@ -2,12 +2,13 @@
 #define MINESWEEPER_GAMEMENU_HPP_INCLUDED
 
 #include "Scene.hpp"
+#include "RectangularObject.hpp"
 #include "SpriteButton.hpp"
-#include "TextBox.hpp"
+#include "IntegralTextBox.hpp"
 
 class Level;
 
-class GameMenu : public Scene, public sf::Transformable
+class GameMenu : public Scene, public RectangularObject
 {
 private:
     struct Buttons
@@ -30,9 +31,9 @@ private:
 
     sf::RectangleShape m_background;
     SpriteButton       m_buttons[Buttons::Count];
-    TextBox<2>         m_lines;
-    TextBox<2>         m_columns;
-    TextBox<3>         m_mines;
+    IntegralTextBox<2> m_lines;
+    IntegralTextBox<2> m_columns;
+    IntegralTextBox<3> m_mines;
     TextBoxBase*       m_focus;
     Level*             m_level;
     bool               m_open;
@@ -50,6 +51,8 @@ public:
     void open();
     void close();
     bool isOpen()const;
+
+    virtual sf::Vector2f getSize()const;
 
     virtual void onClosed();
     virtual void onResized(const sf::Event::SizeEvent&);

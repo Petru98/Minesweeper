@@ -23,14 +23,14 @@ void Header::setTexture(const sf::Texture& textures)
     smiley.setTexture(textures);
 }
 
-void Header::setSize(const sf::Vector2f size)
-{
-    this->setSize(size.x, size.y);
-}
 void Header::setSize(const float width, const float height)
 {
     m_size.x = width;
     m_size.y = height;
+}
+void Header::setSize(const sf::Vector2f size)
+{
+    this->setSize(size.x, size.y);
 }
 
 sf::Vector2f Header::getSize()const

@@ -2,9 +2,9 @@
 #define MINESWEEPER_HEADER_HPP_INCLUDED
 
 #include "Smiley.hpp"
-#include "RectangularObject.hpp"
+#include "ResizableRectangularObject.hpp"
 
-class Header : public RectangularObject
+class Header : public ResizableRectangularObject
 {
 public:
     static constexpr std::size_t HEIGHT = 33;
@@ -22,8 +22,8 @@ public:
     void initialize(const sf::Texture& textures);
     void setTexture(const sf::Texture& textures);
 
-    void setSize(const sf::Vector2f size);
-    void setSize(const float width, const float height);
+    virtual void setSize(const float width, const float height);
+    virtual void setSize(const sf::Vector2f size);
 
     virtual sf::Vector2f getSize()const;
 };

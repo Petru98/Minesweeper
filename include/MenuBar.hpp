@@ -2,8 +2,9 @@
 #define MINESWEEPER_MENU_HPP_INCLUDED
 
 #include "SpriteButton.hpp"
+#include "ResizableRectangularObject.hpp"
 
-class MenuBar : public sf::Drawable, public sf::Transformable
+class MenuBar : public ResizableRectangularObject
 {
 public:
     static constexpr std::size_t HEIGHT = 19;
@@ -17,15 +18,15 @@ public:
     SpriteButton game_button;
 
     MenuBar();
-    ~MenuBar();
+    virtual ~MenuBar();
 
     void initialize(const sf::Texture& textures);
     void setTexture(const sf::Texture& textures);
 
-    void setSize(const float width, const float height);
-    void setSize(const sf::Vector2f size);
+    virtual void setSize(const float width, const float height);
+    virtual void setSize(const sf::Vector2f size);
 
-    sf::Vector2f getSize()const;
+    virtual sf::Vector2f getSize()const;
 };
 
 #endif

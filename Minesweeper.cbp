@@ -13,7 +13,6 @@
 				<Option compiler="gnu_gcc_compiler_530" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-lsfml-graphics-s-d" />
@@ -33,7 +32,6 @@
 				<Option compiler="gnu_gcc_compiler_530" />
 				<Compiler>
 					<Add option="-O3" />
-					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -52,7 +50,7 @@
 			<Add option="-Wall" />
 			<Add option="-Wno-switch" />
 			<Add option="-DSFML_STATIC" />
-			<Add directory="C:/Github/Minesweeper/trunk/include" />
+			<Add directory="include" />
 		</Compiler>
 		<Linker>
 			<Add option="-static-libgcc -static-libstdc++" />
@@ -69,21 +67,31 @@
 		<Unit filename="include/File.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="include/Flags.hpp" />
 		<Unit filename="include/Game.hpp" />
 		<Unit filename="include/GameMenu.hpp" />
 		<Unit filename="include/Header.hpp" />
+		<Unit filename="include/IntegralTextBox.hpp" />
 		<Unit filename="include/Level.hpp" />
 		<Unit filename="include/LineShape.hpp" />
 		<Unit filename="include/Matrix.hpp" />
-		<Unit filename="include/Menu.hpp" />
-		<Unit filename="include/PushButton.hpp" />
+		<Unit filename="include/Menu.hpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="include/MenuBar.hpp" />
+		<Unit filename="include/RectangularObject.hpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="include/ResizableRectangularObject.hpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="include/Resource.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="include/Scene.hpp" />
 		<Unit filename="include/Smiley.hpp" />
+		<Unit filename="include/SpriteButton.hpp" />
 		<Unit filename="include/Table.hpp" />
-		<Unit filename="include/TextBox.hpp" />
 		<Unit filename="include/TextBoxBase.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -107,11 +115,10 @@
 		<Unit filename="src/GameMenu.cpp" />
 		<Unit filename="src/Header.cpp" />
 		<Unit filename="src/Level.cpp" />
-		<Unit filename="src/LineShape.cpp" />
-		<Unit filename="src/Menu.cpp" />
-		<Unit filename="src/PushButton.cpp" />
+		<Unit filename="src/MenuBar.cpp" />
 		<Unit filename="src/Scene.cpp" />
 		<Unit filename="src/Smiley.cpp" />
+		<Unit filename="src/SpriteButton.cpp" />
 		<Unit filename="src/Table.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/random.cpp" />

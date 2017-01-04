@@ -4,8 +4,6 @@
 #include "ResizableRectangularObject.hpp"
 #include "Smiley.hpp"
 
-class Level;
-
 class Header : public ResizableRectangularObject
 {
 public:
@@ -14,12 +12,11 @@ public:
     Smiley smiley;
 private:
     sf::Vector2f m_size;
-    Level*       m_level;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:
-    Header(Level* level);
+    Header();
     virtual ~Header();
 
     void initialize(const sf::Texture& textures);

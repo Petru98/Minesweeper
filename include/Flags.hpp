@@ -23,6 +23,11 @@ public:
     Flags& operator= (const T value)      {m_flags = value; return *this;}
     Flags& operator= (const Flags& flags) {m_flags = flags.m_flags; return *this;}
 
+    bool operator== (const T value)      {return m_flags == value;}
+    bool operator== (const Flags& flags) {return m_flags == flags.m_flags;}
+    bool operator!= (const T value)      {return m_flags != value;}
+    bool operator!= (const Flags& flags) {return m_flags != flags.m_flags;}
+
     Flags operator~ ()const {return ~m_flags;}
 
     Flags operator& (const T mask)const {return m_flags & mask;}
@@ -32,6 +37,8 @@ public:
     Flags& operator&= (const T mask) {m_flags &= mask; return *this;}
     Flags& operator|= (const T mask) {m_flags |= mask; return *this;}
     Flags& operator^= (const T mask) {m_flags ^= mask; return *this;}
+
+    explicit operator T () {return m_flags;}
 };
 
 typedef Flags<sf::Uint8> Flags8;

@@ -38,7 +38,9 @@ private:
     Level*             m_level;
     bool               m_open;
 
+    void M_clickTextBox(TextBoxBase& text_box, sf::Mouse::Button button);
     void M_setFocus(TextBoxBase& text_box);
+
     void M_startNewGame();
     void M_setNewGameInfo(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines);
 

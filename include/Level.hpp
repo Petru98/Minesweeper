@@ -43,12 +43,10 @@ public:
     };
 
 private:
-    static Difficulty S_correctDifficulty(Difficulty difficulty);
-
-    MenuBar            m_menu_bar;
     GameMenu           m_game_menu;
     Background         m_background;
     Header             m_header;
+    MenuBar            m_menu_bar;
     Table              m_table;
     sf::RenderWindow&  m_window;
     const sf::Texture& m_textures;
@@ -59,11 +57,22 @@ private:
     void M_initializeHeader();
     void M_resizeWindow();
 
+    void M_onMouseButtonPressedTable(const sf::Event::MouseButtonEvent event);
+    void M_onMouseButtonPressedSmiley(const sf::Event::MouseButtonEvent event);
+
+    void M_onMouseButtonReleasedTable(const sf::Event::MouseButtonEvent event);
+    void M_onMouseButtonReleasedSmiley(const sf::Event::MouseButtonEvent event);
+
+    void M_onMouseMovedInGame(const sf::Event::MouseMoveEvent event);
+    void M_onMouseMovedGameOver(const sf::Event::MouseMoveEvent event);
+
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:
+    static Difficulty setDifficultyInBounds(Difficulty difficulty);
+
     Level(sf::RenderWindow& window, const sf::Texture& texture);
-    ~Level();
+    virtual ~Level();
 
     void create(const Difficulty difficulty);
 

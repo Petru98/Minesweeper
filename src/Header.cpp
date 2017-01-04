@@ -1,5 +1,4 @@
 #include "Header.hpp"
-#include "Level.hpp"
 
 void Header::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
@@ -7,9 +6,9 @@ void Header::draw(sf::RenderTarget& target, sf::RenderStates states)const
     target.draw(smiley, states);
 }
 
-Header::Header(Level* level) : smiley(), m_size(), m_level(level)
+Header::Header() : smiley(), m_size()
 {
-    smiley.setOrigin(this->getPosition() + sf::Vector2f(Smiley::WIDTH / 2.0f, Smiley::HEIGHT / 2.0f));
+    smiley.setOrigin(sf::Vector2f(Smiley::WIDTH / 2.0f, Smiley::HEIGHT / 2.0f));
 }
 Header::~Header()
 {}

@@ -98,18 +98,19 @@ void GameMenu::onKeyPressed(const sf::Event::KeyEvent& event) {}
 void GameMenu::onKeyReleased(const sf::Event::KeyEvent& event) {}
 void GameMenu::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event) {}
 
+/* onMouseButtonPressed */
 void GameMenu::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
     const float relative_x = event.x - this->getPosition().x;
     const float relative_y = event.y - this->getPosition().y;
 
     if(m_lines.contains(relative_x, relative_y) == true)
-        M_setFocus(m_lines);
+        M_clickTextBox(m_lines, event.button);
     else if(m_columns.contains(relative_x, relative_y) == true)
-        M_setFocus(m_columns);
+        M_clickTextBox(m_columns, event.button);
     else if(m_mines.contains(relative_x, relative_y) == true)
-        M_setFocus(m_mines);
-    else
+        M_clickTextBox(m_mines, event.button);
+    else if(event.button == sf::Mouse::Left)
     {
         for(std::size_t i = 0; i < Buttons::Count; ++i)
             if(m_buttons[i].contains(relative_x, relative_y) == true)
@@ -119,6 +120,11 @@ void GameMenu::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
             }
     }
 }
+void GameMenu::M_clickTextBox(TextBoxBase& text_box, sf::Mouse::Button mouse_button)
+{
+    if(mouse_button == sf::Mouse::Left || mouse_button == sf::Mouse::Right)
+        M_setFocus(text_box);
+}
 void GameMenu::M_setFocus(TextBoxBase& text_box)
 {
     m_focus->hideCursor();
@@ -126,6 +132,7 @@ void GameMenu::M_setFocus(TextBoxBase& text_box)
     m_focus->showCursor();
 }
 
+/* onMouseButtonReleased */
 void GameMenu::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
     if(m_buttons[Buttons::NewGame].isPressed() == true)
@@ -167,6 +174,7 @@ void GameMenu::M_setNewGameInfo(const sf::Uint16 lines, const sf::Uint16 columns
     m_mines.setText(Uint16ToString(mines, buffer));
 }
 
+/* onMouseMoved */
 void GameMenu::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
     const float relative_x = event.x - this->getPosition().x;

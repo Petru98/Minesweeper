@@ -1,9 +1,9 @@
 #ifndef MINESWEEPER_BACKGROUND_HPP_INCLUDED
 #define MINESWEEPER_BACKGROUND_HPP_INCLUDED
 
-#include <SFML/Graphics.hpp>
+#include "ResizableRectangularObject.hpp"
 
-class Background : public sf::Drawable, public sf::Transformable
+class Background : public ResizableRectangularObject
 {
 public:
     static const sf::Vector2f header_position;
@@ -22,20 +22,10 @@ public:
     Background();
     virtual ~Background();
 
-    template<typename T> void setSize(const T width, const T height)
-    {
-        m_size.x = width;
-        m_size.y = height;
-        M_update();
-    }
-    template<typename T> void setSize(const sf::Vector2<T> size)
-    {
-        m_size.x = size.x;
-        m_size.y = size.y;
-        M_update();
-    }
+    virtual void setSize(const float width, const float height);
+    virtual void setSize(const sf::Vector2f size);
 
-    sf::Vector2f getSize()const;
+    virtual sf::Vector2f getSize()const;
 };
 
 #endif

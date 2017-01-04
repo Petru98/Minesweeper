@@ -1,12 +1,12 @@
-#ifndef MINESWEEPER_TEXTBOX_HPP_INCLUDED
-#define MINESWEEPER_TEXTBOX_HPP_INCLUDED
+#ifndef MINESWEEPER_INTEGRALTEXTBOX_HPP_INCLUDED
+#define MINESWEEPER_INTEGRALTEXTBOX_HPP_INCLUDED
 
 #include "TextBoxBase.hpp"
 #include "LineShape.hpp"
 #include "textures.hpp"
 
 template <std::size_t N>
-class TextBox : public TextBoxBase
+class IntegralTextBox : public TextBoxBase
 {
 private:
     static const sf::Vector2f TEXT_OFFSET;
@@ -22,8 +22,8 @@ private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:
-    TextBox();
-    virtual ~TextBox();
+    IntegralTextBox();
+    virtual ~IntegralTextBox();
 
     void initialize(const sf::Texture& textures);
 
@@ -40,20 +40,13 @@ public:
     virtual std::size_t getTextLength()const;
 
     virtual void onTextEntered(const sf::Event::TextEvent& event);
-
-    template<typename T> bool contains(const T x, const T y)const
-    {
-        const sf::Vector2f position = this->getPosition();
-        const sf::Vector2f size = m_background.getSize();
-        return (x >= position.x) && (x < position.x + size.x) && (y >= position.y) && (y < position.y + size.y);
-    }
 };
 
 /* Implementation */
-template<std::size_t N> const sf::Vector2f TextBox<N>::TEXT_OFFSET = {4.0f, 3.0f};
-template<std::size_t N> const sf::Vector2f TextBox<N>::CURSOR_START_POSITION = TextBox<N>::TEXT_OFFSET - sf::Vector2f(0.0f, 1.0f);
+template<std::size_t N> const sf::Vector2f IntegralTextBox<N>::TEXT_OFFSET = {4.0f, 3.0f};
+template<std::size_t N> const sf::Vector2f IntegralTextBox<N>::CURSOR_START_POSITION = IntegralTextBox<N>::TEXT_OFFSET - sf::Vector2f(0.0f, 1.0f);
 
-template<std::size_t N> void TextBox<N>::draw(sf::RenderTarget& target, sf::RenderStates states)const
+template<std::size_t N> void IntegralTextBox<N>::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
     states.transform.combine(this->getTransform());
 
@@ -64,7 +57,7 @@ template<std::size_t N> void TextBox<N>::draw(sf::RenderTarget& target, sf::Rend
         target.draw(m_cursor, states);
 }
 
-template<std::size_t N> TextBox<N>::TextBox() : m_background(), m_cursor(), m_index_current(0), m_cursor_visible(false)
+template<std::size_t N> IntegralTextBox<N>::IntegralTextBox() : m_background(), m_cursor(), m_index_current(0), m_cursor_visible(false)
 {
     using namespace Resources::Textures;
 
@@ -85,10 +78,10 @@ template<std::size_t N> TextBox<N>::TextBox() : m_background(), m_cursor(), m_in
     m_text[N] = 0;
 }
 
-template<std::size_t N> TextBox<N>::~TextBox()
+template<std::size_t N> IntegralTextBox<N>::~IntegralTextBox()
 {}
 
-template<std::size_t N> void TextBox<N>::initialize(const sf::Texture& textures)
+template<std::size_t N> void IntegralTextBox<N>::initialize(const sf::Texture& textures)
 {
     using namespace Resources::Textures::Rectangles;
 
@@ -100,25 +93,25 @@ template<std::size_t N> void TextBox<N>::initialize(const sf::Texture& textures)
     }
 }
 
-template<std::size_t N> void TextBox<N>::showCursor()
+template<std::size_t N> void IntegralTextBox<N>::showCursor()
 {
     m_cursor_visible = true;
 }
-template<std::size_t N> void TextBox<N>::hideCursor()
+template<std::size_t N> void IntegralTextBox<N>::hideCursor()
 {
     m_cursor_visible = false;
 }
-template<std::size_t N> bool TextBox<N>::isCursorVisible()const
+template<std::size_t N> bool IntegralTextBox<N>::isCursorVisible()const
 {
     return m_cursor_visible;
 }
 
-template<std::size_t N> sf::Vector2f TextBox<N>::getSize()const
+template<std::size_t N> sf::Vector2f IntegralTextBox<N>::getSize()const
 {
     return m_background.getSize();
 }
 
-template<std::size_t N> void TextBox<N>::clear()
+template<std::size_t N> void IntegralTextBox<N>::clear()
 {
     using namespace Resources::Textures::Rectangles;
 
@@ -130,7 +123,7 @@ template<std::size_t N> void TextBox<N>::clear()
     m_index_current = 0;
     m_cursor.setPosition(this->CURSOR_START_POSITION);
 }
-template<std::size_t N> void TextBox<N>::setText(const char* str)
+template<std::size_t N> void IntegralTextBox<N>::setText(const char* str)
 {
     using namespace Resources::Textures::Rectangles;
     using namespace Resources::Textures;
@@ -148,16 +141,16 @@ template<std::size_t N> void TextBox<N>::setText(const char* str)
     m_cursor.setPosition(this->CURSOR_START_POSITION + sf::Vector2f(m_index_current * DIGIT_WIDTH, 0.0f));
 }
 
-template<std::size_t N> const char* TextBox<N>::getText()const
+template<std::size_t N> const char* IntegralTextBox<N>::getText()const
 {
     return m_text;
 }
-template<std::size_t N> std::size_t TextBox<N>::getTextLength()const
+template<std::size_t N> std::size_t IntegralTextBox<N>::getTextLength()const
 {
     return m_index_current;
 }
 
-template<std::size_t N> void TextBox<N>::onTextEntered(const sf::Event::TextEvent& event)
+template<std::size_t N> void IntegralTextBox<N>::onTextEntered(const sf::Event::TextEvent& event)
 {
     using namespace Resources::Textures::Rectangles;
     using namespace Resources::Textures;

@@ -1,36 +1,24 @@
 #ifndef MINESWEEPER_MENU_HPP_INCLUDED
 #define MINESWEEPER_MENU_HPP_INCLUDED
 
-#include "PushButton.hpp"
+#include "Scene.hpp"
+#include "RectangularObject.hpp"
+#include "SpriteButton.hpp"
 
-class Menu : public sf::Drawable, public sf::Transformable
+class Menu : public Scene, public RectangularObject
 {
+protected:
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const = 0;
+
 public:
-    static constexpr std::size_t HEIGHT = 19;
-    static const sf::Vector2f ITEM_OFFSET;
+    SpriteButton button;
 
-private:
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
+    Menu() {}
+    virtual ~Menu() {}
 
-    sf::RectangleShape m_background;
-public:
-    PushButton game_button;
-
-    Menu();
-    ~Menu();
-
-    void initialize(const sf::Texture& textures);
-
-    template<typename T> void setSize(const T width, const T height)
-    {
-        m_background.setSize(sf::Vector2f(width, height));
-    }
-    template<typename T> void setSize(const sf::Vector2<T> size)
-    {
-        m_background.setSize(sf::Vector2f(size.x, size.y));
-    }
-
-    sf::Vector2f getSize()const;
+    virtual void open() = 0;
+    virtual void close() = 0;
+    virtual bool isOpen()const = 0;
 };
 
 #endif

@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-class Scene : public sf::Drawable
+class Scene : virtual public sf::Drawable
 {
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const = 0;

@@ -1,10 +1,10 @@
 #ifndef MINESWEEPER_HEADER_HPP_INCLUDED
 #define MINESWEEPER_HEADER_HPP_INCLUDED
 
+#include "ResizableRectangularObject.hpp"
 #include "Smiley.hpp"
-#include <SFML/Graphics.hpp>
 
-class Header : public sf::Drawable, public sf::Transformable
+class Header : public ResizableRectangularObject
 {
 public:
     static constexpr std::size_t HEIGHT = 33;
@@ -17,22 +17,15 @@ private:
 
 public:
     Header();
-    ~Header();
+    virtual ~Header();
 
     void initialize(const sf::Texture& textures);
+    void setTexture(const sf::Texture& textures);
 
-    template<typename T> void setSize(const T width, const T height)
-    {
-        m_size.x = width;
-        m_size.y = height;
-    }
-    template<typename T> void setSize(const sf::Vector2<T> size)
-    {
-        m_size.x = size.x;
-        m_size.y = size.y;
-    }
+    virtual void setSize(const float width, const float height);
+    virtual void setSize(const sf::Vector2f size);
 
-    sf::Vector2f getSize()const;
+    virtual sf::Vector2f getSize()const;
 };
 
 #endif

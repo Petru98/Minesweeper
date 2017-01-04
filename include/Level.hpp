@@ -2,7 +2,7 @@
 #define MINESWEEPER_LEVEL_HPP_INCLUDED
 
 #include "Scene.hpp"
-#include "Menu.hpp"
+#include "MenuBar.hpp"
 #include "GameMenu.hpp"
 #include "Background.hpp"
 #include "Header.hpp"
@@ -36,20 +36,18 @@ public:
 
         Difficulty() : lines(0), columns(0), mines(0) {}
         Difficulty(const sf::Uint16 l, const sf::Uint16 c, const sf::Uint16 m) : lines(l), columns(c), mines(m) {}
+
+        static const Difficulty beginner;
+        static const Difficulty intermediate;
+        static const Difficulty expert;
     };
 
-    static const Difficulty beginner;
-    static const Difficulty intermediate;
-    static const Difficulty expert;
-
 private:
-    static Difficulty S_correctDifficulty(Difficulty difficulty);
-
     GameMenu           m_game_menu;
-    Menu               m_menu;
-    Header             m_header;
-    Table              m_table;
     Background         m_background;
+    Header             m_header;
+    MenuBar            m_menu_bar;
+    Table              m_table;
     sf::RenderWindow&  m_window;
     const sf::Texture& m_textures;
     bool               m_game_over;
@@ -59,11 +57,22 @@ private:
     void M_initializeHeader();
     void M_resizeWindow();
 
+    void M_onMouseButtonPressedTable(const sf::Event::MouseButtonEvent event);
+    void M_onMouseButtonPressedSmiley(const sf::Event::MouseButtonEvent event);
+
+    void M_onMouseButtonReleasedTable(const sf::Event::MouseButtonEvent event);
+    void M_onMouseButtonReleasedSmiley(const sf::Event::MouseButtonEvent event);
+
+    void M_onMouseMovedInGame(const sf::Event::MouseMoveEvent event);
+    void M_onMouseMovedGameOver(const sf::Event::MouseMoveEvent event);
+
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:
+    static Difficulty setDifficultyInBounds(Difficulty difficulty);
+
     Level(sf::RenderWindow& window, const sf::Texture& texture);
-    ~Level();
+    virtual ~Level();
 
     void create(const Difficulty difficulty);
 

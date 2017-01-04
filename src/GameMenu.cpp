@@ -28,10 +28,12 @@ void GameMenu::initialize(const sf::Texture& textures)
     using namespace Resources::Textures::Rectangles;
     using namespace Resources::Textures;
 
-    PushButton& beginner     = m_buttons[Buttons::Beginner];
-    PushButton& intermediate = m_buttons[Buttons::Intermediate];
-    PushButton& expert       = m_buttons[Buttons::Expert];
-    PushButton& new_game     = m_buttons[Buttons::NewGame];
+    this->button.initialize(textures, text[Indexes::TextGame]);
+
+    SpriteButton& beginner     = m_buttons[Buttons::Beginner];
+    SpriteButton& intermediate = m_buttons[Buttons::Intermediate];
+    SpriteButton& expert       = m_buttons[Buttons::Expert];
+    SpriteButton& new_game     = m_buttons[Buttons::NewGame];
 
     beginner.initialize(textures, text[Indexes::TextBeginner]);
     intermediate.initialize(textures, text[Indexes::TextIntermediate]);
@@ -74,17 +76,15 @@ bool GameMenu::isOpen()const
     return m_open;
 }
 
-void GameMenu::onClosed()
-{}
+sf::Vector2f GameMenu::getSize()const
+{
+    return m_background.getSize();
+}
 
-void GameMenu::onResized(const sf::Event::SizeEvent& event)
-{}
-
-void GameMenu::onLostFocus()
-{}
-
-void GameMenu::onGainedFocus()
-{}
+void GameMenu::onClosed() {}
+void GameMenu::onResized(const sf::Event::SizeEvent& event) {}
+void GameMenu::onLostFocus() {}
+void GameMenu::onGainedFocus() {}
 
 void GameMenu::onTextEntered(const sf::Event::TextEvent& event)
 {
@@ -94,34 +94,36 @@ void GameMenu::onTextEntered(const sf::Event::TextEvent& event)
         m_focus->onTextEntered(event);
 }
 
-void GameMenu::onKeyPressed(const sf::Event::KeyEvent& event)
-{}
+void GameMenu::onKeyPressed(const sf::Event::KeyEvent& event) {}
+void GameMenu::onKeyReleased(const sf::Event::KeyEvent& event) {}
+void GameMenu::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event) {}
 
-void GameMenu::onKeyReleased(const sf::Event::KeyEvent& event)
-{}
-
-void GameMenu::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event)
-{}
-
+/* onMouseButtonPressed */
 void GameMenu::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
-    float relative_x = event.x - this->getPosition().x;
-    float relative_y = event.y - this->getPosition().y;
+    const float relative_x = event.x - this->getPosition().x;
+    const float relative_y = event.y - this->getPosition().y;
 
     if(m_lines.contains(relative_x, relative_y) == true)
-        M_setFocus(m_lines);
+        M_clickTextBox(m_lines, event.button);
     else if(m_columns.contains(relative_x, relative_y) == true)
-        M_setFocus(m_columns);
+        M_clickTextBox(m_columns, event.button);
     else if(m_mines.contains(relative_x, relative_y) == true)
-        M_setFocus(m_mines);
-    else if(m_buttons[Buttons::Beginner].contains(relative_x, relative_y) == true)
-        m_buttons[Buttons::Beginner].press();
-    else if(m_buttons[Buttons::Intermediate].contains(relative_x, relative_y) == true)
-        m_buttons[Buttons::Intermediate].press();
-    else if(m_buttons[Buttons::Expert].contains(relative_x, relative_y) == true)
-        m_buttons[Buttons::Expert].press();
-    else if(m_buttons[Buttons::NewGame].contains(relative_x, relative_y) == true)
-        m_buttons[Buttons::NewGame].press();
+        M_clickTextBox(m_mines, event.button);
+    else if(event.button == sf::Mouse::Left)
+    {
+        for(std::size_t i = 0; i < Buttons::Count; ++i)
+            if(m_buttons[i].contains(relative_x, relative_y) == true)
+            {
+                m_buttons[i].press();
+                break;
+            }
+    }
+}
+void GameMenu::M_clickTextBox(TextBoxBase& text_box, sf::Mouse::Button mouse_button)
+{
+    if(mouse_button == sf::Mouse::Left || mouse_button == sf::Mouse::Right)
+        M_setFocus(text_box);
 }
 void GameMenu::M_setFocus(TextBoxBase& text_box)
 {
@@ -130,54 +132,61 @@ void GameMenu::M_setFocus(TextBoxBase& text_box)
     m_focus->showCursor();
 }
 
+/* onMouseButtonReleased */
 void GameMenu::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
-    float relative_x = event.x - this->getPosition().x;
-    float relative_y = event.y - this->getPosition().y;
-
-    if(m_buttons[Buttons::Beginner].contains(relative_x, relative_y) == true)
-    {
-        m_buttons[Buttons::Beginner].release();
-        char buffer[4];
-        m_lines.setText(Uint16ToString(Level::beginner.lines, buffer));
-        m_columns.setText(Uint16ToString(Level::beginner.columns, buffer));
-        m_mines.setText(Uint16ToString(Level::beginner.mines, buffer));
-    }
-    else if(m_buttons[Buttons::Intermediate].contains(relative_x, relative_y) == true)
-    {
-        m_buttons[Buttons::Intermediate].release();
-        char buffer[4];
-        m_lines.setText(Uint16ToString(Level::intermediate.lines, buffer));
-        m_columns.setText(Uint16ToString(Level::intermediate.columns, buffer));
-        m_mines.setText(Uint16ToString(Level::intermediate.mines, buffer));
-    }
-    else if(m_buttons[Buttons::Expert].contains(relative_x, relative_y) == true)
-    {
-        m_buttons[Buttons::Expert].release();
-        char buffer[4];
-        m_lines.setText(Uint16ToString(Level::expert.lines, buffer));
-        m_columns.setText(Uint16ToString(Level::expert.columns, buffer));
-        m_mines.setText(Uint16ToString(Level::expert.mines, buffer));
-    }
-    else if(m_buttons[Buttons::NewGame].contains(relative_x, relative_y) == true)
+    if(m_buttons[Buttons::NewGame].isPressed() == true)
     {
         m_buttons[Buttons::NewGame].release();
-        Level::Difficulty difficulty;
-        difficulty.lines   = stringToUint16(m_lines.getText());
-        difficulty.columns = stringToUint16(m_columns.getText());
-        difficulty.mines   = stringToUint16(m_mines.getText());
-        m_level->create(difficulty);
-        this->close();
+        M_startNewGame();
+    }
+    else
+    {
+        for(std::size_t i = Buttons::Beginner; i <= Buttons::Expert; ++i)
+            if(m_buttons[i].isPressed() == true)
+            {
+                const Level::Difficulty difficulties[] = {Level::Difficulty::beginner, Level::Difficulty::intermediate, Level::Difficulty::expert};
+                const Level::Difficulty& difficulty = difficulties[i - Buttons::Beginner];
+
+                m_buttons[i].release();
+                M_setNewGameInfo(difficulty.lines, difficulty.columns, difficulty.mines);
+                break;
+            }
     }
 }
-
-void GameMenu::onMouseMoved(const sf::Event::MouseMoveEvent& event)
+void GameMenu::M_startNewGame()
 {
+    const Level::Difficulty difficulty =
+    {
+        stringToUint16(m_lines.getText()),
+        stringToUint16(m_columns.getText()),
+        stringToUint16(m_mines.getText())
+    };
 
+    m_level->create(difficulty);
+    this->close();
+}
+void GameMenu::M_setNewGameInfo(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines)
+{
+    char buffer[4];
+    m_lines.setText(Uint16ToString(lines, buffer));
+    m_columns.setText(Uint16ToString(columns, buffer));
+    m_mines.setText(Uint16ToString(mines, buffer));
 }
 
-void GameMenu::onMouseEntered()
-{}
+/* onMouseMoved */
+void GameMenu::onMouseMoved(const sf::Event::MouseMoveEvent& event)
+{
+    const float relative_x = event.x - this->getPosition().x;
+    const float relative_y = event.y - this->getPosition().y;
 
-void GameMenu::onMouseLeft()
-{}
+    for(std::size_t i = 0; i < Buttons::Count; ++i)
+        if(m_buttons[i].isPressed() == true && m_buttons[i].contains(relative_x, relative_y) == false)
+        {
+            m_buttons[i].release();
+            break;
+        }
+}
+
+void GameMenu::onMouseEntered() {}
+void GameMenu::onMouseLeft() {}

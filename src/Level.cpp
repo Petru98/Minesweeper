@@ -1,53 +1,14 @@
 #include "Level.hpp"
 
 #include "random.hpp"
+#include "File.hpp"
 #include <ctime>
-#include "file.hpp"
 
-const Level::Difficulty Level::beginner     = {9 , 9 , 10};
-const Level::Difficulty Level::intermediate = {16, 16, 40};
-const Level::Difficulty Level::expert       = {16, 30, 99};
+const Level::Difficulty Level::Difficulty::beginner     = {9 , 9 , 10};
+const Level::Difficulty Level::Difficulty::intermediate = {16, 16, 40};
+const Level::Difficulty Level::Difficulty::expert       = {16, 30, 99};
 
-void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
-{
-    if(m_game_menu.isOpen() == true)
-        target.draw(m_game_menu, states);
-    else
-    {
-        target.draw(m_menu, states);
-        target.draw(m_background, states);
-        target.draw(m_header, states);
-        target.draw(m_table, states);
-    }
-}
-
-/* Constructor / Destructor */
-Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
-    : m_game_menu(this), m_menu(), m_header(), m_table(), m_background(), m_window(window), m_textures(textures), m_game_over(false)
-{
-    Random::seed(std::time(nullptr));
-    m_game_menu.setPosition(sf::Vector2f(0.0f, Menu::HEIGHT));
-    m_game_menu.initialize(m_textures);
-}
-
-Level::~Level()
-{}
-
-/* New game */
-void Level::create(Level::Difficulty difficulty)
-{
-    difficulty = S_correctDifficulty(difficulty);
-    if(m_table.create(difficulty.lines, difficulty.columns, difficulty.mines, m_textures) == false)
-        throw Exception(Error::Allocate, Error::messages[Error::Allocate]);
-
-    M_initializeMenu();
-    M_initializeBackground();
-    M_initializeHeader();
-    m_table.setPosition(m_background.getPosition() + m_background.table_position);
-    M_resizeWindow();
-    m_game_over = false;
-}
-Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
+Level::Difficulty Level::setDifficultyInBounds(Level::Difficulty difficulty)
 {
     if(difficulty.lines == 0)
         difficulty.lines = 1;
@@ -66,14 +27,51 @@ Level::Difficulty Level::S_correctDifficulty(Level::Difficulty difficulty)
 
     return difficulty;
 }
+
+void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
+{
+    target.draw(m_menu_bar, states);
+
+    if(m_menu_bar.getOpenMenu() == nullptr)
+    {
+        target.draw(m_background, states);
+        target.draw(m_header, states);
+        target.draw(m_table, states);
+    }
+}
+
+/* Constructor / Destructor */
+Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
+    : m_game_menu(this), m_background(), m_header(), m_menu_bar(), m_table(), m_window(window), m_textures(textures), m_game_over(false)
+{
+    Random::seed(std::time(nullptr));
+    m_game_menu.initialize(m_textures);
+    m_menu_bar.addMenu(m_game_menu);
+}
+Level::~Level()
+{}
+
+/* New game */
+void Level::create(Level::Difficulty difficulty)
+{
+    difficulty = setDifficultyInBounds(difficulty);
+    if(m_table.create(difficulty.lines, difficulty.columns, difficulty.mines, m_textures) == false)
+        throw Exception(Error::Allocate, Error::messages[Error::Allocate]);
+
+    M_initializeMenu();
+    M_initializeBackground();
+    M_initializeHeader();
+    m_table.setPosition(m_background.getPosition() + m_background.table_position);
+    M_resizeWindow();
+    m_game_over = false;
+}
 void Level::M_initializeMenu()
 {
-    m_menu.initialize(m_textures);
-    m_menu.setSize(sf::Vector2f(m_table.getSize().x + Table::LEFT_OFFSET + Table::RIGHT_OFFSET, Menu::HEIGHT));
+    m_menu_bar.setSize(sf::Vector2f(m_table.getSize().x + Table::LEFT_OFFSET + Table::RIGHT_OFFSET, MenuBar::HEIGHT));
 }
 void Level::M_initializeBackground()
 {
-    m_background.setPosition(0.0f, Menu::HEIGHT);
+    m_background.setPosition(0.0f, MenuBar::HEIGHT);
     m_background.setSize(m_table.getSize() + sf::Vector2f(Table::LEFT_OFFSET + Table::RIGHT_OFFSET, Table::TOP_OFFSET + Table::BOTTOM_OFFSET));
 }
 void Level::M_initializeHeader()
@@ -85,7 +83,7 @@ void Level::M_initializeHeader()
 
 void Level::M_resizeWindow()
 {
-    const sf::Vector2u size(m_background.getSize().x, m_background.getSize().y + Menu::HEIGHT);
+    const sf::Vector2u size(m_background.getSize().x, m_background.getSize().y + MenuBar::HEIGHT);
     if(m_window.isOpen() == false)
     {
         m_window.create(sf::VideoMode(size.x, size.y), "Minesweeper", sf::Style::Titlebar | sf::Style::Close);
@@ -121,12 +119,9 @@ void Level::lose()
 void Level::handleEvent(const sf::Event& event)
 {
     if(event.type == sf::Event::Closed)
-    {
-        m_game_menu.onClosed();
         this->onClosed();
-    }
-    else if(m_game_menu.isOpen() == true)
-        m_game_menu.handleEvent(event);
+    else if(m_menu_bar.getOpenMenu() != nullptr)
+        m_menu_bar.handleEvent(event);
     else
         Scene::handleEvent(event);
 }
@@ -141,86 +136,99 @@ void Level::onResized(const sf::Event::SizeEvent& event)
     m_window.setView(sf::View(sf::FloatRect(0, 0, event.width, event.height)));
 }
 
-void Level::onLostFocus()
-{}
+void Level::onLostFocus() {}
+void Level::onGainedFocus() {}
+void Level::onTextEntered(const sf::Event::TextEvent& event) {}
+void Level::onKeyPressed(const sf::Event::KeyEvent& event) {}
+void Level::onKeyReleased(const sf::Event::KeyEvent& event) {}
+void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event) {}
 
-void Level::onGainedFocus()
-{}
-
-void Level::onTextEntered(const sf::Event::TextEvent& event)
-{}
-
-void Level::onKeyPressed(const sf::Event::KeyEvent& event)
-{}
-
-void Level::onKeyReleased(const sf::Event::KeyEvent& event)
-{}
-
-void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event)
-{}
-
+/* onMouseButtonPressed */
 void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.contains(event.x, event.y) == true && m_game_over == false)
-    {
-        m_table.onMouseButtonPressed(event);
-        if(event.button == sf::Mouse::Left)
-            m_header.smiley.setScared();
-    }
-    else if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == true)
-        m_header.smiley.press();
-    else if(m_menu.game_button.contains(event.x, event.y) == true)
-        m_menu.game_button.press();
+    if(m_game_over == false && m_table.contains(event.x, event.y) == true)
+        M_onMouseButtonPressedTable(event);
+    else if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == true)
+        M_onMouseButtonPressedSmiley(event);
+    else if(m_menu_bar.contains(event.x, event.y) == true)
+        m_menu_bar.onMouseButtonPressed(event);
 }
 
+void Level::M_onMouseButtonPressedTable(const sf::Event::MouseButtonEvent event)
+{
+    m_table.onMouseButtonPressed(event);
+
+    if(event.button == sf::Mouse::Left)
+        m_header.smiley.setScared();
+}
+
+void Level::M_onMouseButtonPressedSmiley(const sf::Event::MouseButtonEvent event)
+{
+    if(event.button == sf::Mouse::Left)
+        m_header.smiley.press();
+}
+
+/* onMouseButtonReleased */
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
-    if(m_table.contains(event.x, event.y) == true && m_game_over == false)
-    {
-        int status = m_table.onMouseButtonReleased(event);
-
-        if(status == 1)
-            win();
-        else if(status == -1)
-            lose();
-        else if(event.button == sf::Mouse::Left)
-            m_header.smiley.reset();
-    }
-    else if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == true)
-    {
-        if(m_header.smiley.isPressed() == true)
-            this->create(Difficulty(m_table.lines(), m_table.columns(), m_table.mines()));
-    }
-    else if(m_menu.game_button.release() == true)
-        m_game_menu.open();
+    if(m_game_over == false && m_table.contains(event.x, event.y) == true)
+        M_onMouseButtonReleasedTable(event);
+    else if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == true)
+        M_onMouseButtonReleasedSmiley(event);
+    else if(m_menu_bar.contains(event.x, event.y) == true)
+        m_menu_bar.onMouseButtonReleased(event);
 }
 
+void Level::M_onMouseButtonReleasedTable(const sf::Event::MouseButtonEvent event)
+{
+    int status = m_table.onMouseButtonReleased(event);
+
+    if(status == 1)
+        win();
+    else if(status == -1)
+        lose();
+    else if(event.button == sf::Mouse::Left)
+        m_header.smiley.reset();
+}
+
+void Level::M_onMouseButtonReleasedSmiley(const sf::Event::MouseButtonEvent event)
+{
+    if(m_header.smiley.isPressed() == true)
+        this->create(Difficulty(m_table.lines(), m_table.columns(), m_table.mines()));
+}
+
+/* onMouseMoved */
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == false)
         return;
 
+    m_menu_bar.onMouseMoved(event);
+
     if(m_game_over == false)
-    {
-        if(m_table.onMouseMoved(event) == true)
-            m_header.smiley.setScared();
-        else if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == false)
-        {
-            if(m_header.smiley.isPressed() == true)
-                m_header.smiley.release();
-            else
-                m_header.smiley.reset();
-        }
-    }
+        M_onMouseMovedInGame(event);
     else
+        M_onMouseMovedGameOver(event);
+}
+
+void Level::M_onMouseMovedInGame(const sf::Event::MouseMoveEvent event)
+{
+    if(m_table.onMouseMoved(event) == true)
+        m_header.smiley.setScared();
+    else if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == false)
     {
-        if(m_header.smiley.contains(sf::Vector2f(event.x, event.y) - m_header.getPosition()) == false)
+        if(m_header.smiley.isPressed() == true)
             m_header.smiley.release();
+        else
+            m_header.smiley.reset();
     }
 }
 
-void Level::onMouseEntered()
-{}
+void Level::M_onMouseMovedGameOver(const sf::Event::MouseMoveEvent event)
+{
+    if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == false)
+            m_header.smiley.release();
+}
 
-void Level::onMouseLeft()
-{}
+void Level::onMouseEntered() {}
+void Level::onMouseLeft() {}

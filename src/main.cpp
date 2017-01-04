@@ -18,12 +18,27 @@
     {
         cout << sizeof(T) << '\n';
     }
+    template<typename T> void log(const char* const type)
+    {
+        cout << type << " = " << sizeof(T) << '\n';
+    }
+    #define STRINGIFY(x) #x
+    #define log_size(type) log<type>(STRINGIFY(type))
 #else
     #define log(x)
 #endif
 
 int main()
 {
+    log_size(Game);
+    log_size(Level);
+    log_size(MenuBar);
+    log_size(GameMenu);
+    log_size(Background);
+    log_size(Header);
+    log_size(Table);
+    log_size(Cell);
+
     Game game;
 
     try

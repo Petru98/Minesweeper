@@ -1,8 +1,10 @@
 #ifndef MINESWEEPER_HEADER_HPP_INCLUDED
 #define MINESWEEPER_HEADER_HPP_INCLUDED
 
-#include "Smiley.hpp"
 #include "ResizableRectangularObject.hpp"
+#include "Smiley.hpp"
+
+class Level;
 
 class Header : public ResizableRectangularObject
 {
@@ -12,11 +14,12 @@ public:
     Smiley smiley;
 private:
     sf::Vector2f m_size;
+    Level*       m_level;
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:
-    Header();
+    Header(Level* level);
     virtual ~Header();
 
     void initialize(const sf::Texture& textures);

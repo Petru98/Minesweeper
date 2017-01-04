@@ -45,11 +45,11 @@ public:
 private:
     static Difficulty S_correctDifficulty(Difficulty difficulty);
 
-    GameMenu           m_game_menu;
     MenuBar            m_menu_bar;
+    GameMenu           m_game_menu;
+    Background         m_background;
     Header             m_header;
     Table              m_table;
-    Background         m_background;
     sf::RenderWindow&  m_window;
     const sf::Texture& m_textures;
     bool               m_game_over;

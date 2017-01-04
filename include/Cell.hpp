@@ -3,6 +3,7 @@
 
 #include "textures.hpp"
 #include "Button.hpp"
+#include "Flags.hpp"
 
 class Cell : public Button
 {
@@ -11,14 +12,23 @@ public:
     static constexpr std::size_t HEIGHT = Resources::Textures::CELL_HEIGHT;
 
 private:
+    struct Flags
+    {
+        enum
+        {
+            HasMine    = 1 << 0,
+            HasFlag    = 1 << 1,
+            IsRevealed = 1 << 2,
+            IsPressed  = 1 << 3
+        };
+    };
+
     sf::Sprite m_sprite;
     sf::Uint8  m_mines_count;
-    bool       m_has_mine;
-    bool       m_flag;
-    bool       m_revealed;
+    Flags8     m_status;
 
-    void M_revealGameOver();
-    void M_revealInGame();
+    bool M_revealGameOver();
+    bool M_revealInGame();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 

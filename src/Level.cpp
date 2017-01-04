@@ -22,13 +22,12 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
-    : m_game_menu(this), m_menu_bar(), m_header(), m_table(), m_background(), m_window(window), m_textures(textures), m_game_over(false)
+    : m_game_menu(this), m_menu_bar(), m_header(this), m_table(), m_background(), m_window(window), m_textures(textures), m_game_over(false)
 {
     Random::seed(std::time(nullptr));
     m_game_menu.initialize(m_textures);
     m_menu_bar.addMenu(m_game_menu);
 }
-
 Level::~Level()
 {}
 

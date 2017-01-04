@@ -169,8 +169,11 @@ void GameMenu::M_setNewGameInfo(const sf::Uint16 lines, const sf::Uint16 columns
 
 void GameMenu::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
+    const float relative_x = event.x - this->getPosition().x;
+    const float relative_y = event.y - this->getPosition().y;
+
     for(std::size_t i = 0; i < Buttons::Count; ++i)
-        if(m_buttons[i].isPressed() == true)
+        if(m_buttons[i].isPressed() == true && m_buttons[i].contains(relative_x, relative_y) == false)
         {
             m_buttons[i].release();
             break;

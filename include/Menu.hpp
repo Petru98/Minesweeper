@@ -7,11 +7,7 @@
 
 class Menu : public Scene, public RectangularObject
 {
-    friend class MenuBar;
-
 protected:
-    //MenuBar* m_menu_bar;
-
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const = 0;
 
 public:

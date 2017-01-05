@@ -25,7 +25,7 @@ private:
 
     sf::Sprite m_sprite;
     sf::Uint8  m_mines_count;
-    Flags8     m_status;
+    Flags8     m_state;
 
     bool M_revealGameOver();
     bool M_revealInGame();
@@ -46,8 +46,8 @@ public:
     void setMine();
     bool toggleFlag();
     void incrementMinesCount();
-
-    sf::Uint8 getMinesCount()const;
+    void setState(Flags8 state);
+    void setTextureRect(const sf::IntRect& rect);
 
     bool hasMine()const;
     bool hasFlag()const;
@@ -55,6 +55,10 @@ public:
     bool canPress()const;
     bool canRelease()const;
     bool canReveal()const;
+
+    sf::Uint8          getMinesCount()const;
+    Flags8             getState()const;
+    const sf::IntRect& getTextureRect()const;
 
     virtual bool press();
     virtual bool release();

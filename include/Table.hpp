@@ -5,7 +5,7 @@
 #include "Smiley.hpp"
 #include "Matrix.hpp"
 #include "Cell.hpp"
-#include "file.hpp"
+#include "File.hpp"
 #include "Exception.hpp"
 
 class Table : public RectangularObject
@@ -72,6 +72,11 @@ public:
     void onMouseButtonPressed(const sf::Event::MouseButtonEvent&);
     int  onMouseButtonReleased(const sf::Event::MouseButtonEvent&);
     bool onMouseMoved(const sf::Event::MouseMoveEvent&);
+
+    bool save(File& file)const;
+
+private:
+    bool M_saveCell(const std::size_t line, const std::size_t column, File& file)const;
 };
 
 #endif

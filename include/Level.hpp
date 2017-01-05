@@ -42,7 +42,20 @@ public:
         static const Difficulty expert;
     };
 
+    struct GameOver
+    {
+        enum
+        {
+            Lost = -1,
+            None = 0,
+            Won  = 1
+        };
+    };
+
 private:
+    static constexpr sf::Uint32 MAGIG_NUMBER = 0x4D535750;
+    static constexpr char SAVE_FILE[] = "last_game.sav";
+
     GameMenu           m_game_menu;
     Background         m_background;
     Header             m_header;
@@ -50,7 +63,7 @@ private:
     Table              m_table;
     sf::RenderWindow&  m_window;
     const sf::Texture& m_textures;
-    bool               m_game_over;
+    sf::Int8           m_game_over;
 
     void M_initializeMenu();
     void M_initializeBackground();
@@ -94,6 +107,9 @@ public:
     virtual void onMouseMoved(const sf::Event::MouseMoveEvent&);
     virtual void onMouseEntered();
     virtual void onMouseLeft();
+
+    bool save(const char* const filename);
+    bool save(File& file)const;
 };
 
 #endif

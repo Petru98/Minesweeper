@@ -300,3 +300,32 @@ bool Table::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 
     return false;
 }
+
+/* Save/Load */
+bool Table::save(File& file)const
+{
+    file.writeUint16(m_table.lines());
+    file.writeUint16(m_table.columns());
+    file.writeUint16(m_mines);
+    file.writeUint16(m_cells_left);
+
+    for(std::size_t i = 0; i < m_table.lines(); ++i)
+        for(std::size_t j = 0; j < m_table.columns(); ++j)
+            M_saveCell(i, j, file);
+    return true;
+}
+bool Table::M_saveCell(const std::size_t line, const std::size_t column, File& file)const
+{
+    const Cell& cell = m_table[line][column];
+
+    file.writeUint8(cell.getMinesCount());
+    file.writeUint8(static_cast<sf::Uint8>(cell.getState()));
+
+    const sf::IntRect rect = cell.getTextureRect();
+    file.writeUint16(rect.left);
+    file.writeUint16(rect.top);
+    file.writeUint16(rect.width);
+    file.writeUint16(rect.height);
+
+    return true;
+}

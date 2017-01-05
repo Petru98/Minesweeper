@@ -8,6 +8,8 @@ const Level::Difficulty Level::Difficulty::beginner     = {9 , 9 , 10};
 const Level::Difficulty Level::Difficulty::intermediate = {16, 16, 40};
 const Level::Difficulty Level::Difficulty::expert       = {16, 30, 99};
 
+constexpr char Level::SAVE_FILE[];
+
 Level::Difficulty Level::setDifficultyInBounds(Level::Difficulty difficulty)
 {
     if(difficulty.lines == 0)
@@ -42,7 +44,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
-    : m_game_menu(this), m_background(), m_header(), m_menu_bar(), m_table(), m_window(window), m_textures(textures), m_game_over(false)
+    : m_game_menu(this), m_background(), m_header(), m_menu_bar(), m_table(), m_window(window), m_textures(textures), m_game_over(GameOver::None)
 {
     Random::seed(std::time(nullptr));
     m_game_menu.initialize(m_textures);
@@ -63,7 +65,7 @@ void Level::create(Level::Difficulty difficulty)
     M_initializeHeader();
     m_table.setPosition(m_background.getPosition() + m_background.table_position);
     M_resizeWindow();
-    m_game_over = false;
+    m_game_over = GameOver::None;
 }
 void Level::M_initializeMenu()
 {
@@ -97,7 +99,7 @@ void Level::M_resizeWindow()
 /* Win / Lose */
 void Level::win()
 {
-    m_game_over = true;
+    m_game_over = GameOver::Won;
     m_header.smiley.setWin();
 
     for(std::size_t i = 0; i < m_table.lines(); ++i)
@@ -107,7 +109,7 @@ void Level::win()
 }
 void Level::lose()
 {
-    m_game_over = true;
+    m_game_over = GameOver::Lost;
     m_header.smiley.setLose();
 
     for(std::size_t i = 0; i < m_table.lines(); ++i)
@@ -128,6 +130,7 @@ void Level::handleEvent(const sf::Event& event)
 
 void Level::onClosed()
 {
+    this->save(SAVE_FILE);
     m_table.destroy();
 }
 
@@ -232,3 +235,20 @@ void Level::M_onMouseMovedGameOver(const sf::Event::MouseMoveEvent event)
 
 void Level::onMouseEntered() {}
 void Level::onMouseLeft() {}
+
+
+/* Save/Load */
+bool Level::save(const char* const filename)
+{
+    File file(filename, "wb");
+
+    if(file.isOpen() == false)
+        return false;
+    return this->save(file);
+}
+bool Level::save(File& file)const
+{
+    file.writeUint32(MAGIG_NUMBER);
+    file.writeInt8(m_game_over);
+    return m_table.save(file);
+}

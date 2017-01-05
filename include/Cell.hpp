@@ -46,6 +46,7 @@ public:
     void setMine();
     bool toggleFlag();
     void incrementMinesCount();
+    void setMinesCount(const sf::Uint8 count);
     void setState(Flags8 state);
     void setTextureRect(const sf::IntRect& rect);
 

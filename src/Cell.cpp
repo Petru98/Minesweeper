@@ -78,10 +78,6 @@ void Cell::setMine()
     m_state.set(Flags::HasMine);
     this->incrementMinesCount();
 }
-void Cell::incrementMinesCount()
-{
-    ++m_mines_count;
-}
 bool Cell::toggleFlag()
 {
     using namespace Resources::Textures::Rectangles;
@@ -97,6 +93,14 @@ bool Cell::toggleFlag()
         m_sprite.setTextureRect(cell[Indexes::CellNormal]);
 
     return true;
+}
+void Cell::incrementMinesCount()
+{
+    ++m_mines_count;
+}
+void Cell::setMinesCount(const sf::Uint8 count)
+{
+    m_mines_count = count;
 }
 void Cell::setState(Flags8 state)
 {

@@ -53,8 +53,7 @@ public:
     };
 
 private:
-    static constexpr sf::Uint32 MAGIG_NUMBER = 0x4D535750;
-    static constexpr char SAVE_FILE[] = "last_game.sav";
+    static constexpr sf::Uint32 MAGIC_NUMBER = 0x4D535750;
 
     GameMenu           m_game_menu;
     Background         m_background;
@@ -82,6 +81,8 @@ private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 
 public:
+    static constexpr char SAVE_FILE[] = "last_game.sav";
+
     static Difficulty setDifficultyInBounds(Difficulty difficulty);
 
     Level(sf::RenderWindow& window, const sf::Texture& texture);
@@ -108,8 +109,10 @@ public:
     virtual void onMouseEntered();
     virtual void onMouseLeft();
 
-    bool save(const char* const filename);
+    bool save(const char* const filename)const;
     bool save(File& file)const;
+    bool load(const char* const filename);
+    bool load(File& file);
 };
 
 #endif

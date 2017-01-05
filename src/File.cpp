@@ -85,7 +85,7 @@ sf::Uint32 File::readUint32()
     sf::Uint8 buff[4];
     fread(buff, 4, 1, m_file);
     return (static_cast<sf::Uint32>(buff[0]) << 24) | (static_cast<sf::Uint32>(buff[1]) << 16) |
-           (static_cast<sf::Uint32>(buff[1]) << 8)  | (static_cast<sf::Uint32>(buff[1]));
+           (static_cast<sf::Uint32>(buff[2]) << 8)  | (static_cast<sf::Uint32>(buff[3]));
 }
 
 sf::Int8 File::readInt8()

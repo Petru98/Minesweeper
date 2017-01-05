@@ -329,3 +329,39 @@ bool Table::M_saveCell(const std::size_t line, const std::size_t column, File& f
 
     return true;
 }
+
+bool Table::load(File& file, const sf::Texture& textures, bool game_over)
+{
+    const sf::Uint16 lines_count = file.readUint16();
+    const sf::Uint16 columns_count = file.readUint16();
+
+    if(m_table.create(lines_count, columns_count) == false)
+        return false;
+
+    m_mines = file.readUint16();
+    m_cells_left = file.readUint16();
+
+    for(std::size_t i = 0; i < m_table.lines(); ++i)
+        for(std::size_t j = 0; j < m_table.columns(); ++j)
+            M_loadCell(i, j, file, textures, game_over);
+    return true;
+}
+bool Table::M_loadCell(const std::size_t line, const std::size_t column, File& file, const sf::Texture& textures, const bool game_over)
+{
+    Cell& cell = m_table[line][column];
+
+    cell.setMinesCount(file.readUint8());
+    cell.setState(file.readUint8());
+
+    sf::IntRect rect;
+    rect.left   = file.readUint16();
+    rect.top    = file.readUint16();
+    rect.width  = file.readUint16();
+    rect.height = file.readUint16();
+
+    cell.setTexture(textures);
+    cell.setTextureRect(rect);
+    cell.setPosition(sf::Vector2f(column * Cell::WIDTH, line * Cell::HEIGHT));
+
+    return true;
+}

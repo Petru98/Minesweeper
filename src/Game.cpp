@@ -14,7 +14,8 @@ void Game::initialize()
     if(textures.loadFromMemory(Textures::pack.data, Textures::pack.size) == false)
         throw Exception(Error::LoadTextures, Error::messages[Error::LoadTextures]);
 
-    level.create(Level::Difficulty::beginner);
+    if(level.load(Level::SAVE_FILE) == false)
+        level.create(Level::Difficulty::beginner);
 }
 
 #ifndef NDEBUG

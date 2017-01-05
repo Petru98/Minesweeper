@@ -74,9 +74,11 @@ public:
     bool onMouseMoved(const sf::Event::MouseMoveEvent&);
 
     bool save(File& file)const;
+    bool load(File& file, const sf::Texture& textures, bool game_over);
 
 private:
     bool M_saveCell(const std::size_t line, const std::size_t column, File& file)const;
+    bool M_loadCell(const std::size_t line, const std::size_t column, File& file, const sf::Texture& textures, const bool game_over);
 };
 
 #endif

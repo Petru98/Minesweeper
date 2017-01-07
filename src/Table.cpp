@@ -122,10 +122,7 @@ int Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
             M_pressArea(index);
         else
-        {
-            M_toggleFlag(index);
-            return 1;
-        }
+            return M_toggleFlag(index);
     }
     return Level::Status::None;
 }
@@ -136,10 +133,14 @@ sf::Vector2i Table::M_getCellIndexAtPosition(const int x, const int y)const
     return sf::Vector2i((x - position.x) / Cell::WIDTH, (y - position.y) / Cell::HEIGHT);
 }
 
-bool Table::M_toggleFlag(const sf::Vector2i index)
+int Table::M_toggleFlag(const sf::Vector2i index)
 {
-    m_table[index.y][index.x].toggleFlag();
-    return m_table[index.y][index.x].hasFlag();
+    Cell& cell = m_table[index.y][index.x];
+
+    if(cell.isRevealed() == true)
+        return 0;
+    cell.toggleFlag();
+    return 1;
 }
 
 void Table::M_pressCell(const sf::Vector2i index)

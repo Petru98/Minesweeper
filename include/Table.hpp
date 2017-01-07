@@ -33,7 +33,7 @@ private:
     sf::Vector2i M_getCellIndexAtPosition(const int x, const int y)const;
     sf::Uint16   M_countAdjacentFlags(const sf::Vector2i index);
 
-    bool M_toggleFlag(const sf::Vector2i index);
+    int M_toggleFlag(const sf::Vector2i index);
 
     void M_pressCell(const sf::Vector2i index);
     void M_pressArea(const sf::Vector2i index);

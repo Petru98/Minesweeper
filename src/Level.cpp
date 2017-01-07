@@ -253,6 +253,7 @@ bool Level::save(File& file)const
 {
     file.writeUint32(MAGIC_NUMBER);
     file.writeInt8(m_game_over);
+    file.writeUint16(m_header.moves.getCount());
     return m_table.save(file);
 }
 bool Level::load(const char* const filename)
@@ -267,7 +268,9 @@ bool Level::load(File& file)
 {
     if(file.readUint32() != MAGIC_NUMBER)
         return false;
+
     m_game_over = file.readInt8();
+    sf::Uint16 moves_count = file.readUint16();
 
     if(m_table.load(file, m_textures, m_game_over) == false)
         return false;
@@ -277,6 +280,8 @@ bool Level::load(File& file)
     M_initializeHeader();
     m_table.setPosition(m_background.getPosition() + m_background.table_position);
     M_resizeWindow();
+
+    m_header.moves = moves_count;
 
     if(m_game_over == Status::Won)
         m_header.smiley.setWin();

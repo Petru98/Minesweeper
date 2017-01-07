@@ -124,7 +124,7 @@ int Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         else
             return M_toggleFlag(index);
     }
-    return Level::Status::None;
+    return 0;
 }
 
 sf::Vector2i Table::M_getCellIndexAtPosition(const int x, const int y)const
@@ -139,8 +139,9 @@ int Table::M_toggleFlag(const sf::Vector2i index)
 
     if(cell.isRevealed() == true)
         return 0;
+
     cell.toggleFlag();
-    return 1;
+    return ((cell.hasFlag() == true) ? 1 : -1);
 }
 
 void Table::M_pressCell(const sf::Vector2i index)

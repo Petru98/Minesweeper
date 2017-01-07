@@ -28,6 +28,7 @@ public:
     void writeUint32(const sf::Uint32 data);
 
     void writeInt8(const sf::Int8 data);
+    void writeInt16(const sf::Int16 data);
 
     void writeSize_t(const std::size_t data);
     void writeInt(const int data);
@@ -36,7 +37,8 @@ public:
     sf::Uint16 readUint16();
     sf::Uint32 readUint32();
 
-    sf::Int8 readInt8();
+    sf::Int8  readInt8();
+    sf::Int16 readInt16();
 
     std::size_t readSize_t();
     int         readInt();

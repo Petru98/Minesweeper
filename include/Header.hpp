@@ -11,6 +11,7 @@ public:
     static constexpr std::size_t HEIGHT = 33;
 
     Smiley  smiley;
+    Counter flags_left;
     Counter moves;
 private:
     sf::Vector2f m_size;

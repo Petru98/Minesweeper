@@ -9,7 +9,7 @@ protected:
     static constexpr std::size_t N = 3;
 
     sf::Sprite m_sprites[N];
-    sf::Uint16 m_count;
+    sf::Int16 m_count;
 
     void M_update();
 
@@ -25,19 +25,19 @@ public:
     void increment();
     void decrement();
 
-    void setCount(const sf::Uint16 count);
-    sf::Uint16 getCount()const;
+    void setCount(const sf::Int16 count);
+    sf::Int16 getCount()const;
 
     sf::Vector2f getSize()const;
 
     Counter& operator++ ();
     Counter& operator-- ();
 
-    Counter& operator= (const sf::Uint16 count);
+    Counter& operator= (const sf::Int16 count);
     Counter& operator= (const Counter& counter);
 
-    Counter& operator+= (const sf::Uint16 count);
-    Counter& operator-= (const sf::Uint16 count);
+    Counter& operator+= (const sf::Int16 count);
+    Counter& operator-= (const sf::Int16 count);
 };
 
 #endif

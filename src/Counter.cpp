@@ -49,12 +49,12 @@ void Counter::decrement()
     M_update();
 }
 
-void Counter::setCount(const sf::Uint16 count)
+void Counter::setCount(const sf::Int16 count)
 {
     m_count = count;
     M_update();
 }
-sf::Uint16 Counter::getCount()const
+sf::Int16 Counter::getCount()const
 {
     return m_count;
 }
@@ -68,9 +68,17 @@ void Counter::M_update()
 {
     using namespace Resources::Textures::Rectangles;
 
-    sf::Uint16 number = m_count;
+    sf::Int16 number = m_count;
+    std::size_t first_digit_index = 0;
 
-    for(std::size_t i = N; i > 0; --i)
+    if(number < 0)
+    {
+        m_sprites[0].setTextureRect(counter[Indexes::CounterMinus]);
+        first_digit_index = 1;
+        number = -number;
+    }
+
+    for(std::size_t i = N; i > first_digit_index; --i)
     {
         m_sprites[i-1].setTextureRect(counter[number % 10]);
         number /= 10;
@@ -80,8 +88,8 @@ void Counter::M_update()
 Counter& Counter::operator++ () {this->increment(); return *this;}
 Counter& Counter::operator-- () {this->decrement(); return *this;}
 
-Counter& Counter::operator+= (const sf::Uint16 count) {m_count += count; M_update(); return *this;}
-Counter& Counter::operator-= (const sf::Uint16 count) {m_count -= count; M_update(); return *this;}
+Counter& Counter::operator+= (const sf::Int16 count) {m_count += count; M_update(); return *this;}
+Counter& Counter::operator-= (const sf::Int16 count) {m_count -= count; M_update(); return *this;}
 
-Counter& Counter::operator=  (const sf::Uint16 count) {this->setCount(count); return *this;}
+Counter& Counter::operator=  (const sf::Int16 count) {this->setCount(count); return *this;}
 Counter& Counter::operator=  (const Counter& counter) {this->setCount(counter.m_count); return *this;}

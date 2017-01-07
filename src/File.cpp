@@ -56,7 +56,11 @@ void File::writeUint32(const sf::Uint32 data)
 
 void File::writeInt8(const sf::Int8 data)
 {
-    fwrite(&data, 1, 1, m_file);
+    this->writeUint8(static_cast<sf::Uint8>(data));
+}
+void File::writeInt16(const sf::Int16 data)
+{
+    this->writeUint16(static_cast<sf::Uint16>(data));
 }
 
 void File::writeSize_t(const std::size_t data)
@@ -90,9 +94,11 @@ sf::Uint32 File::readUint32()
 
 sf::Int8 File::readInt8()
 {
-    sf::Int8 buff;
-    fread(&buff, 1, 1, m_file);
-    return buff;
+    return static_cast<sf::Int8>(this->readUint8());
+}
+sf::Int16 File::readInt16()
+{
+    return static_cast<sf::Int16>(this->readUint16());
 }
 
 std::size_t File::readSize_t()

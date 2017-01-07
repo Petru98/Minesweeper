@@ -64,6 +64,8 @@ private:
     const sf::Texture& m_textures;
     sf::Int8           m_game_over;
 
+    void M_updateFlagsCount();
+
     void M_initializeMenu();
     void M_initializeBackground();
     void M_initializeHeader();

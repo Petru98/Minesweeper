@@ -1,5 +1,5 @@
 #include "Table.hpp"
-
+#include "Level.hpp"
 #include "random.hpp"
 
 const sf::Vector2i Table::INVALID_INDEX = {-1, -1};
@@ -92,6 +92,11 @@ bool Table::outOfBounds(const int line, const int column)const
     return m_table.outOfBounds(line, column);
 }
 
+int Table::getStatus(const int normal_status)const
+{
+    return (m_cells_left == m_mines) ? (Level::Status::Won) : (normal_status);
+}
+
 sf::Vector2f Table::getSize()const
 {
     return sf::Vector2f(Cell::WIDTH * m_table.columns(), Cell::HEIGHT * m_table.lines());
@@ -101,7 +106,7 @@ Cell* Table::operator[] (const sf::Uint16 index)            {return m_table[inde
 const Cell* Table::operator[] (const sf::Uint16 index)const {return m_table[index];}
 
 /* onMouseButtonPressed */
-void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
+int Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
     const sf::Vector2i index = M_getCellIndexAtPosition(event.x, event.y);
 
@@ -117,8 +122,12 @@ void Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
             M_pressArea(index);
         else
+        {
             M_toggleFlag(index);
+            return 1;
+        }
     }
+    return Level::Status::None;
 }
 
 sf::Vector2i Table::M_getCellIndexAtPosition(const int x, const int y)const
@@ -165,15 +174,14 @@ int Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         {
             if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
                 return M_revealFromArea(m_pressed_cell_index);
-            else
-            {
-                M_releaseCell(m_pressed_cell_index);
-                M_revealFromCell(m_pressed_cell_index);
 
-                if(m_table[m_pressed_cell_index.y][m_pressed_cell_index.x].hasMine() == true)
-                    return -1;
-            }
+            M_releaseCell(m_pressed_cell_index);
+            M_revealFromCell(m_pressed_cell_index);
+            if(m_table[m_pressed_cell_index.y][m_pressed_cell_index.x].hasMine() == true)
+                return Level::Status::Lost;
+
             m_pressed_cell_index = this->INVALID_INDEX;
+            return this->getStatus(1);
         }
         else if(event.button == sf::Mouse::Right)
         {
@@ -182,7 +190,7 @@ int Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         }
     }
 
-    return m_cells_left == m_mines;
+    return this->getStatus();
 }
 
 sf::Uint16 Table::M_countAdjacentFlags(const sf::Vector2i index)
@@ -241,14 +249,15 @@ int Table::M_revealFromArea(const sf::Vector2i index)
     const Cell& cell = m_table[index.y][index.x];
     M_releaseArea(index);
 
-    if(cell.isRevealed() == true && M_countAdjacentFlags(index) == cell.getMinesCount())
+    if(cell.isRevealed() == true && cell.getMinesCount() > 0 && M_countAdjacentFlags(index) == cell.getMinesCount())
         return M_revealAdjacentCells(index);
 
-    return m_cells_left == m_mines;
+    return this->getStatus();
 }
 int Table::M_revealAdjacentCells(const sf::Vector2i index)
 {
     bool revealed_mines = false;
+    bool revealed_cells = false;
 
     for(std::size_t i = 0; i < DIRECTIONS_COUNT; ++i)
     {
@@ -261,6 +270,7 @@ int Table::M_revealAdjacentCells(const sf::Vector2i index)
             if(cell.canReveal() == true)
             {
                 M_revealFromCell(index_adjacent);
+                revealed_cells = true;
 
                 if(cell.hasMine() == true)
                     revealed_mines = true;
@@ -269,8 +279,8 @@ int Table::M_revealAdjacentCells(const sf::Vector2i index)
     }
 
     if(revealed_mines == true)
-        return -1;
-    return m_cells_left == m_mines;
+        return Level::Status::Lost;
+    return this->getStatus(revealed_cells == true ? 1 : Level::Status::None);
 }
 
 /* onMouseMoved */

@@ -64,12 +64,14 @@ public:
     bool isCreated()const;
     bool outOfBounds(const int line, const int column)const;
 
+    int getStatus(const int normal_status = 0)const;
+
     virtual sf::Vector2f getSize()const;
 
     Cell* operator[] (const sf::Uint16 index);
     const Cell* operator[] (const sf::Uint16 index)const;
 
-    void onMouseButtonPressed(const sf::Event::MouseButtonEvent&);
+    int onMouseButtonPressed(const sf::Event::MouseButtonEvent&);
     int  onMouseButtonReleased(const sf::Event::MouseButtonEvent&);
     bool onMouseMoved(const sf::Event::MouseMoveEvent&);
 

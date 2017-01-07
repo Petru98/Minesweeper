@@ -3,13 +3,15 @@
 
 #include "ResizableRectangularObject.hpp"
 #include "Smiley.hpp"
+#include "Counter.hpp"
 
 class Header : public ResizableRectangularObject
 {
 public:
     static constexpr std::size_t HEIGHT = 33;
 
-    Smiley smiley;
+    Smiley  smiley;
+    Counter moves;
 private:
     sf::Vector2f m_size;
 

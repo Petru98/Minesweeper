@@ -4,6 +4,7 @@ void Header::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
     states.transform.combine(this->getTransform());
     target.draw(smiley, states);
+    target.draw(moves);
 }
 
 Header::Header() : smiley(), m_size()
@@ -15,12 +16,15 @@ Header::~Header()
 
 void Header::initialize(const sf::Texture& textures)
 {
-    smiley.initialize(textures);
     smiley.setPosition(static_cast<int>(m_size.x) / 2, static_cast<int>(m_size.y) / 2);
+    smiley.initialize(textures);
+    moves.setPosition(this->getPosition() + sf::Vector2f(m_size.x - moves.getSize().x - 8, 5));
+    moves.initialize(textures);
 }
 void Header::setTexture(const sf::Texture& textures)
 {
     smiley.setTexture(textures);
+    moves.setTexture(textures);
 }
 
 void Header::setSize(const float width, const float height)

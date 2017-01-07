@@ -31,6 +31,11 @@ void Counter::initialize(const sf::Texture& textures)
         m_sprites[i].setTextureRect(counter[0]);
     }
 }
+void Counter::setTexture(const sf::Texture& textures)
+{
+    for(std::size_t i = 0; i < N; ++i)
+        m_sprites[i].setTexture(textures);
+}
 
 void Counter::increment()
 {
@@ -53,6 +58,11 @@ sf::Uint16 Counter::getCount()const
     return m_count;
 }
 
+sf::Vector2f Counter::getSize()const
+{
+    return sf::Vector2f(N * Resources::Textures::COUNTER_DIGIT_WIDTH, Resources::Textures::COUNTER_DIGIT_HEIGHT);
+}
+
 void Counter::M_update()
 {
     using namespace Resources::Textures::Rectangles;
@@ -65,3 +75,12 @@ void Counter::M_update()
         number /= 10;
     }
 }
+
+Counter& Counter::operator++ () {this->increment(); return *this;}
+Counter& Counter::operator-- () {this->decrement(); return *this;}
+
+Counter& Counter::operator+= (const sf::Uint16 count) {m_count += count; M_update(); return *this;}
+Counter& Counter::operator-= (const sf::Uint16 count) {m_count -= count; M_update(); return *this;}
+
+Counter& Counter::operator=  (const sf::Uint16 count) {this->setCount(count); M_update(); return *this;}
+Counter& Counter::operator=  (const Counter& counter) {this->setCount(counter.m_count); M_update(); return *this;}

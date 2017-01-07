@@ -44,7 +44,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 
 /* Constructor / Destructor */
 Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
-    : m_game_menu(this), m_background(), m_header(), m_menu_bar(), m_table(), m_window(window), m_textures(textures), m_game_over(GameOver::None)
+    : m_game_menu(this), m_background(), m_header(), m_menu_bar(), m_table(), m_window(window), m_textures(textures), m_game_over(Status::None)
 {
     Random::seed(std::time(nullptr));
     m_game_menu.initialize(m_textures);
@@ -65,7 +65,7 @@ void Level::create(Level::Difficulty difficulty)
     M_initializeHeader();
     m_table.setPosition(m_background.getPosition() + m_background.table_position);
     M_resizeWindow();
-    m_game_over = GameOver::None;
+    m_game_over = Status::None;
 }
 void Level::M_initializeMenu()
 {
@@ -99,7 +99,7 @@ void Level::M_resizeWindow()
 /* Win / Lose */
 void Level::win()
 {
-    m_game_over = GameOver::Won;
+    m_game_over = Status::Won;
     m_header.smiley.setWin();
 
     for(std::size_t i = 0; i < m_table.lines(); ++i)
@@ -109,7 +109,7 @@ void Level::win()
 }
 void Level::lose()
 {
-    m_game_over = GameOver::Lost;
+    m_game_over = Status::Lost;
     m_header.smiley.setLose();
 
     for(std::size_t i = 0; i < m_table.lines(); ++i)
@@ -159,7 +159,7 @@ void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 
 void Level::M_onMouseButtonPressedTable(const sf::Event::MouseButtonEvent event)
 {
-    m_table.onMouseButtonPressed(event);
+    m_header.moves += m_table.onMouseButtonPressed(event);
 
     if(event.button == sf::Mouse::Left)
         m_header.smiley.setScared();
@@ -186,12 +186,15 @@ void Level::M_onMouseButtonReleasedTable(const sf::Event::MouseButtonEvent event
 {
     int status = m_table.onMouseButtonReleased(event);
 
-    if(status == 1)
+    if(status == Status::Won)
         win();
-    else if(status == -1)
+    else if(status == Status::Lost)
         lose();
     else if(event.button == sf::Mouse::Left)
+    {
         m_header.smiley.reset();
+        m_header.moves += status;
+    }
 }
 
 void Level::M_onMouseButtonReleasedSmiley(const sf::Event::MouseButtonEvent event)
@@ -275,9 +278,9 @@ bool Level::load(File& file)
     m_table.setPosition(m_background.getPosition() + m_background.table_position);
     M_resizeWindow();
 
-    if(m_game_over == GameOver::Won)
+    if(m_game_over == Status::Won)
         m_header.smiley.setWin();
-    else if (m_game_over == GameOver::Lost)
+    else if (m_game_over == Status::Lost)
         m_header.smiley.setLose();
 
     return true;

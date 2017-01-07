@@ -42,13 +42,13 @@ public:
         static const Difficulty expert;
     };
 
-    struct GameOver
+    struct Status
     {
         enum
         {
-            Lost = -1,
-            None = 0,
-            Won  = 1
+            Lost = -2,
+            Won  = -1,
+            None = 0
         };
     };
 

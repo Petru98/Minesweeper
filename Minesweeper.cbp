@@ -98,6 +98,9 @@
 		<Unit filename="include/def.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="include/os.hpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="include/random.hpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

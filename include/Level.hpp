@@ -11,23 +11,6 @@
 class Level : public Scene
 {
 public:
-    struct Error
-    {
-        enum
-        {
-            None,
-            Allocate,
-            CreateWindow
-        };
-
-        static constexpr const char* messages[] =
-        {
-            "No error",
-            "Could not allocate memory for a new game",
-            "Could not create an OpenGL window"
-        };
-    };
-
     struct Difficulty
     {
         sf::Uint16 lines;
@@ -40,6 +23,7 @@ public:
         static const Difficulty beginner;
         static const Difficulty intermediate;
         static const Difficulty expert;
+        static const Difficulty maximum;
     };
 
     struct Status
@@ -66,8 +50,8 @@ private:
 
     void M_updateFlagsCount();
 
+    void M_initializeBackground(const sf::Uint16 lines, const sf::Uint16 columns);
     void M_initializeMenu();
-    void M_initializeBackground();
     void M_initializeHeader();
     void M_resizeWindow();
 
@@ -90,7 +74,7 @@ public:
     Level(sf::RenderWindow& window, const sf::Texture& texture);
     virtual ~Level();
 
-    void create(const Difficulty difficulty);
+    bool create(const Difficulty difficulty);
 
     void win();
     void lose();

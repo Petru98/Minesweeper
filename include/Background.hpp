@@ -14,7 +14,7 @@ private:
     sf::Sprite        m_sprite;
     sf::Vector2f      m_size;
 
-    void M_update();
+    bool M_update();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states)const;
 

@@ -1,12 +1,15 @@
 #include "Level.hpp"
 
+#include "textures.hpp"
 #include "random.hpp"
 #include "File.hpp"
+#include "os.hpp"
 #include <ctime>
 
 const Level::Difficulty Level::Difficulty::beginner     = {9 , 9 , 10};
 const Level::Difficulty Level::Difficulty::intermediate = {16, 16, 40};
 const Level::Difficulty Level::Difficulty::expert       = {16, 30, 99};
+const Level::Difficulty Level::Difficulty::maximum      = {35, 75, 999};
 
 constexpr char Level::SAVE_FILE[];
 
@@ -14,13 +17,13 @@ Level::Difficulty Level::setDifficultyInBounds(Level::Difficulty difficulty)
 {
     if(difficulty.lines == 0)
         difficulty.lines = 1;
-    else if(difficulty.lines > 35)
-        difficulty.lines = 35;
+    else if(difficulty.lines > Difficulty::maximum.lines)
+        difficulty.lines = Difficulty::maximum.lines;
 
     if(difficulty.columns < 8)
         difficulty.columns = 8;
-    else if(difficulty.columns > 75)
-        difficulty.columns = 75;
+    else if(difficulty.columns > Difficulty::maximum.columns)
+        difficulty.columns = Difficulty::maximum.columns;
 
     if(difficulty.mines == 0)
         difficulty.mines = 1;
@@ -54,29 +57,48 @@ Level::~Level()
 {}
 
 /* New game */
-void Level::create(Level::Difficulty difficulty)
+bool Level::create(Level::Difficulty difficulty)
 {
     difficulty = setDifficultyInBounds(difficulty);
+
+    try
+    {
+        M_initializeBackground(difficulty.lines, difficulty.columns);
+    }
+    catch(const std::exception& error)
+    {
+        if(m_table.isCreated() == false)
+            throw;
+        os::error(error.what());
+        return false;
+    }
+
     if(m_table.create(difficulty.lines, difficulty.columns, difficulty.mines, m_textures) == false)
-        throw Exception(Error::Allocate, Error::messages[Error::Allocate]);
+        throw Exception("Could not allocate memory for the cells");
 
     M_initializeMenu();
-    M_initializeBackground();
     M_initializeHeader();
-    m_table.setPosition(m_background.getPosition() + m_background.table_position);
     M_resizeWindow();
+    m_table.setPosition(m_background.getPosition() + m_background.table_position);
 
     m_header.flags_left = difficulty.mines;
     m_game_over = Status::None;
+
+    return true;
+}
+void Level::M_initializeBackground(const sf::Uint16 lines, const sf::Uint16 columns)
+{
+    using namespace Resources::Textures;
+
+    const sf::Vector2f size = {static_cast<float>(columns * CELL_WIDTH + Table::LEFT_OFFSET + Table::RIGHT_OFFSET),
+                               static_cast<float>(lines * CELL_HEIGHT + Table::TOP_OFFSET + Table::BOTTOM_OFFSET)};
+
+    m_background.setPosition(0.0f, MenuBar::HEIGHT);
+    m_background.setSize(size);
 }
 void Level::M_initializeMenu()
 {
     m_menu_bar.setSize(sf::Vector2f(m_table.getSize().x + Table::LEFT_OFFSET + Table::RIGHT_OFFSET, MenuBar::HEIGHT));
-}
-void Level::M_initializeBackground()
-{
-    m_background.setPosition(0.0f, MenuBar::HEIGHT);
-    m_background.setSize(m_table.getSize() + sf::Vector2f(Table::LEFT_OFFSET + Table::RIGHT_OFFSET, Table::TOP_OFFSET + Table::BOTTOM_OFFSET));
 }
 void Level::M_initializeHeader()
 {
@@ -92,7 +114,7 @@ void Level::M_resizeWindow()
     {
         m_window.create(sf::VideoMode(size.x, size.y), "Minesweeper", sf::Style::Titlebar | sf::Style::Close);
         if(m_window.isOpen() == false)
-            throw Exception(Error::CreateWindow, Error::messages[Error::CreateWindow]);
+            throw Exception("Could not create the window");
     }
     else
         m_window.setSize(size);
@@ -285,14 +307,25 @@ bool Level::load(File& file)
     m_game_over = file.readInt8();
     sf::Int16 moves_count = file.readInt16();
 
+    const bool first_time = (m_table.isCreated() == false);
+
     if(m_table.load(file, m_textures, m_game_over) == false)
         return false;
 
+    try
+        {M_initializeBackground(m_table.lines(), m_table.columns());}
+    catch(const std::exception& error)
+    {
+        if(first_time == true)
+            throw;
+        os::error(error.what());
+        return false;
+    }
+
     M_initializeMenu();
-    M_initializeBackground();
     M_initializeHeader();
-    m_table.setPosition(m_background.getPosition() + m_background.table_position);
     M_resizeWindow();
+    m_table.setPosition(m_background.getPosition() + m_background.table_position);
 
     M_updateFlagsCount();
     m_header.moves = moves_count;

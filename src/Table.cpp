@@ -9,35 +9,39 @@ void Table::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {
     states.transform.combine(this->getTransform());
 
-    for(std::size_t i = 0; i < m_table.lines(); ++i)
-        for(std::size_t j = 0; j < m_table.columns(); ++j)
+    for(std::size_t i = 0; i < this->lines(); ++i)
+        for(std::size_t j = 0; j < this->columns(); ++j)
             target.draw(m_table[i][j], states);
 }
 
-Table::Table() : m_table(), m_pressed_cell_index(this->INVALID_INDEX), m_mines(0), m_cells_left(0)
+Table::Table() : m_table(), m_pressed_cell_index(this->INVALID_INDEX), m_lines(0), m_columns(0), m_mines(0), m_cells_left(0)
 {}
 Table::~Table()
 {}
 
 bool Table::create(const sf::Uint16 lines, const sf::Uint16 columns, const sf::Uint16 mines, const sf::Texture& textures)
 {
-    if(m_table.create(lines, columns) == false)
-        return false;
+    if(m_table.isCreated() == false)
+        if(m_table.create(Level::Difficulty::maximum.lines, Level::Difficulty::maximum.columns) == false)
+            return false;
+
+    m_lines = lines;
+    m_columns = columns;
+    m_mines = mines;
+    m_cells_left = this->lines() * this->columns();
 
     M_initializeCells(textures);
     M_placeMines(mines);
 
-    m_mines = mines;
-    m_cells_left = lines * columns;
     return true;
 }
 void Table::M_initializeCells(const sf::Texture& textures)
 {
     sf::Vector2f position(0.0f, 0.0f);
 
-    for(std::size_t i = 0; i < m_table.lines(); ++i)
+    for(std::size_t i = 0; i < this->lines(); ++i)
     {
-        for(std::size_t j = 0; j < m_table.columns(); ++j)
+        for(std::size_t j = 0; j < this->columns(); ++j)
         {
             m_table[i][j].initialize(textures);
             m_table[i][j].setPosition(position);
@@ -51,8 +55,8 @@ void Table::M_placeMines(sf::Uint16 mines)
 {
     while(mines > 0)
     {
-        const std::size_t line = Random::rand() % m_table.lines();
-        const std::size_t column = Random::rand() % m_table.columns();
+        const std::size_t line = Random::rand() % this->lines();
+        const std::size_t column = Random::rand() % this->columns();
 
         if(m_table[line][column].hasMine() == false)
         {
@@ -64,7 +68,7 @@ void Table::M_placeMines(sf::Uint16 mines)
                 const std::size_t line_adjacent = line + directions[i].y;
                 const std::size_t column_adjacent = column + directions[i].x;
 
-                if(m_table.outOfBounds(line_adjacent, column_adjacent) == false)
+                if(this->outOfBounds(line_adjacent, column_adjacent) == false)
                     m_table[line_adjacent][column_adjacent].incrementMinesCount();
             }
         }
@@ -74,12 +78,14 @@ void Table::M_placeMines(sf::Uint16 mines)
 void Table::destroy()
 {
     m_table.destroy();
+    m_lines = 0;
+    m_columns = 0;
     m_mines = 0;
     m_cells_left = 0;
 }
 
-sf::Uint16 Table::lines()const      {return m_table.lines();}
-sf::Uint16 Table::columns()const    {return m_table.columns();}
+sf::Uint16 Table::lines()const      {return m_lines;}
+sf::Uint16 Table::columns()const    {return m_columns;}
 sf::Uint16 Table::mines()const      {return m_mines;}
 sf::Uint16 Table::cellsLeft()const  {return m_cells_left;}
 
@@ -89,7 +95,7 @@ bool Table::isCreated()const
 }
 bool Table::outOfBounds(const int line, const int column)const
 {
-    return m_table.outOfBounds(line, column);
+    return line < 0 || line >= this->lines() || column < 0 || column >= this->columns();
 }
 
 int Table::getStatus(const int normal_status)const
@@ -99,7 +105,7 @@ int Table::getStatus(const int normal_status)const
 
 sf::Vector2f Table::getSize()const
 {
-    return sf::Vector2f(Cell::WIDTH * m_table.columns(), Cell::HEIGHT * m_table.lines());
+    return sf::Vector2f(Cell::WIDTH * this->columns(), Cell::HEIGHT * this->lines());
 }
 
 Cell* Table::operator[] (const sf::Uint16 index)            {return m_table[index];}
@@ -162,7 +168,7 @@ void Table::M_pressAdjacentCells(const sf::Vector2i index)
         const int line = index.y + directions[i].y;
         const int column = index.x + directions[i].x;
 
-        if(m_table.outOfBounds(line, column) == false)
+        if(this->outOfBounds(line, column) == false)
             m_table[line][column].press();
     }
 }
@@ -202,7 +208,7 @@ sf::Uint16 Table::M_countAdjacentFlags(const sf::Vector2i index)
     {
         const sf::Vector2i index_adjacent = index + directions[i];
 
-        if(m_table.outOfBounds(index_adjacent.y, index_adjacent.x) == false)
+        if(this->outOfBounds(index_adjacent.y, index_adjacent.x) == false)
             if(m_table[index_adjacent.y][index_adjacent.x].hasFlag() == true)
                 ++flags_count;
     }
@@ -225,14 +231,14 @@ void Table::M_releaseAdjacentCells(const sf::Vector2i index)
         const int line = index.y + directions[i].y;
         const int column = index.x + directions[i].x;
 
-        if(m_table.outOfBounds(line, column) == false)
+        if(this->outOfBounds(line, column) == false)
             m_table[line][column].release();
     }
 }
 
 void Table::M_revealFromCell(const sf::Vector2i index)
 {
-    if(m_table.outOfBounds(index.y, index.x) == false)
+    if(this->outOfBounds(index.y, index.x) == false)
     {
         if(m_table[index.y][index.x].reveal() == true)
         {
@@ -265,7 +271,7 @@ int Table::M_revealAdjacentCells(const sf::Vector2i index)
     {
         const sf::Vector2i index_adjacent = index + directions[i];
 
-        if(m_table.outOfBounds(index_adjacent.y, index_adjacent.x) == false)
+        if(this->outOfBounds(index_adjacent.y, index_adjacent.x) == false)
         {
             const Cell& cell = m_table[index_adjacent.y][index_adjacent.x];
 
@@ -316,13 +322,13 @@ bool Table::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 /* Save/Load */
 bool Table::save(File& file)const
 {
-    file.writeUint16(m_table.lines());
-    file.writeUint16(m_table.columns());
+    file.writeUint16(this->lines());
+    file.writeUint16(this->columns());
     file.writeUint16(m_mines);
     file.writeUint16(m_cells_left);
 
-    for(std::size_t i = 0; i < m_table.lines(); ++i)
-        for(std::size_t j = 0; j < m_table.columns(); ++j)
+    for(std::size_t i = 0; i < this->lines(); ++i)
+        for(std::size_t j = 0; j < this->columns(); ++j)
             M_saveCell(i, j, file);
     return true;
 }
@@ -344,17 +350,17 @@ bool Table::M_saveCell(const std::size_t line, const std::size_t column, File& f
 
 bool Table::load(File& file, const sf::Texture& textures, bool game_over)
 {
-    const sf::Uint16 lines_count = file.readUint16();
-    const sf::Uint16 columns_count = file.readUint16();
+    if(m_table.isCreated() == false)
+        if(m_table.create(Level::Difficulty::maximum.lines, Level::Difficulty::maximum.columns) == false)
+            return false;
 
-    if(m_table.create(lines_count, columns_count) == false)
-        return false;
-
+    m_lines = file.readUint16();
+    m_columns = file.readUint16();
     m_mines = file.readUint16();
     m_cells_left = file.readUint16();
 
-    for(std::size_t i = 0; i < m_table.lines(); ++i)
-        for(std::size_t j = 0; j < m_table.columns(); ++j)
+    for(std::size_t i = 0; i < this->lines(); ++i)
+        for(std::size_t j = 0; j < this->columns(); ++j)
             M_loadCell(i, j, file, textures, game_over);
     return true;
 }

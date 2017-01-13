@@ -24,6 +24,8 @@ private:
 
     Matrix<Cell> m_table;
     sf::Vector2i m_pressed_cell_index;
+    sf::Uint16   m_lines;
+    sf::Uint16   m_columns;
     sf::Uint16   m_mines;
     sf::Uint16   m_cells_left;
 

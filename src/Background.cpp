@@ -19,24 +19,24 @@ void Background::setSize(const float width, const float height)
 {
     m_size.x = width;
     m_size.y = height;
-    M_update();
+
+    if(M_update() == false)
+        throw "Could not allocate memory for the background";
 }
 void Background::setSize(const sf::Vector2f size)
 {
-    m_size.x = size.x;
-    m_size.y = size.y;
-    M_update();
+    this->setSize(size.x, size.y);
 }
 sf::Vector2f Background::getSize()const
 {
     return m_size;
 }
 
-void Background::M_update()
+bool Background::M_update()
 {
     if(m_cache.getSize() != sf::Vector2u(m_size.x, m_size.y))
         if(m_cache.create(m_size.x, m_size.y) == false)
-            throw Exception(__LINE__, __FILE__);
+            return false;
 
     sf::RectangleShape rect;
     rect.setSize(sf::Vector2f(m_size.x, m_size.y));
@@ -71,4 +71,6 @@ void Background::M_update()
 
     m_cache.display();
     m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
+
+    return true;
 }

@@ -1,2 +1,13 @@
 # Minesweeper
-Proiect IP, anul I semestrul I
+
+
+
+##### Locatia executabilului:
+
+bin\Release\
+
+
+
+##### Prerequisites:
+
+OpenGL

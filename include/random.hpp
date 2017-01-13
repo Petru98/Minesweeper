@@ -2,21 +2,14 @@
 #define MINEWEEPER_RANDOM_HPP_INCLUDED
 
 #include <cstdint>
+#include <random>
 
 namespace Random
 {
-    namespace internal
-    {
-        extern uint32_t state_a;
-        extern uint32_t state_b;
-    }
+    typedef std::mt19937 Engine;
+    typedef std::uniform_int_distribution<std::size_t> Distribution;
 
-    uint32_t rand();
-
-    void seed(const uint32_t first_seed);
-    void seed(const uint32_t first_seed, const uint32_t second_seed);
-
-    double rand01();
+    extern Engine engine;
 }
 
 #endif

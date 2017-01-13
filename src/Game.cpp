@@ -1,6 +1,8 @@
 #include "Game.hpp"
 #include "textures.hpp"
 #include "Exception.hpp"
+#include "random.hpp"
+#include <chrono>
 
 Game::Game() : window(), textures(), level(window, textures)
 {}
@@ -10,6 +12,9 @@ Game::~Game()
 void Game::initialize()
 {
     using namespace Resources;
+    using namespace std::chrono;
+
+    Random::engine.seed(system_clock::to_time_t(system_clock::now()));
 
     if(textures.loadFromMemory(Textures::pack.data, Textures::pack.size) == false)
         throw Exception("Could not load the textures");

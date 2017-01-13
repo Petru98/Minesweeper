@@ -4,7 +4,6 @@
 #include "random.hpp"
 #include "File.hpp"
 #include "os.hpp"
-#include <ctime>
 
 const Level::Difficulty Level::Difficulty::beginner     = {9 , 9 , 10};
 const Level::Difficulty Level::Difficulty::intermediate = {16, 16, 40};
@@ -49,7 +48,6 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states)const
 Level::Level(sf::RenderWindow& window, const sf::Texture& textures)
     : m_game_menu(this), m_background(), m_header(), m_menu_bar(), m_table(), m_window(window), m_textures(textures), m_game_over(Status::None)
 {
-    Random::seed(std::time(nullptr));
     m_game_menu.initialize(m_textures);
     m_menu_bar.addMenu(m_game_menu);
 }

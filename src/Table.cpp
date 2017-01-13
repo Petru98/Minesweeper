@@ -51,12 +51,16 @@ void Table::M_initializeCells(const sf::Texture& textures)
         position.x = 0.0f;
     }
 }
+
 void Table::M_placeMines(sf::Uint16 mines)
 {
+    Random::Distribution rand(0, this->lines() * this->columns() - 1);
+
     while(mines > 0)
     {
-        const std::size_t line = Random::rand() % this->lines();
-        const std::size_t column = Random::rand() % this->columns();
+        const std::size_t index  = rand(Random::engine);
+        const std::size_t line   = index / this->columns();
+        const std::size_t column = index % this->columns();
 
         if(m_table[line][column].hasMine() == false)
         {

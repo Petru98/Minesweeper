@@ -122,14 +122,14 @@ int Table::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 
     if(event.button == sf::Mouse::Left)
     {
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+        if(Level::mouse_right_pressed == false)
             M_pressCell(index);
         else
             M_pressArea(index);
     }
     else if(event.button == sf::Mouse::Right)
     {
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+        if(Level::mouse_left_pressed == true)
             M_pressArea(index);
         else
             return M_toggleFlag(index);
@@ -184,11 +184,14 @@ int Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
     {
         if(event.button == sf::Mouse::Left)
         {
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
+            if(Level::mouse_right_pressed == true)
                 return M_revealFromArea(m_pressed_cell_index);
+            if(m_table[m_pressed_cell_index.y][m_pressed_cell_index.x].hasFlag() == true)
+                return this->getStatus(0);
 
             M_releaseCell(m_pressed_cell_index);
             M_revealFromCell(m_pressed_cell_index);
+
             if(m_table[m_pressed_cell_index.y][m_pressed_cell_index.x].hasMine() == true)
                 return Level::Status::Lost;
 
@@ -197,7 +200,7 @@ int Table::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
         }
         else if(event.button == sf::Mouse::Right)
         {
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+            if(Level::mouse_left_pressed == true)
                 M_releaseAdjacentCells(m_pressed_cell_index);
         }
     }
@@ -300,7 +303,7 @@ bool Table::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
     if(m_pressed_cell_index != this->INVALID_INDEX)
     {
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == false)
+        if(Level::mouse_right_pressed == false)
             M_releaseCell(m_pressed_cell_index);
         else
             M_releaseArea(m_pressed_cell_index);
@@ -308,11 +311,11 @@ bool Table::onMouseMoved(const sf::Event::MouseMoveEvent& event)
         m_pressed_cell_index = this->INVALID_INDEX;
     }
 
-    if(this->contains(event.x, event.y) == true && sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+    if(this->contains(event.x, event.y) == true && Level::mouse_left_pressed == true)
     {
         const sf::Vector2i index = M_getCellIndexAtPosition(event.x, event.y);
 
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
+        if(Level::mouse_right_pressed == true)
             M_pressArea(index);
         else
             M_pressCell(index);

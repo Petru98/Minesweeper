@@ -36,6 +36,9 @@ public:
         };
     };
 
+    static bool mouse_left_pressed;
+    static bool mouse_right_pressed;
+
 private:
     static constexpr sf::Uint32 MAGIC_NUMBER = 0x4D535750;
 
@@ -54,6 +57,8 @@ private:
     void M_initializeMenu();
     void M_initializeHeader();
     void M_resizeWindow();
+
+    void M_setButtonPressStatus(const int button, const bool pressed);
 
     void M_onMouseButtonPressedTable(const sf::Event::MouseButtonEvent event);
     void M_onMouseButtonPressedSmiley(const sf::Event::MouseButtonEvent event);

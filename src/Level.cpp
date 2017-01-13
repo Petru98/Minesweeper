@@ -10,6 +10,9 @@ const Level::Difficulty Level::Difficulty::intermediate = {16, 16, 40};
 const Level::Difficulty Level::Difficulty::expert       = {16, 30, 99};
 const Level::Difficulty Level::Difficulty::maximum      = {35, 75, 999};
 
+bool Level::mouse_left_pressed = false;
+bool Level::mouse_right_pressed = false;
+
 constexpr char Level::SAVE_FILE[];
 
 Level::Difficulty Level::setDifficultyInBounds(Level::Difficulty difficulty)
@@ -170,9 +173,20 @@ void Level::onKeyPressed(const sf::Event::KeyEvent& event) {}
 void Level::onKeyReleased(const sf::Event::KeyEvent& event) {}
 void Level::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& event) {}
 
+void Level::M_setButtonPressStatus(const int button, const bool pressed)
+{
+    switch(button)
+    {
+        case sf::Mouse::Left : this->mouse_left_pressed = pressed; break;
+        case sf::Mouse::Right: this->mouse_right_pressed = pressed; break;
+    }
+}
+
 /* onMouseButtonPressed */
 void Level::onMouseButtonPressed(const sf::Event::MouseButtonEvent& event)
 {
+    M_setButtonPressStatus(event.button, true);
+
     if(m_game_over == false && m_table.contains(event.x, event.y) == true)
         M_onMouseButtonPressedTable(event);
     else if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == true)
@@ -204,6 +218,8 @@ void Level::M_onMouseButtonPressedSmiley(const sf::Event::MouseButtonEvent event
 /* onMouseButtonReleased */
 void Level::onMouseButtonReleased(const sf::Event::MouseButtonEvent& event)
 {
+    M_setButtonPressStatus(event.button, false);
+
     if(m_game_over == false && m_table.contains(event.x, event.y) == true)
         M_onMouseButtonReleasedTable(event);
     else if(m_header.smiley.contains(m_header.getRelativePoint(event.x, event.y)) == true)
@@ -242,7 +258,7 @@ void Level::M_onMouseButtonReleasedSmiley(const sf::Event::MouseButtonEvent even
 /* onMouseMoved */
 void Level::onMouseMoved(const sf::Event::MouseMoveEvent& event)
 {
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left) == false)
+    if(this->mouse_left_pressed == false)
         return;
 
     m_menu_bar.onMouseMoved(event);

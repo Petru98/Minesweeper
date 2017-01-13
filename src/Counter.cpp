@@ -1,5 +1,4 @@
 #include "Counter.hpp"
-#include "textures.hpp"
 
 void Counter::draw(sf::RenderTarget& target, sf::RenderStates states)const
 {

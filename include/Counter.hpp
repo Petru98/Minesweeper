@@ -2,12 +2,17 @@
 #define MINESWEEPER_COUNTER_HPP_INCLUDED
 
 #include "RectangularObject.hpp"
+#include "textures.hpp"
 
 class Counter : public RectangularObject
 {
-protected:
+public:
+    static constexpr std::size_t WIDTH = Resources::Textures::COUNTER_DIGIT_WIDTH;
+    static constexpr std::size_t HEIGHT = Resources::Textures::COUNTER_DIGIT_HEIGHT;
+
     static constexpr std::size_t N = 3;
 
+protected:
     sf::Sprite m_sprites[N];
     sf::Int16 m_count;
 

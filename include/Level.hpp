@@ -50,7 +50,7 @@ private:
 
     void M_updateFlagsCount();
 
-    void M_initializeBackground(const sf::Uint16 lines, const sf::Uint16 columns);
+    bool M_initializeBackground(const sf::Uint16 lines, const sf::Uint16 columns);
     void M_initializeMenu();
     void M_initializeHeader();
     void M_resizeWindow();

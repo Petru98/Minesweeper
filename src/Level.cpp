@@ -61,17 +61,8 @@ bool Level::create(Level::Difficulty difficulty)
 {
     difficulty = setDifficultyInBounds(difficulty);
 
-    try
-    {
-        M_initializeBackground(difficulty.lines, difficulty.columns);
-    }
-    catch(const std::exception& error)
-    {
-        if(m_table.isCreated() == false)
-            throw;
-        os::error(error.what());
+    if(M_initializeBackground(difficulty.lines, difficulty.columns) == false)
         return false;
-    }
 
     if(m_table.create(difficulty.lines, difficulty.columns, difficulty.mines, m_textures) == false)
         throw Exception("Could not allocate memory for the cells");
@@ -86,7 +77,7 @@ bool Level::create(Level::Difficulty difficulty)
 
     return true;
 }
-void Level::M_initializeBackground(const sf::Uint16 lines, const sf::Uint16 columns)
+bool Level::M_initializeBackground(const sf::Uint16 lines, const sf::Uint16 columns)
 {
     using namespace Resources::Textures;
 
@@ -94,7 +85,18 @@ void Level::M_initializeBackground(const sf::Uint16 lines, const sf::Uint16 colu
                                static_cast<float>(lines * CELL_HEIGHT + Table::TOP_OFFSET + Table::BOTTOM_OFFSET)};
 
     m_background.setPosition(0.0f, MenuBar::HEIGHT);
-    m_background.setSize(size);
+
+    try
+        {m_background.setSize(size);}
+    catch(const std::exception& error)
+    {
+        if(sf::Vector2u(m_background.getSize()) == sf::Vector2u(0,0))
+            throw;
+        os::error(error.what());
+        return false;
+    }
+
+    return true;
 }
 void Level::M_initializeMenu()
 {
@@ -307,20 +309,10 @@ bool Level::load(File& file)
     m_game_over = file.readInt8();
     sf::Int16 moves_count = file.readInt16();
 
-    const bool first_time = (m_table.isCreated() == false);
-
     if(m_table.load(file, m_textures, m_game_over) == false)
         return false;
-
-    try
-        {M_initializeBackground(m_table.lines(), m_table.columns());}
-    catch(const std::exception& error)
-    {
-        if(first_time == true)
-            throw;
-        os::error(error.what());
+    if(M_initializeBackground(m_table.lines(), m_table.columns()) == false)
         return false;
-    }
 
     M_initializeMenu();
     M_initializeHeader();
